@@ -1,0 +1,37 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 23, 2023
+Time:                22:10:12
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+         Measurement    Frequency
+Role        Level         Count
+ 
+INPUT     INTERVAL          1
+TEXT      NOMINAL           1
+ 
+ 
+ 
+Saved Data Properties
+ 
+ Data                                                                                       Total           Saved        Number of
+Library                                 Output Location                                  Observations    Observations    Variables
+ 
+RESUME     C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Stoplist_TRAIN.sas7bdat       55785            MAX             2
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*

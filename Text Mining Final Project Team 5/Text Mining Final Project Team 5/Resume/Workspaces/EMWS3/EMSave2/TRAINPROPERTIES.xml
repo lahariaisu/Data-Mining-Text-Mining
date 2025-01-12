@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  Location="CATALOG" Catalog="Sashelp.Emutil.Savext.Source" Type="SAS7BDAT" Replace="Y"
+ AllObs="Y" OutObs="1000" AllRoles="Y" Train="Y" Validate="Y" Test="Y" Score="Y" Transaction="Y"
+ ForceRun="N" RunAction="Train" Component="EMSave" Lib="RESUME" DirectorySelector=""
+ Name="Stoplist" RawCreateTime="2015952549.7" CreateTime="18NOV2023:18:49:10" RunId="f009f3cf-03f3-4ede-9cf9-50ce6f495005"
+ RawLastTimeRun="2016396608.7" RawRunTime="4.0310001373" LastTimeRun="23NOV2023:22:10:09"
+ RunTime="0 Hr. 0 Min. 4.03 Sec.">
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES ><![CDATA[
+USERTRAINCODE
+USERSCORECODE
+USERREPORTCODE
+]]>
+</FILEPROPERTIES></_ROOT_>

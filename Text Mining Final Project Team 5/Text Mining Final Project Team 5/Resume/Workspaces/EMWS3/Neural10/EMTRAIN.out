@@ -1,0 +1,236 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+INPUT        INTERVAL          13   
+REJECTED     INTERVAL           3   
+TARGET       NOMINAL            1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                                     Number
+                                      Measurement      of
+ Target             Event                Level       Levels      Order        Label
+
+Category    INFORMATION-TECHNOLOGY      NOMINAL         3      Descending    Category
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type         Variable                            Label
+
+TARGET       Category                            Category                                  
+PREDICTED    P_CategoryINFORMATION_TECHNOLOGY    Predicted: Category=INFORMATION-TECHNOLOGY
+RESIDUAL     R_CategoryINFORMATION_TECHNOLOGY    Residual: Category=INFORMATION-TECHNOLOGY 
+PREDICTED    P_CategoryHR                        Predicted: Category=HR                    
+RESIDUAL     R_CategoryHR                        Residual: Category=HR                     
+PREDICTED    P_CategoryDESIGNER                  Predicted: Category=DESIGNER              
+RESIDUAL     R_CategoryDESIGNER                  Residual: Category=DESIGNER               
+FROM         F_Category                          From: Category                            
+INTO         I_Category                          Into: Category                            
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+Preliminary       Starting         Objective         Number
+ Training          Random           Function           of        Terminating
+    Run             Seed             Value         Iterations     Criteria
+
+        1               12345    0.000388288304            5      ABSCONV   
+        2           117568856    0.002615060013           10                
+        3          1589137630    0.001385857417            4      ABSCONV   
+        4          1780215241    0.000311582832            5      ABSCONV   
+        5           653604406    0.001491884017            5      ABSCONV   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+                         Optimization Start
+                         Parameter Estimates
+                                                            Gradient
+                                                           Objective
+  N Parameter                               Estimate        Function
+
+  1 TextCluster_SVD1_H11                    0.492329    -0.000024230
+  2 TextCluster_SVD10_H11                   0.585497     0.000037371
+  3 TextCluster_SVD2_H11                    0.042802    -0.000057755
+  4 TextCluster_SVD3_H11                   -0.957987     0.000041911
+  5 TextCluster_SVD4_H11                   -0.918202     0.000034124
+  6 TextCluster_SVD5_H11                   -0.303962    -0.000029294
+  7 TextCluster_SVD6_H11                   -0.238321     0.000010352
+  8 TextCluster_SVD7_H11                   -0.018974     0.000037228
+  9 TextCluster_SVD8_H11                    0.053118    -0.000004371
+ 10 TextCluster_SVD9_H11                    0.186081    -0.000035764
+ 11 TextTopic2_raw1_H11                     0.293358    -0.000063197
+ 12 TextTopic2_raw2_H11                     0.584490     0.000026767
+ 13 TextTopic2_raw3_H11                    -0.170592     0.000042497
+ 14 TextCluster_SVD1_H12                   -0.011959    -0.000045426
+ 15 TextCluster_SVD10_H12                  -0.281549     0.000013718
+ 16 TextCluster_SVD2_H12                    0.878449     0.000012086
+ 17 TextCluster_SVD3_H12                    0.128177     0.000066567
+ 18 TextCluster_SVD4_H12                    0.838340     0.000068505
+ 19 TextCluster_SVD5_H12                    0.280534    -0.000045780
+ 20 TextCluster_SVD6_H12                   -0.130759     0.000042609
+ 21 TextCluster_SVD7_H12                   -0.216406     0.000072874
+ 22 TextCluster_SVD8_H12                   -0.039988     0.000042464
+ 23 TextCluster_SVD9_H12                   -0.438620     0.000008157
+ 24 TextTopic2_raw1_H12                     0.274795    -0.000030383
+ 25 TextTopic2_raw2_H12                    -1.376373    -0.000041381
+ 26 TextTopic2_raw3_H12                    -0.507843     0.000051714
+ 27 TextCluster_SVD1_H13                   -0.731707     0.000069896
+ 28 TextCluster_SVD10_H13                   0.197577     0.000016672
+ 29 TextCluster_SVD2_H13                   -0.318972    -0.000053198
+ 30 TextCluster_SVD3_H13                    0.501166       -0.000109
+ 31 TextCluster_SVD4_H13                    0.331556       -0.000153
+ 32 TextCluster_SVD5_H13                    0.206950        0.000131
+ 33 TextCluster_SVD6_H13                   -0.362415    -0.000091271
+ 34 TextCluster_SVD7_H13                   -0.339911       -0.000178
+ 35 TextCluster_SVD8_H13                   -0.003339    -0.000053137
+ 36 TextCluster_SVD9_H13                   -0.344479     0.000007192
+ 37 TextTopic2_raw1_H13                    -1.075739     0.000022726
+ 38 TextTopic2_raw2_H13                    -0.217067     0.000088713
+ 39 TextTopic2_raw3_H13                     0.697529    -0.000090844
+ 40 BIAS_H11                               -0.332506    -0.000054006
+ 41 BIAS_H12                                0.194399     0.000062117
+ 42 BIAS_H13                               -0.241590    -0.000075655
+ 43 H11_CategoryINFORMATIONTECHNOLOG        3.918933       -0.000157
+ 44 H12_CategoryINFORMATIONTECHNOLOG        3.942666     0.000025043
+ 45 H13_CategoryINFORMATIONTECHNOLOG       -5.005783        0.000168
+ 46 H11_CategoryHR                          4.258730    -0.000066825
+ 47 H12_CategoryHR                         -4.291650        0.000148
+ 48 H13_CategoryHR                         -1.670259    -0.000004283
+ 49 BIAS_CategoryINFORMATIONTECHNOLO       -2.332016     0.000095625
+ 50 BIAS_CategoryHR                         0.741692     0.000022667
+
+Value of Objective Function = 0.0003115828
+
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+Levenberg-Marquardt Optimization
+
+
+Minimum Iterations                                0
+Maximum Iterations                               50
+Maximum Function Calls                   2147483647
+Maximum CPU Time                              14400
+ABSGCONV Gradient Criterion                 0.00001
+GCONV Gradient Criterion                       1E-8
+GCONV2 Gradient Criterion                         0
+ABSFCONV Function Criterion                       0
+FCONV Function Criterion                     0.0001
+FCONV2 Function Criterion                         0
+FSIZE Parameter                                   0
+ABSXCONV Parameter Change Criterion               0
+XCONV Parameter Change Criterion                  0
+XSIZE Parameter                                   0
+ABSCONV Function Criterion             0.0022149899
+Trust Region Initial Radius Factor                1
+Singularity Tolerance (SINGULAR)               1E-8
+
+Levenberg-Marquardt Optimization
+
+Scaling Update of More (1978)
+
+Parameter Estimates              50
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       0.0003115828
+Max Abs Gradient Element                 0.0001777268  Radius                                              1
+
+                                            Optimization Results
+
+Iterations                                          0  Function Calls                                      3
+Jacobian Calls                                      1  Active Constraints                                  0
+Objective Function                       0.0003115828  Max Abs Gradient Element                 0.0001777268
+Lambda                                              0  Actual Over Pred Change                             0
+Radius                                              1                                                       
+
+Convergence criterion (ABSCONV=0.0022149899) satisfied.                                           
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+                        Optimization Results
+                         Parameter Estimates
+                                                            Gradient
+                                                           Objective
+  N Parameter                               Estimate        Function
+
+  1 TextCluster_SVD1_H11                    0.492329    -0.000024230
+  2 TextCluster_SVD10_H11                   0.585497     0.000037371
+  3 TextCluster_SVD2_H11                    0.042802    -0.000057755
+  4 TextCluster_SVD3_H11                   -0.957987     0.000041911
+  5 TextCluster_SVD4_H11                   -0.918202     0.000034124
+  6 TextCluster_SVD5_H11                   -0.303962    -0.000029294
+  7 TextCluster_SVD6_H11                   -0.238321     0.000010352
+  8 TextCluster_SVD7_H11                   -0.018974     0.000037228
+  9 TextCluster_SVD8_H11                    0.053118    -0.000004371
+ 10 TextCluster_SVD9_H11                    0.186081    -0.000035764
+ 11 TextTopic2_raw1_H11                     0.293358    -0.000063197
+ 12 TextTopic2_raw2_H11                     0.584490     0.000026767
+ 13 TextTopic2_raw3_H11                    -0.170592     0.000042497
+ 14 TextCluster_SVD1_H12                   -0.011959    -0.000045426
+ 15 TextCluster_SVD10_H12                  -0.281549     0.000013718
+ 16 TextCluster_SVD2_H12                    0.878449     0.000012086
+ 17 TextCluster_SVD3_H12                    0.128177     0.000066567
+ 18 TextCluster_SVD4_H12                    0.838340     0.000068505
+ 19 TextCluster_SVD5_H12                    0.280534    -0.000045780
+ 20 TextCluster_SVD6_H12                   -0.130759     0.000042609
+ 21 TextCluster_SVD7_H12                   -0.216406     0.000072874
+ 22 TextCluster_SVD8_H12                   -0.039988     0.000042464
+ 23 TextCluster_SVD9_H12                   -0.438620     0.000008157
+ 24 TextTopic2_raw1_H12                     0.274795    -0.000030383
+ 25 TextTopic2_raw2_H12                    -1.376373    -0.000041381
+ 26 TextTopic2_raw3_H12                    -0.507843     0.000051714
+ 27 TextCluster_SVD1_H13                   -0.731707     0.000069896
+ 28 TextCluster_SVD10_H13                   0.197577     0.000016672
+ 29 TextCluster_SVD2_H13                   -0.318972    -0.000053198
+ 30 TextCluster_SVD3_H13                    0.501166       -0.000109
+ 31 TextCluster_SVD4_H13                    0.331556       -0.000153
+ 32 TextCluster_SVD5_H13                    0.206950        0.000131
+ 33 TextCluster_SVD6_H13                   -0.362415    -0.000091271
+ 34 TextCluster_SVD7_H13                   -0.339911       -0.000178
+ 35 TextCluster_SVD8_H13                   -0.003339    -0.000053137
+ 36 TextCluster_SVD9_H13                   -0.344479     0.000007192
+ 37 TextTopic2_raw1_H13                    -1.075739     0.000022726
+ 38 TextTopic2_raw2_H13                    -0.217067     0.000088713
+ 39 TextTopic2_raw3_H13                     0.697529    -0.000090844
+ 40 BIAS_H11                               -0.332506    -0.000054006
+ 41 BIAS_H12                                0.194399     0.000062117
+ 42 BIAS_H13                               -0.241590    -0.000075655
+ 43 H11_CategoryINFORMATIONTECHNOLOG        3.918933       -0.000157
+ 44 H12_CategoryINFORMATIONTECHNOLOG        3.942666     0.000025043
+ 45 H13_CategoryINFORMATIONTECHNOLOG       -5.005783        0.000168
+ 46 H11_CategoryHR                          4.258730    -0.000066825
+ 47 H12_CategoryHR                         -4.291650        0.000148
+ 48 H13_CategoryHR                         -1.670259    -0.000004283
+ 49 BIAS_CategoryINFORMATIONTECHNOLO       -2.332016     0.000095625
+ 50 BIAS_CategoryHR                         0.741692     0.000022667
+
+Value of Objective Function = 0.0003115828
+

@@ -1,0 +1,312 @@
+*------------------------------------------------------------*
+* Report Log
+Date:                November 27, 2023
+Time:                20:52:16
+*------------------------------------------------------------*
+19538  %let EMEXCEPTIONSTRING=;
+19539  *------------------------------------------------------------*;
+19540  * REPORT: TextCluster2;
+19541  *------------------------------------------------------------*;
+19542  %let EM_ACTION = REPORT;
+19543  %let syscc = 0;
+19544  %macro main();
+19545  
+19546     %if %upcase(&EM_ACTION) eq CREATE %then %do;
+19547        filename temp catalog 'sashelp.emtxtext.cluster_create.source';
+19548        %include temp;
+19549        %create();
+19550     %end;
+19551     %if %upcase(&EM_ACTION) eq TRAIN %then %do;
+19552        filename temp catalog 'sashelp.emtxtext.cluster_train.source';
+19553        %include temp;
+19554        %train();
+19555     %end;
+19556     %if %upcase(&EM_ACTION) eq REPORT %then %do;
+19557        filename temp catalog 'sashelp.emtxtext.cluster_report.source';
+19558        %include temp;
+19559        %report();
+19560     %end;
+19561     %if %upcase(&EM_ACTION) eq SCORE %then %do;
+19562        filename temp catalog 'sashelp.emtxtext.cluster_score.source';
+19563        %include temp;
+19564        %score();
+19565     %end;
+19566  %mend main;
+19567  
+19568  %main();
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.CLUSTER_REPORT.SOURCE.
+19569 +%macro report();
+19570 +
+19571 +    %EM_GETNAME(KEY=GRAPH_TABLE, TYPE=DATA);
+19572 +    %EM_GETNAME(KEY=clusters, TYPE=DATA);
+19573 +    %EM_GETNAME(KEY=prescorecode, type=file, extension=sas);
+19574 +    %em_getname(key=svd_s, type=data);
+19575 +    %em_getname(key=hierds, type=data);
+19576 +
+19577 +    proc sql noprint;
+19578 +        select count(*) into :svdkeep
+19579 +            from &em_user_svd_s
+19580 +            where keep=1;
+19581 +        select count(*) into :nclus
+19582 +            from &em_user_clusters;
+19583 +    quit;
+19584 +    %let svdkeep=%left(&svdkeep);
+19585 +    %let nclus=%left(&nclus);
+19586 +    %let clusterid=%sysfunc(sasmsg(sashelp.tmine, rpt_text_clusterid_vlabel, NOQUOTE));
+19587 +    %let frequency=%sysfunc(sasmsg(sashelp.tmine, rpt_text_frequency_vlabel, NOQUOTE));
+19588 +    %let percentage=%sysfunc(sasmsg(sashelp.tmine, rpt_text_percentage_vlabel, NOQUOTE));
+19589 +    %let descterms=%sysfunc(sasmsg(sashelp.tmine, rpt_text_descterms_vlabel, NOQUOTE));
+19590 +    %let rmsstd=%sysfunc(sasmsg(sashelp.tmine, rpt_text_rmsstd_vlabel, NOQUOTE));
+19591 +    %let coordinate=%sysfunc(sasmsg(sashelp.tmine, rpt_text_coordinate_vlabel, NOQUOTE));
+19592 +    %let parent=%sysfunc(sasmsg(sashelp.tmine, rpt_text_parent_vlabel, NOQUOTE));
+19593 +    %let hierlevel=%sysfunc(sasmsg(sashelp.tmine, rpt_text_hierlevel_vlabel, NOQUOTE));
+19594 +    %let graphdesc=%sysfunc(sasmsg(sashelp.tmine, rpt_text_graphdesc_vlabel, NOQUOTE));
+19595 +    %let descshort=%sysfunc(sasmsg(sashelp.tmine, rpt_text_descshort_vlabel, NOQUOTE));
+19596 +
+19597 +    data &em_user_graph_table;
+19598 +        set &em_user_clusters;
+19599 +        label _cluster_="&clusterid"
+19600 +              clus_desc="&DescTerms"
+19601 +              freq="&Frequency"
+19602 +              percent="&Percentage"
+19603 +              _rmsstd_="&rmsstd"
+19604 +              %do i=1 %to &svdkeep;
+19605 +                _mean&i="&Coordinate &i"
+19606 +              %end;
+19607 +              ;
+19608 +        format percent percent10.;
+19609 +        desc_short = clus_desc;
+19610 +        if COUNTW(clus_desc, ' ') > 5 then do;
+19611 +            call scan(clus_desc, 6, position, len, ' ');
+19612 +            desc_short=substr(clus_desc, 1, position-1) || '...';
+19613 +            drop position len;
+19614 +            label desc_short="&descshort";
+19615 +        end;
+19616 +    run;
+19617 +
+19618 +    proc sql noprint;
+19619 +        create table &em_user_graph_table as
+19620 +        select _cluster_, clus_desc, freq, percent, *
+19621 +        from &em_user_graph_table;
+19622 +    quit;
+19623 +
+19624 +    %let block = %sysfunc(sasmsg(sashelp.tmine, rpt_text_clusters_title, NOQUOTE));
+19625 +
+19626 +    %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_prescore_title, NOQUOTE));
+19627 +    %EM_REPORT(KEY=PRESCORECODE, VIEWTYPE=SOURCE, DESCRIPTION=%nrbquote(&desc),
+19628 +              BLOCK=Scoring, AUTODISPLAY=N);
+19629 +
+19630 +    %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_clusfreqbyrms_title, NOQUOTE));
+19631 +    %EM_REPORT(KEY=GRAPH_TABLE, VIEWTYPE=SCATTER, X=FREQ, Y=_RMSSTD_, DESCRIPTION=%nrbquote(&desc),
+19632 +            BLOCK=%nrbquote(&block), AUTODISPLAY=Y, TIP=%if &em_property_nDescTerms > 5 %then desc_short; %else clus_desc;);
+19633 +
+19634 +    %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_clusters_title, NOQUOTE));
+19635 +    %EM_REPORT(KEY=GRAPH_TABLE, VIEWTYPE=DATA, DESCRIPTION=%nrbquote(&desc), BLOCK=%nrbquote(&block), AUTODISPLAY=Y);
+19636 +
+19637 +    %if &nclus > 2 %then %do;
+19638 +        data work.graph_table(drop=_cluster_);
+19639 +            set &em_user_graph_table;
+19640 +            cluster=put(_cluster_,best12.);
+19641 +        run;
+19642 +        proc distance data=work.graph_table out=work.graph_table method=EUCLID nostd;
+19643 +            var RATIO(_mean1-_mean&svdkeep);
+19644 +            id cluster;
+19645 +        run;
+19646 +        proc mds data=work.graph_table out=work.graph_table
+19647 +            level=ratio dimension=2 noprint;
+19648 +        run;
+19649 +        data work.graph_table;
+19650 +            set work.graph_table;
+19651 +            if _name_ ne '';
+19652 +            Cluster=input(substr(_name_,2),8.);
+19653 +            LABEL dim1='X' dim2='Y';
+19654 +        run;
+19655 +        proc sql noprint;
+19656 +            create table &em_user_graph_table as
+19657 +            select a.*, b.dim1, b.dim2
+19658 +            from &em_user_graph_table a, work.graph_table b
+19659 +            where a._cluster_=b.cluster;
+19660 +        quit;
+19661 +
+19662 +        %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_clusterdist_title, NOQUOTE));
+19663 +        %EM_REPORT(KEY=GRAPH_TABLE, VIEWTYPE=SCATTER, X=DIM1, Y=DIM2, BLOCK=%nrbquote(&BLOCK),
+19664 +            DESCRIPTION=%nrbquote(&desc), AUTODISPLAY=Y, TIP=%if &em_property_nDescTerms > 5 %then desc_short; %else clus_desc;,
+19665 +            GROUP=_CLUSTER_, LEGEND=N);
+19666 +    %end;
+19667 +    %else %do;
+19668 +        %put &em_codebar;
+19669 +        %let errormsg=%sysfunc(sasmsg(sashelp.tmine, EMTOOL.NODISTANCEREPORT_NOTE, NOQUOTE));
+19670 +        %put &errormsg;
+19671 +        %put &em_codebar;
+19672 +    %end;
+19673 +
+19674 +    %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_clusterfreq_title, NOQUOTE));
+19675 +    %EM_REPORT(KEY=GRAPH_TABLE, VIEWTYPE=PIE, X=_cluster_, Y=freq, DESCRIPTION=%nrbquote(&desc),
+19676 +        TOOLTIP=clus_desc, BLOCK=%nrbquote(&block), AUTODISPLAY=Y);
+19677 +
+19678 +    %if &EM_PROPERTY_ALGORITHM=2.0 %then %do;
+19679 +
+19680 +        proc sql noprint;
+19681 +            create table &em_user_hierds as
+19682 +            select level, _cluster_, parent, clus_desc, *
+19683 +            from &em_user_hierds;
+19684 +        quit;
+19685 +        filename temp catalog 'sashelp.emtext.tmsort.source';
+19686 +        %include temp;
+19687 +        %tmsort(data=&em_user_hierds, out=, by=level parent _cluster_);
+19688 +
+19689 +        data &em_user_hierds;
+19690 +            set &em_user_hierds;
+19691 +            label _cluster_="&clusterid"
+19692 +                  clus_desc="&descterms"
+19693 +                  freq="&frequency"
+19694 +                  parent="&parent"
+19695 +                  level="&hierlevel"
+19696 +                  graphdesc="&graphdesc";
+19697 +        run;
+19698 +        %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_clusterhierarchy_title, NOQUOTE));
+19699 +        %em_report(viewtype=constellation, linkkey=hierds, nodekey=hierds, method=HIERARCHY,
+19700 +            linkfrom=_CLUSTER_,linkto=PARENT,linkid=_cluster_,nodeid=_CLUSTER_,nodesize=FREQ,nodelabel=graphdesc,
+19701 +            nodetip=clus_desc, BLOCK=%nrbquote(&block), DESCRIPTION=%nrbquote(&desc), AUTODISPLAY=Y);
+19702 +
+19703 +        %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_hierarchydata_title, NOQUOTE));
+19704 +        %em_report(KEY=hierds, VIEWTYPE=data, DESCRIPTION=%nrbquote(&DESC), AUTODISPLAY=Y, BLOCK=%nrbquote(&BLOCK));
+19705 +    %end;
+19706 +
+19707 +    proc sql noprint;
+19708 +        drop table work.graph_table;
+19709 +    quit;
+19710 +
+19711 +%mend report;
+19712 +
+NOTE: %INCLUDE (level 1) ending.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 4 observations read from the data set EMWS3.TEXTCLUSTER2_CLUSTERS.
+NOTE: The data set EMWS3.TEXTCLUSTER2_GRAPH_TABLE has 4 observations and 25 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+WARNING: This CREATE TABLE statement recursively references the target table. A consequence of this is a possible data integrity problem.
+WARNING: Variable clus_desc already exists on file EMWS3.TEXTCLUSTER2_GRAPH_TABLE.
+WARNING: Variable _CLUSTER_ already exists on file EMWS3.TEXTCLUSTER2_GRAPH_TABLE.
+WARNING: Variable freq already exists on file EMWS3.TEXTCLUSTER2_GRAPH_TABLE.
+WARNING: Variable percent already exists on file EMWS3.TEXTCLUSTER2_GRAPH_TABLE.
+NOTE: Table EMWS3.TEXTCLUSTER2_GRAPH_TABLE created, with 4 rows and 25 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 132 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 265 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 265 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 397 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 4 observations read from the data set EMWS3.TEXTCLUSTER2_GRAPH_TABLE.
+NOTE: The data set WORK.GRAPH_TABLE has 4 observations and 25 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+WARNING: Found negative value(s) in the ratio variable(s). The distance matrix may be meaningless.
+NOTE: The data set WORK.GRAPH_TABLE has 4 observations and 5 variables.
+NOTE: PROCEDURE DISTANCE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: Convergence reached in 13 iterations.
+NOTE: The data set WORK.GRAPH_TABLE has 6 observations and 7 variables.
+NOTE: PROCEDURE MDS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 6 observations read from the data set WORK.GRAPH_TABLE.
+NOTE: The data set WORK.GRAPH_TABLE has 4 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+WARNING: This CREATE TABLE statement recursively references the target table. A consequence of this is a possible data integrity problem.
+NOTE: Table EMWS3.TEXTCLUSTER2_GRAPH_TABLE created, with 4 rows and 27 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 397 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 530 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 530 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 663 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: Table WORK.GRAPH_TABLE has been dropped.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+19713  *------------------------------------------------------------*;
+19714  * End REPORT: TextCluster2;
+19715  *------------------------------------------------------------*;
+
+19716  /* Reset EM Options */
+19717  options formchar="|----|+|---+=|-/\<>*";
+19718  options nocenter ls=256 ps=10000;
+19719  goptions reset=all device=GIF NODISPLAY;
+
+19720  proc sort data=WORK.EM_USER_REPORT;
+19721  by ID VIEW;
+19722  run;
+
+NOTE: There were 663 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 663 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+

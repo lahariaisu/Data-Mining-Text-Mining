@@ -1,0 +1,53 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+         Measurement    Frequency
+Role        Level         Count
+
+INPUT     INTERVAL          1    
+TEXT      NOMINAL           1    
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The CONTENTS Procedure
+
+Data Set Name        EMWS3.FIMPORT2_DATA           Observations          55785
+Member Type          DATA                          Variables             2    
+Engine               V9                            Indexes               0    
+Created              11/18/2023 18:53:47           Observation Length    152  
+Last Modified        11/18/2023 18:53:47           Deleted Observations  0    
+Protection                                         Compressed            NO   
+Data Set Type                                      Sorted                NO   
+Label                                                                         
+Data Representation  WINDOWS_64                                               
+Encoding             wlatin1  Western (Windows)                               
+
+
+                                          Engine/Host Dependent Information
+
+Data Set Page Size          65536                                                                                     
+Number of Data Set Pages    130                                                                                       
+First Data Page             1                                                                                         
+Max Obs per Page            430                                                                                       
+Obs in First Data Page      422                                                                                       
+Number of Data Set Repairs  0                                                                                         
+ExtendObsCounter            YES                                                                                       
+Filename                    C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\fimport2_data.sas7bdat
+Release Created             9.0401M6                                                                                  
+Host Created                X64_10HOME                                                                                
+Owner Name                  LAHARI\lahar                                                                              
+File Size                   8MB                                                                                       
+File Size (bytes)           8585216                                                                                   
+
+
+        Alphabetic List of Variables and Attributes
+ 
+#    Variable    Type    Len    Format    Informat    Label
+
+2    ROLE        Num       8    BEST.                 ROLE 
+1    TERM        Char    143    $143.     $143.       TERM 

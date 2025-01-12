@@ -1,0 +1,410 @@
+*------------------------------------------------------------*
+* Report Log
+Date:                November 23, 2023
+Time:                22:13:54
+*------------------------------------------------------------*
+17451  data EMWS3.Neural5_EMOUTFIT(rename=(_NAME_=TARGET));
+17452  set EMWS3.Neural5_OUTFIT(where=(_NAME_ eq 'OVERALL'));
+17453  label _NAME_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel  , NOQUOTE))";
+17454  if _NAME_='OVERALL' then _NAME_='Category';
+17455  drop _ITER_;
+17456  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.NEURAL5_OUTFIT.
+      WHERE _NAME_='OVERALL';
+NOTE: The data set EMWS3.NEURAL5_EMOUTFIT has 1 observations and 50 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17457  proc sort data=EMWS3.Neural5_EMOUTFIT nodupkey;
+17458  by TARGET;
+17459  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.NEURAL5_EMOUTFIT.
+NOTE: 0 observations with duplicate key values were deleted.
+NOTE: The data set EMWS3.NEURAL5_EMOUTFIT has 1 observations and 50 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17460  data EMWS3.Neural5_EMOUTFIT;
+17461  set EMWS3.Neural5_EMOUTFIT;
+17462  length TargetLabel $200;
+17463  label targetLabel = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))";
+17464  if upcase(TARGET) eq "CATEGORY" then TargetLabel = 'Category';
+17465  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.NEURAL5_EMOUTFIT.
+NOTE: The data set EMWS3.NEURAL5_EMOUTFIT has 1 observations and 51 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17466  proc sort data=EMWS3.Neural5_EMREPORTFIT nothreads;
+17467  by TARGET;
+17468  run;
+
+NOTE: There were 21 observations read from the data set EMWS3.NEURAL5_EMREPORTFIT.
+NOTE: The data set EMWS3.NEURAL5_EMREPORTFIT has 21 observations and 7 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+17469  %let _EMwarndup = 0;
+17470  %let _EMtargetdup =;
+17471  %let _EMASEtargetdup =;
+17472  data _null_;
+17473  set EMWS3.Neural5_EMOUTFIT;
+17474  if .<_ASE_<0.000001 then do;
+17475  call symput('_EMwarndup', '1');
+17476  call symput('_EMtargetdup', target);
+17477  call symput('_EMASEtargetdup', put(_ASE_, best.));
+17478  end;
+17479  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.NEURAL5_EMOUTFIT.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17480  proc sort data=EMWS3.TextCluster8_CMeta_TRAIN out=WORK.SUBSETINMETA;
+17481  by NAME;
+17482  run;
+
+NOTE: There were 112 observations read from the data set EMWS3.TEXTCLUSTER8_CMETA_TRAIN.
+NOTE: The data set WORK.SUBSETINMETA has 112 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+17483  proc sort data=EMWS3.Neural5_VariableSet out=WORK.SUBSETVARSET(keep=NAME REPORT);
+17484  by NAME;
+17485  run;
+
+NOTE: There were 107 observations read from the data set EMWS3.NEURAL5_VARIABLESET.
+NOTE: The data set WORK.SUBSETVARSET has 107 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17486  data WORK.ASSESS_META;
+17487  merge WORK.SUBSETINMETA WORK.SUBSETVARSET;
+17488  by NAME;
+17489  run;
+
+NOTE: There were 112 observations read from the data set WORK.SUBSETINMETA.
+NOTE: There were 107 observations read from the data set WORK.SUBSETVARSET.
+NOTE: The data set WORK.ASSESS_META has 112 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17490  data EM_temp_assessMeta;
+17491  set EMWS3.Neural5_CMeta_TRAIN;
+17492  where role in('DECISION', 'PREDICT', 'RESIDUAL', 'CLASSIFICATION', 'ASSESS', 'COST');
+17493  run;
+
+NOTE: There were 28 observations read from the data set EMWS3.NEURAL5_CMETA_TRAIN.
+      WHERE role in ('ASSESS', 'CLASSIFICATION', 'COST', 'DECISION', 'PREDICT', 'RESIDUAL');
+NOTE: The data set WORK.EM_TEMP_ASSESSMETA has 28 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17494  data EM_temp_assessdata;
+17495  set EMWS3.Neural5_TRAIN(keep=
+17496  F_Category
+17497  I_Category
+17498  P_CategoryADVOCATE
+17499  P_CategoryBUSINESS_DEVELOPMENT
+17500  P_CategoryCONSULTANT
+17501  P_CategoryDESIGNER
+17502  P_CategoryDIGITAL_MEDIA
+17503  P_CategoryFITNESS
+17504  P_CategoryHEALTHCARE
+17505  P_CategoryHR
+17506  P_CategoryINFORMATION_TECHNOLOGY
+17507  P_CategoryOTHER
+17508  P_CategorySALES
+17509  P_CategoryTEACHER
+17510  R_CategoryADVOCATE
+17511  R_CategoryBUSINESS_DEVELOPMENT
+17512  R_CategoryCONSULTANT
+17513  R_CategoryDESIGNER
+17514  R_CategoryDIGITAL_MEDIA
+17515  R_CategoryFITNESS
+17516  R_CategoryHEALTHCARE
+17517  R_CategoryHR
+17518  R_CategoryINFORMATION_TECHNOLOGY
+17519  R_CategoryOTHER
+17520  R_CategorySALES
+17521  R_CategoryTEACHER
+17522  U_Category
+17523  _WARN_
+17524  Category
+17525  );
+17526  run;
+
+NOTE: View EMWS3.NEURAL5_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+      
+NOTE: There were 674 observations read from the data set EMWS3.TEXTCLUSTER8_TRAIN.
+NOTE: There were 674 observations read from the data set EMWS3.NEURAL5_TRAIN.
+NOTE: The data set WORK.EM_TEMP_ASSESSDATA has 674 observations and 29 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+21808  data EM_temp_assessMeta;
+21809  set EMWS3.Neural5_CMeta_TRAIN;
+21810  where role in('DECISION', 'PREDICT', 'RESIDUAL', 'CLASSIFICATION', 'ASSESS', 'COST');
+21811  run;
+
+NOTE: There were 28 observations read from the data set EMWS3.NEURAL5_CMETA_TRAIN.
+      WHERE role in ('ASSESS', 'CLASSIFICATION', 'COST', 'DECISION', 'PREDICT', 'RESIDUAL');
+NOTE: The data set WORK.EM_TEMP_ASSESSMETA has 28 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+21812  data EM_temp_assessdata;
+21813  set EMWS3.Neural5_VALIDATE(keep=
+21814  F_Category
+21815  I_Category
+21816  P_CategoryADVOCATE
+21817  P_CategoryBUSINESS_DEVELOPMENT
+21818  P_CategoryCONSULTANT
+21819  P_CategoryDESIGNER
+21820  P_CategoryDIGITAL_MEDIA
+21821  P_CategoryFITNESS
+21822  P_CategoryHEALTHCARE
+21823  P_CategoryHR
+21824  P_CategoryINFORMATION_TECHNOLOGY
+21825  P_CategoryOTHER
+21826  P_CategorySALES
+21827  P_CategoryTEACHER
+21828  R_CategoryADVOCATE
+21829  R_CategoryBUSINESS_DEVELOPMENT
+21830  R_CategoryCONSULTANT
+21831  R_CategoryDESIGNER
+21832  R_CategoryDIGITAL_MEDIA
+21833  R_CategoryFITNESS
+21834  R_CategoryHEALTHCARE
+21835  R_CategoryHR
+21836  R_CategoryINFORMATION_TECHNOLOGY
+21837  R_CategoryOTHER
+21838  R_CategorySALES
+21839  R_CategoryTEACHER
+21840  U_Category
+21841  _WARN_
+21842  Category
+21843  );
+21844  run;
+
+NOTE: View EMWS3.NEURAL5_VALIDATE.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+NOTE: There were 405 observations read from the data set EMWS3.TEXTCLUSTER8_VALIDATE.
+NOTE: There were 405 observations read from the data set EMWS3.NEURAL5_VALIDATE.
+NOTE: The data set WORK.EM_TEMP_ASSESSDATA has 405 observations and 29 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+26135  %let _cn = %sysfunc(getoption(CENTER));
+26136  options nocenter;
+26137  proc print data=EMWS3.Neural5_EMREPORTFIT noobs label;
+26138  var STAT LABEL TRAIN
+26139  VALIDATE
+26140  TEST
+26141  ;
+26142  by TARGET TARGETLABEL;
+26143  title9 ' ';
+26144  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_fitstat_title  , NOQUOTE))";
+26145  run;
+
+NOTE: There were 21 observations read from the data set EMWS3.NEURAL5_EMREPORTFIT.
+NOTE: The PROCEDURE PRINT printed page 8.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+26146  title10;
+26147  options &_cn;
+
+26148  proc sort data=EMWS3.Neural5_EMCLASSIFICATION nothreads;
+26149  by DATAROLE TARGET TARGETLABEL;
+26150  run;
+
+NOTE: There were 157 observations read from the data set EMWS3.NEURAL5_EMCLASSIFICATION.
+NOTE: The data set EMWS3.NEURAL5_EMCLASSIFICATION has 157 observations and 12 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+26151  %let _cn = %sysfunc(getoption(CENTER));
+26152  options nocenter;
+26153  proc print data=EMWS3.Neural5_EMCLASSIFICATION noobs label;
+26154  var from into pct_row pct_col count percent
+26155  ;
+26156  by DATAROLE TARGET TARGETLABEL;
+26157  label FROM = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,     NOQUOTE))";
+26158  label INTO = "%sysfunc(sasmsg(sashelp.dmine, rpt_outcome_vlabel ,    NOQUOTE))";
+26159  label PCT_ROW = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetpct_vlabel ,  NOQUOTE))";
+26160  label PCT_COL = "%sysfunc(sasmsg(sashelp.dmine, rpt_outcomepct_vlabel , NOQUOTE))";
+26161  label COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel ,      NOQUOTE))";
+26162  label PERCENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_totalpct_vlabel ,   NOQUOTE))";
+26163  where _TYPE_='PREDICTION';
+26164  title9 ' ';
+26165  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_classification_title    , NOQUOTE))";
+26166  run;
+
+NOTE: There were 157 observations read from the data set EMWS3.NEURAL5_EMCLASSIFICATION.
+      WHERE _TYPE_='PREDICTION';
+NOTE: The PROCEDURE PRINT printed page 9.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+26167  title9;
+26168  title10;
+26169  options &_cn;
+
+26170  %let _cn = %sysfunc(getoption(CENTER));
+26171  options nocenter;
+26172  data EMWS3.Neural5_EMEVENTREPORT;
+26173  length DATAROLE TARGET $32 TARGETLABEL $200 FALSENEVENT TRUENEVENT FALSEEVENT TRUEEVENT 8;
+26174  label DATAROLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))" TARGET = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,      NOQUOTE))" TARGETLABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))"
+26174! FALSEEVENT
+26175  = "%sysfunc(sasmsg(sashelp.dmine, rpt_falseevent_vlabel ,  NOQUOTE))" FALSENEVENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_falsenevent_vlabel , NOQUOTE))" TRUEEVENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_trueevent_vlabel ,   NOQUOTE))" TRUENEVENT =
+26176     "%sysfunc(sasmsg(sashelp.dmine, rpt_truenevent_vlabel ,  NOQUOTE))";
+26177  FALSEEVENT=0;
+26178  FALSENEVENT=0;
+26179  TRUEEVENT=0;
+26180  TRUENEVENT=0;
+26181  set EMWS3.Neural5_EMEVENTREPORT;
+26182  run;
+
+NOTE: There were 2 observations read from the data set EMWS3.NEURAL5_EMEVENTREPORT.
+NOTE: The data set EMWS3.NEURAL5_EMEVENTREPORT has 2 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+26183  proc print data=EMWS3.Neural5_EMEVENTREPORT noobs label;
+26184  title9 ' ';
+26185  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_eventtable_title    , NOQUOTE))";
+26186  by notsorted DATAROLE notsorted TARGET notsorted TARGETLABEL;
+26187  run;
+
+NOTE: There were 2 observations read from the data set EMWS3.NEURAL5_EMEVENTREPORT.
+NOTE: The PROCEDURE PRINT printed page 10.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+26188  title10;
+26189  options &_cn;
+
+26190  proc datasets library=EMWS3 nolist;
+26191  modify Neural5_EMRANK;
+26192  label target = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetvar_vlabel ,   NOQUOTE))";
+26193  label datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))";
+26194  run;
+
+NOTE: MODIFY was successful for EMWS3.NEURAL5_EMRANK.DATA.
+26195  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.03 seconds
+      
+
+26196  %let _cn = %sysfunc(getoption(CENTER));
+26197  options nocenter;
+26198  proc print data=EMWS3.Neural5_EMRANK label noobs;
+26199  var
+26200  decile gain lift liftc resp respc N _meanP_;
+26201  by
+26202  notsorted DATAROLE
+26203  notsorted TARGET
+26204  notsorted TARGETLABEL
+26205  ;
+26206  title9 ' ';
+26207  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_scoreranking_title , NOQUOTE))";
+26208  run;
+
+NOTE: There were 40 observations read from the data set EMWS3.NEURAL5_EMRANK.
+NOTE: The PROCEDURE PRINT printed page 11.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+26209  title10;
+26210  options &_cn;
+
+26211  proc datasets library=EMWS3 nolist;
+26212  modify Neural5_EMSCOREDIST;
+26213  label target = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetvar_vlabel ,      NOQUOTE))";
+26214  label datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))";
+26215  run;
+
+NOTE: MODIFY was successful for EMWS3.NEURAL5_EMSCOREDIST.DATA.
+26216  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.07 seconds
+      
+

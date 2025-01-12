@@ -1,0 +1,429 @@
+*------------------------------------------------------------*
+* Report Log
+Date:                November 23, 2023
+Time:                22:13:34
+*------------------------------------------------------------*
+14088  data WORK.DMREGTEMP;
+14089  set EMWS3.Reg6_EMESTIMATE;
+14090  where _CHOSEN_ ne '';
+14091  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.REG6_EMESTIMATE.
+      WHERE _CHOSEN_ not = ' ';
+NOTE: The data set WORK.DMREGTEMP has 3 observations and 531 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+14092  data WORK.DMREGTEMP;
+14093  merge WORK.DMREGTEMP EMWS3.Reg6_FITTEST;
+14094  by _step_;
+14095  if _CHOSEN_ ne '' then output;
+14096  run;
+
+NOTE: There were 3 observations read from the data set WORK.DMREGTEMP.
+NOTE: There were 22 observations read from the data set EMWS3.REG6_FITTEST.
+NOTE: The data set WORK.DMREGTEMP has 3 observations and 545 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+14097  data EMWS3.Reg6_EMOUTFIT;
+14098  length TARGET $32;
+14099  set WORK.DMREGTEMP end=eof;
+14100  where (_TYPE_='PARMS');
+14101  drop _STEP_--TextCluster6_SVD9_BUSINESS_DEVEL;
+14102  if eof then do;
+14103  TARGET = "Category";
+14104  output;
+14105  end;
+14106  run;
+
+NOTE: There were 1 observations read from the data set WORK.DMREGTEMP.
+      WHERE _TYPE_='PARMS';
+NOTE: The data set EMWS3.REG6_EMOUTFIT has 1 observations and 47 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+14107  data EMWS3.Reg6_EMOUTFIT;
+14108  set EMWS3.Reg6_EMOUTFIT;
+14109  length TargetLabel $200;
+14110  label targetLabel = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))";
+14111  if upcase(TARGET) eq "CATEGORY" then TargetLabel = 'Category';
+14112  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.REG6_EMOUTFIT.
+NOTE: The data set EMWS3.REG6_EMOUTFIT has 1 observations and 48 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+14113  proc sort data=EMWS3.Reg6_EMREPORTFIT nothreads;
+14114  by TARGET;
+14115  run;
+
+NOTE: There were 20 observations read from the data set EMWS3.REG6_EMREPORTFIT.
+NOTE: The data set EMWS3.REG6_EMREPORTFIT has 20 observations and 7 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+14116  %let _EMwarndup = 0;
+14117  %let _EMtargetdup =;
+14118  %let _EMASEtargetdup =;
+14119  data _null_;
+14120  set EMWS3.Reg6_EMOUTFIT;
+14121  if .<_ASE_<0.000001 then do;
+14122  call symput('_EMwarndup', '1');
+14123  call symput('_EMtargetdup', target);
+14124  call symput('_EMASEtargetdup', put(_ASE_, best.));
+14125  end;
+14126  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.REG6_EMOUTFIT.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+14127  proc sort data=EMWS3.TextCluster6_CMeta_TRAIN out=WORK.SUBSETINMETA;
+14128  by NAME;
+14129  run;
+
+NOTE: There were 54 observations read from the data set EMWS3.TEXTCLUSTER6_CMETA_TRAIN.
+NOTE: The data set WORK.SUBSETINMETA has 54 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+14130  proc sort data=EMWS3.Reg6_VariableSet out=WORK.SUBSETVARSET(keep=NAME REPORT);
+14131  by NAME;
+14132  run;
+
+NOTE: There were 49 observations read from the data set EMWS3.REG6_VARIABLESET.
+NOTE: The data set WORK.SUBSETVARSET has 49 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+14133  data WORK.ASSESS_META;
+14134  merge WORK.SUBSETINMETA WORK.SUBSETVARSET;
+14135  by NAME;
+14136  run;
+
+NOTE: There were 54 observations read from the data set WORK.SUBSETINMETA.
+NOTE: There were 49 observations read from the data set WORK.SUBSETVARSET.
+NOTE: The data set WORK.ASSESS_META has 54 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+14137  data EM_temp_assessMeta;
+14138  set EMWS3.Reg6_CMeta_TRAIN;
+14139  where role in('DECISION', 'PREDICT', 'RESIDUAL', 'CLASSIFICATION', 'ASSESS', 'COST');
+14140  run;
+
+NOTE: There were 28 observations read from the data set EMWS3.REG6_CMETA_TRAIN.
+      WHERE role in ('ASSESS', 'CLASSIFICATION', 'COST', 'DECISION', 'PREDICT', 'RESIDUAL');
+NOTE: The data set WORK.EM_TEMP_ASSESSMETA has 28 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+14141  data EM_temp_assessdata;
+14142  set EMWS3.Reg6_TRAIN(keep=
+14143  F_Category
+14144  I_Category
+14145  P_CategoryADVOCATE
+14146  P_CategoryBUSINESS_DEVELOPMENT
+14147  P_CategoryCONSULTANT
+14148  P_CategoryDESIGNER
+14149  P_CategoryDIGITAL_MEDIA
+14150  P_CategoryFITNESS
+14151  P_CategoryHEALTHCARE
+14152  P_CategoryHR
+14153  P_CategoryINFORMATION_TECHNOLOGY
+14154  P_CategoryOTHER
+14155  P_CategorySALES
+14156  P_CategoryTEACHER
+14157  R_CategoryADVOCATE
+14158  R_CategoryBUSINESS_DEVELOPMENT
+14159  R_CategoryCONSULTANT
+14160  R_CategoryDESIGNER
+14161  R_CategoryDIGITAL_MEDIA
+14162  R_CategoryFITNESS
+14163  R_CategoryHEALTHCARE
+14164  R_CategoryHR
+14165  R_CategoryINFORMATION_TECHNOLOGY
+14166  R_CategoryOTHER
+14167  R_CategorySALES
+14168  R_CategoryTEACHER
+14169  U_Category
+14170  _WARN_
+14171  Category
+14172  );
+14173  run;
+
+NOTE: View EMWS3.REG6_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+NOTE: There were 674 observations read from the data set EMWS3.TEXTCLUSTER6_TRAIN.
+NOTE: There were 674 observations read from the data set EMWS3.REG6_TRAIN.
+NOTE: The data set WORK.EM_TEMP_ASSESSDATA has 674 observations and 29 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+18455  data EM_temp_assessMeta;
+18456  set EMWS3.Reg6_CMeta_TRAIN;
+18457  where role in('DECISION', 'PREDICT', 'RESIDUAL', 'CLASSIFICATION', 'ASSESS', 'COST');
+18458  run;
+
+NOTE: There were 28 observations read from the data set EMWS3.REG6_CMETA_TRAIN.
+      WHERE role in ('ASSESS', 'CLASSIFICATION', 'COST', 'DECISION', 'PREDICT', 'RESIDUAL');
+NOTE: The data set WORK.EM_TEMP_ASSESSMETA has 28 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+18459  data EM_temp_assessdata;
+18460  set EMWS3.Reg6_VALIDATE(keep=
+18461  F_Category
+18462  I_Category
+18463  P_CategoryADVOCATE
+18464  P_CategoryBUSINESS_DEVELOPMENT
+18465  P_CategoryCONSULTANT
+18466  P_CategoryDESIGNER
+18467  P_CategoryDIGITAL_MEDIA
+18468  P_CategoryFITNESS
+18469  P_CategoryHEALTHCARE
+18470  P_CategoryHR
+18471  P_CategoryINFORMATION_TECHNOLOGY
+18472  P_CategoryOTHER
+18473  P_CategorySALES
+18474  P_CategoryTEACHER
+18475  R_CategoryADVOCATE
+18476  R_CategoryBUSINESS_DEVELOPMENT
+18477  R_CategoryCONSULTANT
+18478  R_CategoryDESIGNER
+18479  R_CategoryDIGITAL_MEDIA
+18480  R_CategoryFITNESS
+18481  R_CategoryHEALTHCARE
+18482  R_CategoryHR
+18483  R_CategoryINFORMATION_TECHNOLOGY
+18484  R_CategoryOTHER
+18485  R_CategorySALES
+18486  R_CategoryTEACHER
+18487  U_Category
+18488  _WARN_
+18489  Category
+18490  );
+18491  run;
+
+NOTE: View EMWS3.REG6_VALIDATE.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+      
+NOTE: There were 405 observations read from the data set EMWS3.TEXTCLUSTER6_VALIDATE.
+NOTE: There were 405 observations read from the data set EMWS3.REG6_VALIDATE.
+NOTE: The data set WORK.EM_TEMP_ASSESSDATA has 405 observations and 29 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.00 seconds
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+22782  %let _cn = %sysfunc(getoption(CENTER));
+22783  options nocenter;
+22784  proc print data=EMWS3.Reg6_EMREPORTFIT noobs label;
+22785  var STAT LABEL TRAIN
+22786  VALIDATE
+22787  TEST
+22788  ;
+22789  by TARGET TARGETLABEL;
+22790  title9 ' ';
+22791  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_fitstat_title  , NOQUOTE))";
+22792  run;
+
+NOTE: There were 20 observations read from the data set EMWS3.REG6_EMREPORTFIT.
+NOTE: The PROCEDURE PRINT printed page 27.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+22793  title10;
+22794  options &_cn;
+
+22795  proc sort data=EMWS3.Reg6_EMCLASSIFICATION nothreads;
+22796  by DATAROLE TARGET TARGETLABEL;
+22797  run;
+
+NOTE: There were 188 observations read from the data set EMWS3.REG6_EMCLASSIFICATION.
+NOTE: The data set EMWS3.REG6_EMCLASSIFICATION has 188 observations and 12 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+22798  %let _cn = %sysfunc(getoption(CENTER));
+22799  options nocenter;
+22800  proc print data=EMWS3.Reg6_EMCLASSIFICATION noobs label;
+22801  var from into pct_row pct_col count percent
+22802  ;
+22803  by DATAROLE TARGET TARGETLABEL;
+22804  label FROM = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,     NOQUOTE))";
+22805  label INTO = "%sysfunc(sasmsg(sashelp.dmine, rpt_outcome_vlabel ,    NOQUOTE))";
+22806  label PCT_ROW = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetpct_vlabel ,  NOQUOTE))";
+22807  label PCT_COL = "%sysfunc(sasmsg(sashelp.dmine, rpt_outcomepct_vlabel , NOQUOTE))";
+22808  label COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel ,      NOQUOTE))";
+22809  label PERCENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_totalpct_vlabel ,   NOQUOTE))";
+22810  where _TYPE_='PREDICTION';
+22811  title9 ' ';
+22812  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_classification_title    , NOQUOTE))";
+22813  run;
+
+NOTE: There were 188 observations read from the data set EMWS3.REG6_EMCLASSIFICATION.
+      WHERE _TYPE_='PREDICTION';
+NOTE: The PROCEDURE PRINT printed page 28.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+22814  title9;
+22815  title10;
+22816  options &_cn;
+
+22817  %let _cn = %sysfunc(getoption(CENTER));
+22818  options nocenter;
+22819  data EMWS3.Reg6_EMEVENTREPORT;
+22820  length DATAROLE TARGET $32 TARGETLABEL $200 FALSENEVENT TRUENEVENT FALSEEVENT TRUEEVENT 8;
+22821  label DATAROLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))" TARGET = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,      NOQUOTE))" TARGETLABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))"
+22821! FALSEEVENT
+22822  = "%sysfunc(sasmsg(sashelp.dmine, rpt_falseevent_vlabel ,  NOQUOTE))" FALSENEVENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_falsenevent_vlabel , NOQUOTE))" TRUEEVENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_trueevent_vlabel ,   NOQUOTE))" TRUENEVENT =
+22823     "%sysfunc(sasmsg(sashelp.dmine, rpt_truenevent_vlabel ,  NOQUOTE))";
+22824  FALSEEVENT=0;
+22825  FALSENEVENT=0;
+22826  TRUEEVENT=0;
+22827  TRUENEVENT=0;
+22828  set EMWS3.Reg6_EMEVENTREPORT;
+22829  run;
+
+NOTE: There were 2 observations read from the data set EMWS3.REG6_EMEVENTREPORT.
+NOTE: The data set EMWS3.REG6_EMEVENTREPORT has 2 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+22830  proc print data=EMWS3.Reg6_EMEVENTREPORT noobs label;
+22831  title9 ' ';
+22832  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_eventtable_title    , NOQUOTE))";
+22833  by notsorted DATAROLE notsorted TARGET notsorted TARGETLABEL;
+22834  run;
+
+NOTE: There were 2 observations read from the data set EMWS3.REG6_EMEVENTREPORT.
+NOTE: The PROCEDURE PRINT printed page 29.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+22835  title10;
+22836  options &_cn;
+
+22837  proc datasets library=EMWS3 nolist;
+22838  modify Reg6_EMRANK;
+22839  label target = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetvar_vlabel ,   NOQUOTE))";
+22840  label datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))";
+22841  run;
+
+NOTE: MODIFY was successful for EMWS3.REG6_EMRANK.DATA.
+22842  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.10 seconds
+      cpu time            0.06 seconds
+      
+
+22843  %let _cn = %sysfunc(getoption(CENTER));
+22844  options nocenter;
+22845  proc print data=EMWS3.Reg6_EMRANK label noobs;
+22846  var
+22847  decile gain lift liftc resp respc N _meanP_;
+22848  by
+22849  notsorted DATAROLE
+22850  notsorted TARGET
+22851  notsorted TARGETLABEL
+22852  ;
+22853  title9 ' ';
+22854  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_scoreranking_title , NOQUOTE))";
+22855  run;
+
+NOTE: There were 40 observations read from the data set EMWS3.REG6_EMRANK.
+NOTE: The PROCEDURE PRINT printed page 30.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+22856  title10;
+22857  options &_cn;
+
+22858  proc datasets library=EMWS3 nolist;
+22859  modify Reg6_EMSCOREDIST;
+22860  label target = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetvar_vlabel ,      NOQUOTE))";
+22861  label datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))";
+22862  run;
+
+NOTE: MODIFY was successful for EMWS3.REG6_EMSCOREDIST.DATA.
+22863  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.11 seconds
+      cpu time            0.01 seconds
+      
+

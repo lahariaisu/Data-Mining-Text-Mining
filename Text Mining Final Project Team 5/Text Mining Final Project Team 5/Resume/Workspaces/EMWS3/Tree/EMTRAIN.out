@@ -1,0 +1,62 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+ID           INTERVAL           1   
+ID           NOMINAL            2   
+INPUT        INTERVAL          68   
+REJECTED     INTERVAL           5   
+SEGMENT      NOMINAL            1   
+TARGET       NOMINAL            1   
+TEXT         NOMINAL            1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                      Number
+                       Measurement      of
+ Target      Event        Level       Levels      Order        Label
+
+Category    TEACHER      NOMINAL        12      Descending    Category
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type         Variable                            Label
+
+TARGET       Category                            Category                                  
+PREDICTED    P_CategoryTEACHER                   Predicted: Category=TEACHER               
+RESIDUAL     R_CategoryTEACHER                   Residual: Category=TEACHER                
+PREDICTED    P_CategorySALES                     Predicted: Category=SALES                 
+RESIDUAL     R_CategorySALES                     Residual: Category=SALES                  
+PREDICTED    P_CategoryOTHER                     Predicted: Category=OTHER                 
+RESIDUAL     R_CategoryOTHER                     Residual: Category=OTHER                  
+PREDICTED    P_CategoryINFORMATION_TECHNOLOGY    Predicted: Category=INFORMATION-TECHNOLOGY
+RESIDUAL     R_CategoryINFORMATION_TECHNOLOGY    Residual: Category=INFORMATION-TECHNOLOGY 
+PREDICTED    P_CategoryHR                        Predicted: Category=HR                    
+RESIDUAL     R_CategoryHR                        Residual: Category=HR                     
+PREDICTED    P_CategoryHEALTHCARE                Predicted: Category=HEALTHCARE            
+RESIDUAL     R_CategoryHEALTHCARE                Residual: Category=HEALTHCARE             
+PREDICTED    P_CategoryFITNESS                   Predicted: Category=FITNESS               
+RESIDUAL     R_CategoryFITNESS                   Residual: Category=FITNESS                
+PREDICTED    P_CategoryDIGITAL_MEDIA             Predicted: Category=DIGITAL-MEDIA         
+RESIDUAL     R_CategoryDIGITAL_MEDIA             Residual: Category=DIGITAL-MEDIA          
+PREDICTED    P_CategoryDESIGNER                  Predicted: Category=DESIGNER              
+RESIDUAL     R_CategoryDESIGNER                  Residual: Category=DESIGNER               
+PREDICTED    P_CategoryCONSULTANT                Predicted: Category=CONSULTANT            
+RESIDUAL     R_CategoryCONSULTANT                Residual: Category=CONSULTANT             
+PREDICTED    P_CategoryBUSINESS_DEVELOPMENT      Predicted: Category=BUSINESS-DEVELOPMENT  
+RESIDUAL     R_CategoryBUSINESS_DEVELOPMENT      Residual: Category=BUSINESS-DEVELOPMENT   
+PREDICTED    P_CategoryADVOCATE                  Predicted: Category=ADVOCATE              
+RESIDUAL     R_CategoryADVOCATE                  Residual: Category=ADVOCATE               
+FROM         F_Category                          From: Category                            
+INTO         I_Category                          Into: Category                            

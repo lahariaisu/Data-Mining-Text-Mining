@@ -1,0 +1,7 @@
+if NAME="Category" then do;
+ROLE="TARGET";
+LEVEL="NOMINAL";
+ORDER="";
+DROP="N";
+end;
+ 

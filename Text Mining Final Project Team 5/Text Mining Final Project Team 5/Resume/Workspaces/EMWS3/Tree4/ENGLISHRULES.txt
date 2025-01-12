@@ -1,0 +1,184 @@
+*------------------------------------------------------------*
+ Node = 2
+*------------------------------------------------------------*
+if TextCluster7_SVD4 < -0.2196
+then 
+ Tree Node Identifier   = 2
+ Number of Observations = 67
+ Predicted: Category=TEACHER = 0.00
+ Predicted: Category=SALES = 0.03
+ Predicted: Category=OTHER = 0.01
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.01
+ Predicted: Category=HR = 0.73
+ Predicted: Category=HEALTHCARE = 0.06
+ Predicted: Category=FITNESS = 0.01
+ Predicted: Category=DIGITAL-MEDIA = 0.00
+ Predicted: Category=DESIGNER = 0.00
+ Predicted: Category=CONSULTANT = 0.03
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.03
+ Predicted: Category=ADVOCATE = 0.07
+ 
+*------------------------------------------------------------*
+ Node = 6
+*------------------------------------------------------------*
+if TextCluster7_SVD5 < -0.2513
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+then 
+ Tree Node Identifier   = 6
+ Number of Observations = 42
+ Predicted: Category=TEACHER = 0.81
+ Predicted: Category=SALES = 0.00
+ Predicted: Category=OTHER = 0.00
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.00
+ Predicted: Category=HR = 0.00
+ Predicted: Category=HEALTHCARE = 0.00
+ Predicted: Category=FITNESS = 0.10
+ Predicted: Category=DIGITAL-MEDIA = 0.00
+ Predicted: Category=DESIGNER = 0.02
+ Predicted: Category=CONSULTANT = 0.00
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.00
+ Predicted: Category=ADVOCATE = 0.07
+ 
+*------------------------------------------------------------*
+ Node = 11
+*------------------------------------------------------------*
+if TextCluster7_SVD5 >= -0.2513 or MISSING
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+AND TextCluster7_SVD2 >= 0.22659
+then 
+ Tree Node Identifier   = 11
+ Number of Observations = 91
+ Predicted: Category=TEACHER = 0.00
+ Predicted: Category=SALES = 0.00
+ Predicted: Category=OTHER = 0.07
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.54
+ Predicted: Category=HR = 0.00
+ Predicted: Category=HEALTHCARE = 0.03
+ Predicted: Category=FITNESS = 0.00
+ Predicted: Category=DIGITAL-MEDIA = 0.07
+ Predicted: Category=DESIGNER = 0.03
+ Predicted: Category=CONSULTANT = 0.23
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.01
+ Predicted: Category=ADVOCATE = 0.02
+ 
+*------------------------------------------------------------*
+ Node = 15
+*------------------------------------------------------------*
+if TextCluster7_SVD5 >= -0.2513 or MISSING
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+AND TextCluster7_SVD2 < 0.22659 or MISSING
+AND TextCluster7_SVD11 >= 0.17463
+then 
+ Tree Node Identifier   = 15
+ Number of Observations = 41
+ Predicted: Category=TEACHER = 0.00
+ Predicted: Category=SALES = 0.02
+ Predicted: Category=OTHER = 0.00
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.00
+ Predicted: Category=HR = 0.02
+ Predicted: Category=HEALTHCARE = 0.00
+ Predicted: Category=FITNESS = 0.83
+ Predicted: Category=DIGITAL-MEDIA = 0.02
+ Predicted: Category=DESIGNER = 0.00
+ Predicted: Category=CONSULTANT = 0.00
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.02
+ Predicted: Category=ADVOCATE = 0.07
+ 
+*------------------------------------------------------------*
+ Node = 22
+*------------------------------------------------------------*
+if TextCluster7_SVD7 < 0.0498 or MISSING
+AND TextCluster7_SVD5 >= -0.2513 or MISSING
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+AND TextCluster7_SVD3 < 0.18533 or MISSING
+AND TextCluster7_SVD2 < 0.22659 or MISSING
+AND TextCluster7_SVD11 < 0.17463 or MISSING
+then 
+ Tree Node Identifier   = 22
+ Number of Observations = 197
+ Predicted: Category=TEACHER = 0.01
+ Predicted: Category=SALES = 0.08
+ Predicted: Category=OTHER = 0.23
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.03
+ Predicted: Category=HR = 0.01
+ Predicted: Category=HEALTHCARE = 0.21
+ Predicted: Category=FITNESS = 0.05
+ Predicted: Category=DIGITAL-MEDIA = 0.01
+ Predicted: Category=DESIGNER = 0.03
+ Predicted: Category=CONSULTANT = 0.11
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.08
+ Predicted: Category=ADVOCATE = 0.18
+ 
+*------------------------------------------------------------*
+ Node = 23
+*------------------------------------------------------------*
+if TextCluster7_SVD7 < 0.0498 or MISSING
+AND TextCluster7_SVD5 >= -0.2513 or MISSING
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+AND TextCluster7_SVD3 >= 0.18533
+AND TextCluster7_SVD2 < 0.22659 or MISSING
+AND TextCluster7_SVD11 < 0.17463 or MISSING
+then 
+ Tree Node Identifier   = 23
+ Number of Observations = 75
+ Predicted: Category=TEACHER = 0.00
+ Predicted: Category=SALES = 0.09
+ Predicted: Category=OTHER = 0.08
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.00
+ Predicted: Category=HR = 0.00
+ Predicted: Category=HEALTHCARE = 0.07
+ Predicted: Category=FITNESS = 0.05
+ Predicted: Category=DIGITAL-MEDIA = 0.11
+ Predicted: Category=DESIGNER = 0.00
+ Predicted: Category=CONSULTANT = 0.12
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.45
+ Predicted: Category=ADVOCATE = 0.03
+ 
+*------------------------------------------------------------*
+ Node = 24
+*------------------------------------------------------------*
+if TextCluster7_SVD7 >= 0.0498
+AND TextCluster7_SVD5 >= -0.2513 or MISSING
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+AND TextCluster7_SVD2 < -0.1534
+AND TextCluster7_SVD11 < 0.17463 or MISSING
+then 
+ Tree Node Identifier   = 24
+ Number of Observations = 69
+ Predicted: Category=TEACHER = 0.19
+ Predicted: Category=SALES = 0.39
+ Predicted: Category=OTHER = 0.04
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.00
+ Predicted: Category=HR = 0.04
+ Predicted: Category=HEALTHCARE = 0.01
+ Predicted: Category=FITNESS = 0.09
+ Predicted: Category=DIGITAL-MEDIA = 0.01
+ Predicted: Category=DESIGNER = 0.01
+ Predicted: Category=CONSULTANT = 0.04
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.07
+ Predicted: Category=ADVOCATE = 0.09
+ 
+*------------------------------------------------------------*
+ Node = 25
+*------------------------------------------------------------*
+if TextCluster7_SVD7 >= 0.0498
+AND TextCluster7_SVD5 >= -0.2513 or MISSING
+AND TextCluster7_SVD4 >= -0.2196 or MISSING
+AND TextCluster7_SVD2 < 0.22659 AND TextCluster7_SVD2 >= -0.1534 or MISSING
+AND TextCluster7_SVD11 < 0.17463 or MISSING
+then 
+ Tree Node Identifier   = 25
+ Number of Observations = 92
+ Predicted: Category=TEACHER = 0.01
+ Predicted: Category=SALES = 0.05
+ Predicted: Category=OTHER = 0.02
+ Predicted: Category=INFORMATION-TECHNOLOGY = 0.04
+ Predicted: Category=HR = 0.01
+ Predicted: Category=HEALTHCARE = 0.03
+ Predicted: Category=FITNESS = 0.00
+ Predicted: Category=DIGITAL-MEDIA = 0.32
+ Predicted: Category=DESIGNER = 0.47
+ Predicted: Category=CONSULTANT = 0.01
+ Predicted: Category=BUSINESS-DEVELOPMENT = 0.02
+ Predicted: Category=ADVOCATE = 0.01
+ 

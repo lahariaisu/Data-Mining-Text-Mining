@@ -1,0 +1,247 @@
+*------------------------------------------------------------*
+* Score Log
+Date:                November 27, 2023
+Time:                20:55:16
+*------------------------------------------------------------*
+11678  *------------------------------------------------------------*;
+11679  * Meta: Scoring DATA data;
+11680  *------------------------------------------------------------*;
+11681  data EMWS3.Meta_TRAIN
+11682  / view=EMWS3.Meta_TRAIN
+11683  ;
+11684  set EMWS3.TextTopic3_TRAIN
+11685  ;
+11686  run;
+
+NOTE: DATA STEP view saved on file EMWS3.META_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+11687  quit;
+
+11688  *------------------------------------------------------------*;
+11689  * Meta: Scoring VALIDATE data;
+11690  *------------------------------------------------------------*;
+11691  data EMWS3.Meta_VALIDATE
+11692  / view=EMWS3.Meta_VALIDATE
+11693  ;
+11694  set EMWS3.TextTopic3_VALIDATE
+11695  ;
+11696  run;
+
+NOTE: DATA STEP view saved on file EMWS3.META_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11697  quit;
+
+11698  *------------------------------------------------------------*;
+11699  * Meta: Scoring TEST data;
+11700  *------------------------------------------------------------*;
+11701  data EMWS3.Meta_TEST
+11702  / view=EMWS3.Meta_TEST
+11703  ;
+11704  set EMWS3.TextTopic3_TEST
+11705  ;
+11706  run;
+
+NOTE: DATA STEP view saved on file EMWS3.META_TEST.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11707  quit;
+
+11708  *------------------------------------------------------------*;
+11709  * Meta: Scoring TRANSACTION data;
+11710  *------------------------------------------------------------*;
+11711  data EMWS3.Meta_TRANSACTION
+11712  / view=EMWS3.Meta_TRANSACTION
+11713  ;
+11714  set EMWS3.TextTopic3_TRANSACTION
+11715  ;
+11716  run;
+
+NOTE: DATA STEP view saved on file EMWS3.META_TRANSACTION.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11717  quit;
+
+11718  *------------------------------------------------------------*;
+11719  * Meta: Computing metadata for TRAIN data;
+11720  *------------------------------------------------------------*;
+
+11721  data _TEMP;
+11722  set EMWS3.TextTopic3_CMeta_TRAIN;
+11723  *------------------------------------------------------------*;
+11724  * Metadata Changes;
+11725  *------------------------------------------------------------*;
+11726  if upcase(NAME) = "TEXTCLUSTER2_SVD1" then ROLE="REJECTED";
+11727  if upcase(NAME) = "TEXTCLUSTER2_SVD10" then ROLE="REJECTED";
+11728  if upcase(NAME) = "TEXTCLUSTER2_SVD11" then ROLE="REJECTED";
+11729  if upcase(NAME) = "TEXTCLUSTER2_SVD12" then ROLE="REJECTED";
+11730  if upcase(NAME) = "TEXTCLUSTER2_SVD13" then ROLE="REJECTED";
+11731  if upcase(NAME) = "TEXTCLUSTER2_SVD14" then ROLE="REJECTED";
+11732  if upcase(NAME) = "TEXTCLUSTER2_SVD15" then ROLE="REJECTED";
+11733  if upcase(NAME) = "TEXTCLUSTER2_SVD16" then ROLE="REJECTED";
+11734  if upcase(NAME) = "TEXTCLUSTER2_SVD17" then ROLE="REJECTED";
+11735  if upcase(NAME) = "TEXTCLUSTER2_SVD18" then ROLE="REJECTED";
+11736  if upcase(NAME) = "TEXTCLUSTER2_SVD19" then ROLE="REJECTED";
+11737  if upcase(NAME) = "TEXTCLUSTER2_SVD2" then ROLE="REJECTED";
+11738  if upcase(NAME) = "TEXTCLUSTER2_SVD3" then ROLE="REJECTED";
+11739  if upcase(NAME) = "TEXTCLUSTER2_SVD4" then ROLE="REJECTED";
+11740  if upcase(NAME) = "TEXTCLUSTER2_SVD5" then ROLE="REJECTED";
+11741  if upcase(NAME) = "TEXTCLUSTER2_SVD6" then ROLE="REJECTED";
+11742  if upcase(NAME) = "TEXTCLUSTER2_SVD7" then ROLE="REJECTED";
+11743  if upcase(NAME) = "TEXTCLUSTER2_SVD8" then ROLE="REJECTED";
+11744  if upcase(NAME) = "TEXTCLUSTER2_SVD9" then ROLE="REJECTED";
+11745  if upcase(NAME) = "TEXTCLUSTER2_PROB1" then ROLE="INPUT";
+11746  if upcase(NAME) = "TEXTCLUSTER2_PROB2" then ROLE="INPUT";
+11747  if upcase(NAME) = "TEXTCLUSTER2_PROB3" then ROLE="INPUT";
+11748  if upcase(NAME) = "TEXTCLUSTER2_PROB4" then ROLE="INPUT";
+11749  if upcase(NAME) = "TEXTTOPIC3_1" then ROLE="INPUT";
+11750  if upcase(NAME) = "TEXTTOPIC3_10" then ROLE="INPUT";
+11751  if upcase(NAME) = "TEXTTOPIC3_11" then ROLE="INPUT";
+11752  if upcase(NAME) = "TEXTTOPIC3_12" then ROLE="INPUT";
+11753  if upcase(NAME) = "TEXTTOPIC3_13" then ROLE="INPUT";
+11754  if upcase(NAME) = "TEXTTOPIC3_14" then ROLE="INPUT";
+11755  if upcase(NAME) = "TEXTTOPIC3_15" then ROLE="INPUT";
+11756  if upcase(NAME) = "TEXTTOPIC3_16" then ROLE="INPUT";
+11757  if upcase(NAME) = "TEXTTOPIC3_17" then ROLE="INPUT";
+11758  if upcase(NAME) = "TEXTTOPIC3_18" then ROLE="INPUT";
+11759  if upcase(NAME) = "TEXTTOPIC3_19" then ROLE="INPUT";
+11760  if upcase(NAME) = "TEXTTOPIC3_2" then ROLE="INPUT";
+11761  if upcase(NAME) = "TEXTTOPIC3_20" then ROLE="INPUT";
+11762  if upcase(NAME) = "TEXTTOPIC3_21" then ROLE="INPUT";
+11763  if upcase(NAME) = "TEXTTOPIC3_22" then ROLE="INPUT";
+11764  if upcase(NAME) = "TEXTTOPIC3_23" then ROLE="INPUT";
+11765  if upcase(NAME) = "TEXTTOPIC3_24" then ROLE="INPUT";
+11766  if upcase(NAME) = "TEXTTOPIC3_25" then ROLE="INPUT";
+11767  if upcase(NAME) = "TEXTTOPIC3_3" then ROLE="INPUT";
+11768  if upcase(NAME) = "TEXTTOPIC3_4" then ROLE="INPUT";
+11769  if upcase(NAME) = "TEXTTOPIC3_5" then ROLE="INPUT";
+11770  if upcase(NAME) = "TEXTTOPIC3_6" then ROLE="INPUT";
+11771  if upcase(NAME) = "TEXTTOPIC3_7" then ROLE="INPUT";
+11772  if upcase(NAME) = "TEXTTOPIC3_8" then ROLE="INPUT";
+11773  if upcase(NAME) = "TEXTTOPIC3_9" then ROLE="INPUT";
+11774  if upcase(NAME) = "TEXTTOPIC3_RAW1" then ROLE="REJECTED";
+11775  if upcase(NAME) = "TEXTTOPIC3_RAW10" then ROLE="REJECTED";
+11776  if upcase(NAME) = "TEXTTOPIC3_RAW11" then ROLE="REJECTED";
+11777  if upcase(NAME) = "TEXTTOPIC3_RAW12" then ROLE="REJECTED";
+11778  if upcase(NAME) = "TEXTTOPIC3_RAW13" then ROLE="REJECTED";
+11779  if upcase(NAME) = "TEXTTOPIC3_RAW14" then ROLE="REJECTED";
+11780  if upcase(NAME) = "TEXTTOPIC3_RAW15" then ROLE="REJECTED";
+11781  if upcase(NAME) = "TEXTTOPIC3_RAW16" then ROLE="REJECTED";
+11782  if upcase(NAME) = "TEXTTOPIC3_RAW17" then ROLE="REJECTED";
+11783  if upcase(NAME) = "TEXTTOPIC3_RAW18" then ROLE="REJECTED";
+11784  if upcase(NAME) = "TEXTTOPIC3_RAW19" then ROLE="REJECTED";
+11785  if upcase(NAME) = "TEXTTOPIC3_RAW2" then ROLE="REJECTED";
+11786  if upcase(NAME) = "TEXTTOPIC3_RAW20" then ROLE="REJECTED";
+11787  if upcase(NAME) = "TEXTTOPIC3_RAW21" then ROLE="REJECTED";
+11788  if upcase(NAME) = "TEXTTOPIC3_RAW22" then ROLE="REJECTED";
+11789  if upcase(NAME) = "TEXTTOPIC3_RAW23" then ROLE="REJECTED";
+11790  if upcase(NAME) = "TEXTTOPIC3_RAW24" then ROLE="REJECTED";
+11791  if upcase(NAME) = "TEXTTOPIC3_RAW25" then ROLE="REJECTED";
+11792  if upcase(NAME) = "TEXTTOPIC3_RAW3" then ROLE="REJECTED";
+11793  if upcase(NAME) = "TEXTTOPIC3_RAW4" then ROLE="REJECTED";
+11794  if upcase(NAME) = "TEXTTOPIC3_RAW5" then ROLE="REJECTED";
+11795  if upcase(NAME) = "TEXTTOPIC3_RAW6" then ROLE="REJECTED";
+11796  if upcase(NAME) = "TEXTTOPIC3_RAW7" then ROLE="REJECTED";
+11797  if upcase(NAME) = "TEXTTOPIC3_RAW8" then ROLE="REJECTED";
+11798  if upcase(NAME) = "TEXTTOPIC3_RAW9" then ROLE="REJECTED";
+11799  run;
+
+NOTE: There were 79 observations read from the data set EMWS3.TEXTTOPIC3_CMETA_TRAIN.
+NOTE: The data set WORK._TEMP has 79 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11800  proc sort data=_TEMP;
+11801  by NAME;
+11802  run;
+
+NOTE: There were 79 observations read from the data set WORK._TEMP.
+NOTE: The data set WORK._TEMP has 79 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+11803  data EMWS3.Meta_CMeta_TRAIN;
+11804  set _TEMP;
+11805  run;
+
+NOTE: There were 79 observations read from the data set WORK._TEMP.
+NOTE: The data set EMWS3.META_CMETA_TRAIN has 79 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: View EMWS3.META_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+NOTE: View EMWS3.META_VALIDATE.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+NOTE: View EMWS3.META_TEST.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+11806  *------------------------------------------------------------*;
+11807  * Meta: Computing metadata for TRANSACTION data;
+11808  *------------------------------------------------------------*;
+
+11809  data _TEMP;
+11810  set EMWS3.TextTopic3_CMeta_TRANSACTION;
+11811  run;
+
+NOTE: There were 4 observations read from the data set EMWS3.TEXTTOPIC3_CMETA_TRANSACTION.
+NOTE: The data set WORK._TEMP has 4 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+11812  proc sort data=_TEMP;
+11813  by NAME;
+11814  run;
+
+NOTE: There were 4 observations read from the data set WORK._TEMP.
+NOTE: The data set WORK._TEMP has 4 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+11815  data EMWS3.Meta_CMeta_TRANSACTION;
+11816  set _TEMP;
+11817  run;
+
+NOTE: There were 4 observations read from the data set WORK._TEMP.
+NOTE: The data set EMWS3.META_CMETA_TRANSACTION has 4 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: View EMWS3.META_TRANSACTION.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      

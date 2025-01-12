@@ -1,0 +1,674 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+INPUT        INTERVAL          61   
+REJECTED     INTERVAL           7   
+TARGET       NOMINAL            1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                      Number
+                       Measurement      of
+ Target      Event        Level       Levels      Order        Label
+
+Category    TEACHER      NOMINAL        12      Descending    Category
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type         Variable                            Label
+
+TARGET       Category                            Category                                  
+PREDICTED    P_CategoryTEACHER                   Predicted: Category=TEACHER               
+RESIDUAL     R_CategoryTEACHER                   Residual: Category=TEACHER                
+PREDICTED    P_CategorySALES                     Predicted: Category=SALES                 
+RESIDUAL     R_CategorySALES                     Residual: Category=SALES                  
+PREDICTED    P_CategoryOTHER                     Predicted: Category=OTHER                 
+RESIDUAL     R_CategoryOTHER                     Residual: Category=OTHER                  
+PREDICTED    P_CategoryINFORMATION_TECHNOLOGY    Predicted: Category=INFORMATION-TECHNOLOGY
+RESIDUAL     R_CategoryINFORMATION_TECHNOLOGY    Residual: Category=INFORMATION-TECHNOLOGY 
+PREDICTED    P_CategoryHR                        Predicted: Category=HR                    
+RESIDUAL     R_CategoryHR                        Residual: Category=HR                     
+PREDICTED    P_CategoryHEALTHCARE                Predicted: Category=HEALTHCARE            
+RESIDUAL     R_CategoryHEALTHCARE                Residual: Category=HEALTHCARE             
+PREDICTED    P_CategoryFITNESS                   Predicted: Category=FITNESS               
+RESIDUAL     R_CategoryFITNESS                   Residual: Category=FITNESS                
+PREDICTED    P_CategoryDIGITAL_MEDIA             Predicted: Category=DIGITAL-MEDIA         
+RESIDUAL     R_CategoryDIGITAL_MEDIA             Residual: Category=DIGITAL-MEDIA          
+PREDICTED    P_CategoryDESIGNER                  Predicted: Category=DESIGNER              
+RESIDUAL     R_CategoryDESIGNER                  Residual: Category=DESIGNER               
+PREDICTED    P_CategoryCONSULTANT                Predicted: Category=CONSULTANT            
+RESIDUAL     R_CategoryCONSULTANT                Residual: Category=CONSULTANT             
+PREDICTED    P_CategoryBUSINESS_DEVELOPMENT      Predicted: Category=BUSINESS-DEVELOPMENT  
+RESIDUAL     R_CategoryBUSINESS_DEVELOPMENT      Residual: Category=BUSINESS-DEVELOPMENT   
+PREDICTED    P_CategoryADVOCATE                  Predicted: Category=ADVOCATE              
+RESIDUAL     R_CategoryADVOCATE                  Residual: Category=ADVOCATE               
+FROM         F_Category                          From: Category                            
+INTO         I_Category                          Into: Category                            
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+Preliminary       Starting         Objective         Number
+ Training          Random           Function           of        Terminating
+    Run             Seed             Value         Iterations     Criteria
+
+        1               12345    0.261710191976           10                
+        2          1981206845    0.252655157098           10                
+        3          1517691079    0.234307871158           10                
+        4          1344283049    0.238464394029           10                
+        5          2091088801    0.221872335921           10                
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+                         Optimization Start
+                         Parameter Estimates
+                                                            Gradient
+                                                           Objective
+  N Parameter                               Estimate        Function
+
+  1 TextCluster11_SVD1_H11                  0.086322        0.001053
+  2 TextCluster11_SVD10_H11                 0.315244       -0.000128
+  3 TextCluster11_SVD11_H11                -0.098781        0.002613
+  4 TextCluster11_SVD12_H11                 0.344574       -0.001403
+  5 TextCluster11_SVD13_H11                 0.230048        0.000198
+  6 TextCluster11_SVD14_H11                 0.152089       -0.002235
+  7 TextCluster11_SVD15_H11                 0.199345        0.002395
+  8 TextCluster11_SVD16_H11                 0.015891        0.000957
+  9 TextCluster11_SVD17_H11                -0.073474       -0.000566
+ 10 TextCluster11_SVD18_H11                -0.091779        0.002151
+ 11 TextCluster11_SVD19_H11                 0.175490        0.001940
+ 12 TextCluster11_SVD2_H11                  0.200266       -0.002468
+ 13 TextCluster11_SVD20_H11                -0.047641        0.000773
+ 14 TextCluster11_SVD21_H11                -0.326461     0.000074832
+ 15 TextCluster11_SVD22_H11                -0.495801        0.000752
+ 16 TextCluster11_SVD23_H11                -0.339120       -0.003132
+ 17 TextCluster11_SVD24_H11                -0.084309        0.000126
+ 18 TextCluster11_SVD25_H11                -0.092206       -0.001232
+ 19 TextCluster11_SVD26_H11                -0.125774       -0.000657
+ 20 TextCluster11_SVD27_H11                -0.052292       -0.003160
+ 21 TextCluster11_SVD28_H11                 0.186431        0.003908
+ 22 TextCluster11_SVD29_H11                -0.323049       -0.001910
+ 23 TextCluster11_SVD3_H11                  0.949324        0.001715
+ 24 TextCluster11_SVD30_H11                -0.004774        0.005601
+ 25 TextCluster11_SVD31_H11                 0.051641       -0.003449
+ 26 TextCluster11_SVD32_H11                 0.073580       -0.002218
+ 27 TextCluster11_SVD33_H11                -0.025796        0.003583
+ 28 TextCluster11_SVD34_H11                -0.053906        0.002046
+ 29 TextCluster11_SVD35_H11                -0.085361        0.001972
+ 30 TextCluster11_SVD36_H11                -0.086109        0.002788
+ 31 TextCluster11_SVD37_H11                -0.307538       -0.005562
+ 32 TextCluster11_SVD38_H11                 0.009721       -0.002537
+ 33 TextCluster11_SVD39_H11                -0.060445       -0.002072
+ 34 TextCluster11_SVD4_H11                 -0.285891       -0.000528
+ 35 TextCluster11_SVD40_H11                 0.111667        0.003436
+ 36 TextCluster11_SVD41_H11                -0.232909        0.001646
+ 37 TextCluster11_SVD42_H11                 0.265725       -0.004827
+ 38 TextCluster11_SVD43_H11                 0.031387       -0.006426
+ 39 TextCluster11_SVD44_H11                -0.103316        0.003856
+ 40 TextCluster11_SVD45_H11                -0.003725        0.003206
+ 41 TextCluster11_SVD46_H11                 0.118476       -0.002379
+ 42 TextCluster11_SVD47_H11                -0.044532       -0.001210
+ 43 TextCluster11_SVD48_H11                 0.296570        0.002504
+ 44 TextCluster11_SVD49_H11                 0.202869        0.004003
+ 45 TextCluster11_SVD5_H11                  1.014665       -0.002246
+ 46 TextCluster11_SVD50_H11                 0.064817       -0.000868
+ 47 TextCluster11_SVD51_H11                 0.035304        0.002075
+ 48 TextCluster11_SVD52_H11                 0.220113        0.000577
+ 49 TextCluster11_SVD53_H11                -0.238577        0.002906
+ 50 TextCluster11_SVD54_H11                -0.077531       -0.002280
+ 51 TextCluster11_SVD55_H11                -0.029660       -0.000173
+ 52 TextCluster11_SVD56_H11                 0.061108        0.000601
+ 53 TextCluster11_SVD57_H11                 0.171478        0.002239
+ 54 TextCluster11_SVD58_H11                -0.185190        0.000105
+ 55 TextCluster11_SVD59_H11                -0.157678       -0.000731
+ 56 TextCluster11_SVD6_H11                 -1.225804       -0.001337
+ 57 TextCluster11_SVD60_H11                 0.011460        0.001519
+ 58 TextCluster11_SVD61_H11                 0.239253        0.001956
+ 59 TextCluster11_SVD7_H11                 -0.406884       -0.001812
+ 60 TextCluster11_SVD8_H11                  0.160724       -0.000799
+ 61 TextCluster11_SVD9_H11                  0.027632       -0.001749
+ 62 TextCluster11_SVD1_H12                  0.118699        0.000974
+ 63 TextCluster11_SVD10_H12                -0.578088        0.001338
+ 64 TextCluster11_SVD11_H12                -0.053964        0.000594
+ 65 TextCluster11_SVD12_H12                 0.064534        0.000981
+ 66 TextCluster11_SVD13_H12                -0.307282       -0.000637
+ 67 TextCluster11_SVD14_H12                 0.122378       -0.001775
+ 68 TextCluster11_SVD15_H12                 0.115160        0.000929
+ 69 TextCluster11_SVD16_H12                -0.226772        0.000437
+ 70 TextCluster11_SVD17_H12                 0.150812        0.002052
+ 71 TextCluster11_SVD18_H12                 0.005945       -0.001545
+ 72 TextCluster11_SVD19_H12                 0.124011        0.000947
+ 73 TextCluster11_SVD2_H12                 -0.013345       -0.000704
+ 74 TextCluster11_SVD20_H12                -0.095891       -0.000862
+ 75 TextCluster11_SVD21_H12                 0.326352        0.001372
+ 76 TextCluster11_SVD22_H12                 0.458382       -0.000354
+ 77 TextCluster11_SVD23_H12                 0.320467       -0.001026
+ 78 TextCluster11_SVD24_H12                -0.037710        0.001317
+ 79 TextCluster11_SVD25_H12                 0.081657        0.001569
+ 80 TextCluster11_SVD26_H12                -0.068401       -0.001332
+ 81 TextCluster11_SVD27_H12                 0.119510       -0.001943
+ 82 TextCluster11_SVD28_H12                 0.104124        0.001109
+ 83 TextCluster11_SVD29_H12                 0.105868        0.000163
+ 84 TextCluster11_SVD3_H12                 -0.444108        0.001295
+ 85 TextCluster11_SVD30_H12                -0.105655       -0.002321
+ 86 TextCluster11_SVD31_H12                 0.339592        0.000649
+ 87 TextCluster11_SVD32_H12                 0.166351        0.002740
+ 88 TextCluster11_SVD33_H12                 0.160881       -0.000175
+ 89 TextCluster11_SVD34_H12                 0.406273       -0.000777
+ 90 TextCluster11_SVD35_H12                -0.135461       -0.000707
+ 91 TextCluster11_SVD36_H12                -0.417281       -0.000560
+ 92 TextCluster11_SVD37_H12                 0.039399        0.003102
+ 93 TextCluster11_SVD38_H12                -0.046230        0.001931
+ 94 TextCluster11_SVD39_H12                -0.399113       -0.000451
+ 95 TextCluster11_SVD4_H12                 -1.610668        0.000715
+ 96 TextCluster11_SVD40_H12                -0.186567        0.001185
+ 97 TextCluster11_SVD41_H12                 0.223272       -0.000543
+ 98 TextCluster11_SVD42_H12                -0.102212        0.002220
+ 99 TextCluster11_SVD43_H12                -0.422011        0.002828
+100 TextCluster11_SVD44_H12                -0.078804        0.001348
+101 TextCluster11_SVD45_H12                 0.234841        0.002349
+102 TextCluster11_SVD46_H12                 0.379093        0.000522
+103 TextCluster11_SVD47_H12                 0.240748        0.002292
+104 TextCluster11_SVD48_H12                 0.003978       -0.000220
+105 TextCluster11_SVD49_H12                 0.001548       -0.002969
+106 TextCluster11_SVD5_H12                 -0.134344        0.000333
+107 TextCluster11_SVD50_H12                 0.116883        0.002003
+108 TextCluster11_SVD51_H12                 0.058615        0.000497
+109 TextCluster11_SVD52_H12                -0.095601       -0.001068
+110 TextCluster11_SVD53_H12                -0.204594        0.001406
+111 TextCluster11_SVD54_H12                 0.282493        0.001531
+112 TextCluster11_SVD55_H12                 0.013250        0.000340
+113 TextCluster11_SVD56_H12                -0.123557        0.001219
+114 TextCluster11_SVD57_H12                -0.221445       -0.000651
+115 TextCluster11_SVD58_H12                 0.050785       -0.001029
+116 TextCluster11_SVD59_H12                 0.388355        0.003026
+117 TextCluster11_SVD6_H12                  0.581070       -0.001819
+118 TextCluster11_SVD60_H12                -0.153048        0.002481
+119 TextCluster11_SVD61_H12                 0.179742        0.001312
+120 TextCluster11_SVD7_H12                  0.452909        0.002405
+121 TextCluster11_SVD8_H12                  0.380752       -0.002442
+122 TextCluster11_SVD9_H12                 -0.040277        0.000728
+123 TextCluster11_SVD1_H13                 -0.059128       -0.000629
+124 TextCluster11_SVD10_H13                -0.489419       -0.001231
+125 TextCluster11_SVD11_H13                -0.267962       -0.002675
+126 TextCluster11_SVD12_H13                -0.260071       -0.000641
+127 TextCluster11_SVD13_H13                 0.252620        0.001833
+128 TextCluster11_SVD14_H13                -0.350891        0.001564
+129 TextCluster11_SVD15_H13                -0.126403       -0.001190
+130 TextCluster11_SVD16_H13                 0.059406        0.000970
+131 TextCluster11_SVD17_H13                 0.164487       -0.000236
+132 TextCluster11_SVD18_H13                -0.143852       -0.001942
+133 TextCluster11_SVD19_H13                 0.062638       -0.001312
+134 TextCluster11_SVD2_H13                 -0.689510       -0.000211
+135 TextCluster11_SVD20_H13                 0.103573        0.000993
+136 TextCluster11_SVD21_H13                -0.077160        0.000458
+137 TextCluster11_SVD22_H13                -0.234951        0.001116
+138 TextCluster11_SVD23_H13                -0.304428       -0.001457
+139 TextCluster11_SVD24_H13                 0.289290        0.000657
+140 TextCluster11_SVD25_H13                -0.063912        0.000500
+141 TextCluster11_SVD26_H13                -0.432568        0.000515
+142 TextCluster11_SVD27_H13                -0.271569       -0.000339
+143 TextCluster11_SVD28_H13                 0.269278        0.000177
+144 TextCluster11_SVD29_H13                 0.035732       -0.000338
+145 TextCluster11_SVD3_H13                  0.811753        0.001841
+146 TextCluster11_SVD30_H13                -0.167277     0.000047148
+147 TextCluster11_SVD31_H13                 0.003193       -0.001588
+148 TextCluster11_SVD32_H13                -0.267712        0.000757
+149 TextCluster11_SVD33_H13                -0.226250       -0.003014
+150 TextCluster11_SVD34_H13                 0.135633       -0.004376
+151 TextCluster11_SVD35_H13                -0.112124        0.000118
+152 TextCluster11_SVD36_H13                 0.031589       -0.001511
+153 TextCluster11_SVD37_H13                -0.174209        0.000340
+154 TextCluster11_SVD38_H13                -0.392089        0.000459
+155 TextCluster11_SVD39_H13                 0.340842        0.001244
+156 TextCluster11_SVD4_H13                  0.196360        0.001696
+157 TextCluster11_SVD40_H13                 0.165340       -0.001728
+158 TextCluster11_SVD41_H13                -0.064804        0.001181
+159 TextCluster11_SVD42_H13                 0.018747        0.001612
+160 TextCluster11_SVD43_H13                 0.381884        0.002129
+161 TextCluster11_SVD44_H13                -0.311178       -0.001303
+162 TextCluster11_SVD45_H13                -0.021169       -0.003229
+163 TextCluster11_SVD46_H13                -0.182940       -0.000414
+164 TextCluster11_SVD47_H13                 0.108106        0.002518
+165 TextCluster11_SVD48_H13                 0.030186       -0.000105
+166 TextCluster11_SVD49_H13                -0.071149       -0.000541
+167 TextCluster11_SVD5_H13                 -0.143888       -0.001992
+168 TextCluster11_SVD50_H13                 0.049449        0.001133
+169 TextCluster11_SVD51_H13                -0.119314        0.000448
+170 TextCluster11_SVD52_H13                 0.116492       -0.004754
+171 TextCluster11_SVD53_H13                 0.026681        0.002887
+172 TextCluster11_SVD54_H13                 0.015481        0.000165
+173 TextCluster11_SVD55_H13                 0.003053       -0.001589
+174 TextCluster11_SVD56_H13                -0.038837        0.001650
+175 TextCluster11_SVD57_H13                 0.254196        0.000393
+176 TextCluster11_SVD58_H13                 0.043088        0.001567
+177 TextCluster11_SVD59_H13                -0.034354        0.003221
+178 TextCluster11_SVD6_H13                  0.394381       -0.001254
+179 TextCluster11_SVD60_H13                -0.202405        0.000219
+180 TextCluster11_SVD61_H13                -0.043076     0.000042483
+181 TextCluster11_SVD7_H13                 -0.747302       -0.000498
+182 TextCluster11_SVD8_H13                  1.582135        0.000808
+183 TextCluster11_SVD9_H13                 -0.135096        0.002503
+184 BIAS_H11                               -0.776991       -0.000378
+185 BIAS_H12                                0.996479        0.000399
+186 BIAS_H13                               -1.083344        0.001554
+187 H11_CategoryTEACHER                    -1.434907        0.001037
+188 H12_CategoryTEACHER                     1.867113       -0.000251
+189 H13_CategoryTEACHER                     0.962181        0.000528
+190 H11_CategorySALES                      -2.531839       -0.000255
+191 H12_CategorySALES                       0.895241        0.002021
+192 H13_CategorySALES                       4.527022       -0.000251
+193 H11_CategoryOTHER                      -1.179139       -0.000457
+194 H12_CategoryOTHER                       1.496677        0.000839
+195 H13_CategoryOTHER                       0.856532       -0.001626
+196 H11_CategoryINFORMATIONTECHNOLOG        3.641196        0.001669
+197 H12_CategoryINFORMATIONTECHNOLOG        0.640545        0.000225
+198 H13_CategoryINFORMATIONTECHNOLOG       -1.276767       -0.000782
+199 H11_CategoryHR                          4.592442        0.000166
+200 H12_CategoryHR                          2.740193        0.000188
+201 H13_CategoryHR                          1.742434       -0.001350
+202 H11_CategoryHEALTHCARE                 -1.753916        0.000309
+203 H12_CategoryHEALTHCARE                 -2.845195        0.001374
+204 H13_CategoryHEALTHCARE                 -2.944736       -0.001087
+205 H11_CategoryFITNESS                    -2.018759       -0.000818
+206 H12_CategoryFITNESS                     2.388583       -0.000714
+207 H13_CategoryFITNESS                     4.748508        0.001003
+208 H11_CategoryDIGITALMEDIA               -0.048784       -0.001568
+209 H12_CategoryDIGITALMEDIA               -3.468425        0.000216
+210 H13_CategoryDIGITALMEDIA               -2.294514       -0.002482
+211 H11_CategoryDESIGNER                    4.435381       -0.002376
+212 H12_CategoryDESIGNER                   -2.257103        0.002035
+213 H13_CategoryDESIGNER                   -2.535457        0.001326
+214 H11_CategoryCONSULTANT                 -0.750134       -0.004061
+215 H12_CategoryCONSULTANT                  0.768959        0.004027
+216 H13_CategoryCONSULTANT                  0.245668       -0.003611
+217 H11_CategoryBUSINESSDEVELOPMENT        -3.680792    -0.000036891
+218 H12_CategoryBUSINESSDEVELOPMENT        -4.072942       -0.000100
+219 H13_CategoryBUSINESSDEVELOPMENT        -0.793558       -0.000490
+220 BIAS_CategoryTEACHER                   -0.383550        0.000513
+221 BIAS_CategorySALES                     -0.363302       -0.000641
+222 BIAS_CategoryOTHER                      0.270919     0.000082531
+223 BIAS_CategoryINFORMATIONTECHNOLO        0.851390        0.003137
+224 BIAS_CategoryHR                        -0.752443        0.000465
+225 BIAS_CategoryHEALTHCARE                -0.469252        0.001438
+226 BIAS_CategoryFITNESS                   -0.382839        0.002353
+227 BIAS_CategoryDIGITALMEDIA               0.867135        0.002893
+228 BIAS_CategoryDESIGNER                  -1.309860       -0.002028
+229 BIAS_CategoryCONSULTANT                 0.856641        0.003593
+230 BIAS_CategoryBUSINESSDEVELOPMENT       -1.196116       -0.000573
+
+Value of Objective Function = 0.2218723359
+
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+Dual Quasi-Newton Optimization
+
+
+Minimum Iterations                                0
+Maximum Iterations                               50
+Maximum Function Calls                   2147483647
+Maximum CPU Time                              14400
+ABSGCONV Gradient Criterion                 0.00001
+GCONV Gradient Criterion                       1E-8
+ABSFCONV Function Criterion                       0
+FCONV Function Criterion                     0.0001
+FCONV2 Function Criterion                         0
+FSIZE Parameter                                   0
+ABSXCONV Parameter Change Criterion               0
+XCONV Parameter Change Criterion                  0
+XSIZE Parameter                                   0
+ABSCONV Function Criterion             0.0049756515
+Line Search Method                                2
+Starting Alpha for Line Search                    1
+Line Search Precision LSPRECISION               0.4
+DAMPSTEP Parameter for Line Search                .
+Singularity Tolerance (SINGULAR)               1E-8
+
+Dual Quasi-Newton Optimization
+
+Dual Broyden - Fletcher - Goldfarb - Shanno Update (DBFGS)
+
+Parameter Estimates             230
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       0.2218723359
+Max Abs Gradient Element                  0.006425678                                                       
+
+
+                                                                 Objective     Max Abs                Slope of
+                     Function         Active        Objective     Function    Gradient       Step       Search
+Iter     Restarts       Calls    Constraints         Function       Change     Element       Size    Direction
+
+   1            0           4              0          0.22021      0.00166     0.00820      0.100      -0.0820
+   2            0           8              0          0.21651      0.00370     0.00539      1.629      -0.0051
+   3            0          10              0          0.21482      0.00169     0.00686      1.000      -0.0050
+   4            0          12              0          0.21256      0.00226     0.00457      0.606      -0.0070
+   5            0          14              0          0.21123      0.00133     0.00653      0.986      -0.0057
+   6            0          16              0          0.20903      0.00220     0.00422      0.615      -0.0054
+   7            0          18              0          0.20628      0.00275     0.00517      0.950      -0.0058
+   8            0          20              0          0.20482      0.00145      0.0100      1.416      -0.0049
+   9            0          24              0          0.20158      0.00324     0.00429      1.249      -0.0058
+  10            0          27              0          0.19990      0.00168     0.00608      0.869      -0.0039
+  11            0          29              0          0.19768      0.00222     0.00463      0.908      -0.0046
+  12            0          31              0          0.19616      0.00153     0.00746      1.186      -0.0047
+  13            0          33              0          0.19385      0.00231     0.00428      0.684      -0.0056
+  14            0          35              0          0.19288     0.000975     0.00667      1.394      -0.0041
+  15            0          39              0          0.19030      0.00258     0.00376      1.240      -0.0042
+  16            0          42              0          0.18901      0.00129     0.00340      1.027      -0.0025
+  17            0          44              0          0.18773      0.00128     0.00780      1.295      -0.0025
+  18            0          46              0          0.18618      0.00154     0.00374      1.094      -0.0029
+  19            0          48              0          0.18525     0.000933     0.00475      1.545      -0.0025
+  20            0          50              0          0.18372      0.00153     0.00328      0.906      -0.0026
+  21            0          52              0          0.18326     0.000457     0.00513      2.030      -0.0019
+  22            0          56              0          0.18172      0.00154     0.00215      1.112      -0.0028
+  23            0          59              0          0.18124     0.000474     0.00349      0.857      -0.0013
+  24            0          61              0          0.18050     0.000743     0.00218      1.014      -0.0012
+  25            0          63              0          0.18017     0.000334     0.00343      1.424      -0.0013
+  26            0          67              0          0.17937     0.000797     0.00173      1.368      -0.0012
+  27            0          70              0          0.17882     0.000551     0.00171      1.580      -0.0007
+  28            0          72              0          0.17790     0.000923     0.00240      1.231      -0.0011
+  29            0          74              0          0.17664      0.00125     0.00279      1.339      -0.0017
+  30            0          76              0          0.17575     0.000895     0.00405      1.855      -0.0017
+  31            0          78              0          0.17442      0.00133     0.00241      0.717      -0.0031
+  32            0          80              0          0.17364     0.000781     0.00469      1.535      -0.0022
+  33            0          82              0          0.17250      0.00114     0.00203      0.892      -0.0022
+  34            0          85              0          0.17181     0.000685     0.00212      1.102      -0.0013
+  35            0          87              0          0.17107     0.000740     0.00249      1.520      -0.0011
+  36            0          89              0          0.17030     0.000766     0.00338      1.557      -0.0012
+  37            0          91              0          0.16919      0.00111     0.00368      1.236      -0.0015
+  38            0          94              0          0.16874     0.000453     0.00375      0.396      -0.0022
+  39            0          96              0          0.16815     0.000589     0.00247      0.537      -0.0021
+  40            0          98              0          0.16761     0.000538     0.00337      1.496      -0.0010
+  41            0         100              0          0.16724     0.000377     0.00349      1.734      -0.0008
+  42            0         102              0          0.16684     0.000396     0.00169      1.239      -0.0008
+  43            0         104              0          0.16669     0.000147     0.00335      1.459      -0.0007
+  44            0         108              0          0.16616     0.000530     0.00147      1.166      -0.0009
+  45            0         111              0          0.16585     0.000309     0.00201      1.210      -0.0005
+  46            0         113              0          0.16541     0.000441     0.00164      1.207      -0.0006
+  47            0         115              0          0.16495     0.000463     0.00219      1.423      -0.0008
+  48            0         117              0          0.16436     0.000588     0.00229      1.594      -0.0007
+  49            0         119              0          0.16422     0.000148     0.00571      1.714      -0.0009
+  50            0         123              0          0.16342     0.000795     0.00210      1.181      -0.0013
+
+                                            Optimization Results
+
+Iterations                                         50  Function Calls                                    125
+Gradient Calls                                     59  Active Constraints                                  0
+Objective Function                       0.1634198205  Max Abs Gradient Element                 0.0021028341
+Slope of Search Direction                -0.001341419                                                       
+
+QUANEW needs more than 50 iterations or 2147483647 function calls.                                
+
+WARNING: QUANEW Optimization cannot be completed.
+
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+                        Optimization Results
+                         Parameter Estimates
+                                                            Gradient
+                                                           Objective
+  N Parameter                               Estimate        Function
+
+  1 TextCluster11_SVD1_H11                  0.142548       -0.000205
+  2 TextCluster11_SVD10_H11                 0.269272       -0.000420
+  3 TextCluster11_SVD11_H11                 0.077041       -0.000138
+  4 TextCluster11_SVD12_H11                 0.342289       -0.000282
+  5 TextCluster11_SVD13_H11                 0.103157        0.000719
+  6 TextCluster11_SVD14_H11                 0.245304        0.000117
+  7 TextCluster11_SVD15_H11                -0.071128        0.000486
+  8 TextCluster11_SVD16_H11                -0.147089        0.000830
+  9 TextCluster11_SVD17_H11                 0.215865       -0.001019
+ 10 TextCluster11_SVD18_H11                -0.001478       -0.000784
+ 11 TextCluster11_SVD19_H11                 0.443051    -0.000075076
+ 12 TextCluster11_SVD2_H11                  0.691279        0.000155
+ 13 TextCluster11_SVD20_H11                 0.279912        0.000519
+ 14 TextCluster11_SVD21_H11                -0.158147       -0.001165
+ 15 TextCluster11_SVD22_H11                -0.124331        0.000125
+ 16 TextCluster11_SVD23_H11                -0.164461       -0.001603
+ 17 TextCluster11_SVD24_H11                 0.099004       -0.000435
+ 18 TextCluster11_SVD25_H11                -0.241049       -0.002032
+ 19 TextCluster11_SVD26_H11                 0.165889       -0.000895
+ 20 TextCluster11_SVD27_H11                -0.082806       -0.000941
+ 21 TextCluster11_SVD28_H11                 0.264204        0.000939
+ 22 TextCluster11_SVD29_H11                -0.177966       -0.001349
+ 23 TextCluster11_SVD3_H11                  0.996694        0.001096
+ 24 TextCluster11_SVD30_H11                -0.172132       -0.000457
+ 25 TextCluster11_SVD31_H11                 0.051175       -0.001846
+ 26 TextCluster11_SVD32_H11                 0.065457       -0.000617
+ 27 TextCluster11_SVD33_H11                -0.099770        0.001024
+ 28 TextCluster11_SVD34_H11                 0.063253        0.000790
+ 29 TextCluster11_SVD35_H11                -0.183319     0.000083466
+ 30 TextCluster11_SVD36_H11                -0.093159    -0.000020060
+ 31 TextCluster11_SVD37_H11                -0.020643    -0.000041188
+ 32 TextCluster11_SVD38_H11                -0.023233        0.000313
+ 33 TextCluster11_SVD39_H11                -0.194276       -0.000672
+ 34 TextCluster11_SVD4_H11                 -0.405936       -0.001096
+ 35 TextCluster11_SVD40_H11                -0.111219     0.000014085
+ 36 TextCluster11_SVD41_H11                -0.281118       -0.001267
+ 37 TextCluster11_SVD42_H11                 0.048593       -0.000212
+ 38 TextCluster11_SVD43_H11                 0.118499        0.001097
+ 39 TextCluster11_SVD44_H11                -0.134998    -0.000072276
+ 40 TextCluster11_SVD45_H11                -0.018560       -0.002103
+ 41 TextCluster11_SVD46_H11                 0.122227    -0.000048223
+ 42 TextCluster11_SVD47_H11                 0.206625        0.000905
+ 43 TextCluster11_SVD48_H11                 0.239315        0.000195
+ 44 TextCluster11_SVD49_H11                 0.121059    -0.000030218
+ 45 TextCluster11_SVD5_H11                  1.046635       -0.001062
+ 46 TextCluster11_SVD50_H11                -0.098794        0.000368
+ 47 TextCluster11_SVD51_H11                 0.254160       -0.000466
+ 48 TextCluster11_SVD52_H11                 0.087849       -0.001171
+ 49 TextCluster11_SVD53_H11                -0.224536       -0.000578
+ 50 TextCluster11_SVD54_H11                -0.127648       -0.000384
+ 51 TextCluster11_SVD55_H11                -0.005819        0.000210
+ 52 TextCluster11_SVD56_H11                -0.090543     0.000081667
+ 53 TextCluster11_SVD57_H11                 0.040618       -0.000619
+ 54 TextCluster11_SVD58_H11                -0.095104     0.000086401
+ 55 TextCluster11_SVD59_H11                 0.061369     0.000067186
+ 56 TextCluster11_SVD6_H11                 -0.925365       -0.001007
+ 57 TextCluster11_SVD60_H11                -0.093880    -0.000083575
+ 58 TextCluster11_SVD61_H11                 0.132760       -0.000263
+ 59 TextCluster11_SVD7_H11                 -0.786465       -0.000532
+ 60 TextCluster11_SVD8_H11                 -0.203257       -0.001404
+ 61 TextCluster11_SVD9_H11                 -0.170381       -0.000477
+ 62 TextCluster11_SVD1_H12                 -0.254138        0.000219
+ 63 TextCluster11_SVD10_H12                -1.383756        0.000175
+ 64 TextCluster11_SVD11_H12                -0.196482       -0.000696
+ 65 TextCluster11_SVD12_H12                -0.041645     0.000051728
+ 66 TextCluster11_SVD13_H12                -0.787708       -0.000477
+ 67 TextCluster11_SVD14_H12                -0.023477        0.000472
+ 68 TextCluster11_SVD15_H12                 0.159670       -0.000525
+ 69 TextCluster11_SVD16_H12                -0.469032        0.000136
+ 70 TextCluster11_SVD17_H12                 0.154630        0.000113
+ 71 TextCluster11_SVD18_H12                -0.147476        0.000191
+ 72 TextCluster11_SVD19_H12                -0.004529        0.000111
+ 73 TextCluster11_SVD2_H12                 -0.214067       -0.000709
+ 74 TextCluster11_SVD20_H12                -0.070484    -0.000047580
+ 75 TextCluster11_SVD21_H12                 0.448380        0.000399
+ 76 TextCluster11_SVD22_H12                 0.885814        0.000180
+ 77 TextCluster11_SVD23_H12                 0.340533     0.000026649
+ 78 TextCluster11_SVD24_H12                 0.013490       -0.000257
+ 79 TextCluster11_SVD25_H12                 0.017665       -0.000297
+ 80 TextCluster11_SVD26_H12                -0.101092        0.000260
+ 81 TextCluster11_SVD27_H12                 0.395336        0.000108
+ 82 TextCluster11_SVD28_H12                 0.424232    -0.000048640
+ 83 TextCluster11_SVD29_H12                 0.167763       -0.000695
+ 84 TextCluster11_SVD3_H12                 -0.569100       -0.000646
+ 85 TextCluster11_SVD30_H12                -0.500784        0.000417
+ 86 TextCluster11_SVD31_H12                 0.727608    -0.000098438
+ 87 TextCluster11_SVD32_H12                 0.380658    -0.000094270
+ 88 TextCluster11_SVD33_H12                 0.662800        0.000421
+ 89 TextCluster11_SVD34_H12                 0.351857       -0.000267
+ 90 TextCluster11_SVD35_H12                -0.588667       -0.000205
+ 91 TextCluster11_SVD36_H12                -0.709828     0.000063858
+ 92 TextCluster11_SVD37_H12                -0.028284        0.000198
+ 93 TextCluster11_SVD38_H12                 0.099614       -0.000212
+ 94 TextCluster11_SVD39_H12                -0.220232       -0.000317
+ 95 TextCluster11_SVD4_H12                 -2.696329        0.000197
+ 96 TextCluster11_SVD40_H12                -0.288852    -0.000045973
+ 97 TextCluster11_SVD41_H12                 0.396263       -0.000151
+ 98 TextCluster11_SVD42_H12                -0.446545        0.000367
+ 99 TextCluster11_SVD43_H12                -0.628085        0.000853
+100 TextCluster11_SVD44_H12                -0.306987     0.000056941
+101 TextCluster11_SVD45_H12                 0.402736     0.000038076
+102 TextCluster11_SVD46_H12                 0.427741       -0.000298
+103 TextCluster11_SVD47_H12                 0.146201       -0.000437
+104 TextCluster11_SVD48_H12                 0.048130       -0.000231
+105 TextCluster11_SVD49_H12                -0.073546     0.000064107
+106 TextCluster11_SVD5_H12                 -0.470162        0.000298
+107 TextCluster11_SVD50_H12                -0.149688       -0.000381
+108 TextCluster11_SVD51_H12                 0.020381       -0.000391
+109 TextCluster11_SVD52_H12                -0.316950       -0.000373
+110 TextCluster11_SVD53_H12                -0.606226    -0.000000907
+111 TextCluster11_SVD54_H12                 0.467558       -0.000313
+112 TextCluster11_SVD55_H12                 0.055531       -0.000502
+113 TextCluster11_SVD56_H12                -0.522677        0.000218
+114 TextCluster11_SVD57_H12                -0.294757    -0.000005160
+115 TextCluster11_SVD58_H12                 0.020888       -0.000164
+116 TextCluster11_SVD59_H12                 0.547684       -0.000498
+117 TextCluster11_SVD6_H12                  1.694341       -0.000404
+118 TextCluster11_SVD60_H12                -0.284483        0.000182
+119 TextCluster11_SVD61_H12                 0.333105       -0.000408
+120 TextCluster11_SVD7_H12                  0.808274    -0.000089207
+121 TextCluster11_SVD8_H12                  1.075082    -0.000040303
+122 TextCluster11_SVD9_H12                  0.167394        0.000130
+123 TextCluster11_SVD1_H13                  0.318685        0.001272
+124 TextCluster11_SVD10_H13                -0.179586    -0.000021091
+125 TextCluster11_SVD11_H13                 0.199865        0.001036
+126 TextCluster11_SVD12_H13                -0.427926       -0.000539
+127 TextCluster11_SVD13_H13                 0.687890       -0.000909
+128 TextCluster11_SVD14_H13                -1.126370    -0.000017052
+129 TextCluster11_SVD15_H13                -0.950358       -0.000863
+130 TextCluster11_SVD16_H13                -0.075112       -0.000290
+131 TextCluster11_SVD17_H13                 0.083023        0.000824
+132 TextCluster11_SVD18_H13                 0.596592       -0.000429
+133 TextCluster11_SVD19_H13                 0.982692        0.000129
+134 TextCluster11_SVD2_H13                 -1.947617     0.000044813
+135 TextCluster11_SVD20_H13                 0.053869        0.000248
+136 TextCluster11_SVD21_H13                -0.113516     0.000079930
+137 TextCluster11_SVD22_H13                -0.141784       -0.000334
+138 TextCluster11_SVD23_H13                 0.390939       -0.000109
+139 TextCluster11_SVD24_H13                 0.148981     0.000069147
+140 TextCluster11_SVD25_H13                -0.235122        0.001362
+141 TextCluster11_SVD26_H13                -0.323444        0.000823
+142 TextCluster11_SVD27_H13                -0.442615       -0.000635
+143 TextCluster11_SVD28_H13                 0.284747       -0.001432
+144 TextCluster11_SVD29_H13                 0.112638        0.000281
+145 TextCluster11_SVD3_H13                  0.350506        0.001062
+146 TextCluster11_SVD30_H13                -0.357279       -0.001205
+147 TextCluster11_SVD31_H13                -0.189952        0.000998
+148 TextCluster11_SVD32_H13                -0.431110        0.000762
+149 TextCluster11_SVD33_H13                -0.120701       -0.001283
+150 TextCluster11_SVD34_H13                 0.797040       -0.000713
+151 TextCluster11_SVD35_H13                 0.048472       -0.000293
+152 TextCluster11_SVD36_H13                 0.113516       -0.000273
+153 TextCluster11_SVD37_H13                 0.495847       -0.000490
+154 TextCluster11_SVD38_H13                -0.391206        0.000183
+155 TextCluster11_SVD39_H13                 0.030054        0.001156
+156 TextCluster11_SVD4_H13                 -0.321736        0.000374
+157 TextCluster11_SVD40_H13                 0.010359       -0.000887
+158 TextCluster11_SVD41_H13                 0.001366        0.000204
+159 TextCluster11_SVD42_H13                -0.040938        0.001636
+160 TextCluster11_SVD43_H13                 0.505609    -0.000085357
+161 TextCluster11_SVD44_H13                -0.336582       -0.000401
+162 TextCluster11_SVD45_H13                 0.153066       -0.000239
+163 TextCluster11_SVD46_H13                 0.135143    -0.000080834
+164 TextCluster11_SVD47_H13                 0.288210       -0.000372
+165 TextCluster11_SVD48_H13                -0.033942       -0.000840
+166 TextCluster11_SVD49_H13                -0.348219        0.000124
+167 TextCluster11_SVD5_H13                 -0.383922       -0.000661
+168 TextCluster11_SVD50_H13                 0.285485        0.000469
+169 TextCluster11_SVD51_H13                 0.047860       -0.000883
+170 TextCluster11_SVD52_H13                -0.278720       -0.000878
+171 TextCluster11_SVD53_H13                -0.336168    -0.000079018
+172 TextCluster11_SVD54_H13                 0.250658       -0.000232
+173 TextCluster11_SVD55_H13                 0.360127       -0.000565
+174 TextCluster11_SVD56_H13                -0.057124        0.000286
+175 TextCluster11_SVD57_H13                 0.251678     0.000062649
+176 TextCluster11_SVD58_H13                -0.273360       -0.000985
+177 TextCluster11_SVD59_H13                 0.044883       -0.000238
+178 TextCluster11_SVD6_H13                  0.792254       -0.000227
+179 TextCluster11_SVD60_H13                -0.181480        0.000329
+180 TextCluster11_SVD61_H13                -0.233249        0.000332
+181 TextCluster11_SVD7_H13                 -1.464349        0.000337
+182 TextCluster11_SVD8_H13                  1.826412        0.000223
+183 TextCluster11_SVD9_H13                 -0.672605        0.000963
+184 BIAS_H11                               -0.708824       -0.000247
+185 BIAS_H12                                1.934659       -0.000353
+186 BIAS_H13                               -1.350666       -0.000286
+187 H11_CategoryTEACHER                    -3.589836        0.000370
+188 H12_CategoryTEACHER                     1.849778       -0.000158
+189 H13_CategoryTEACHER                     2.663704        0.000356
+190 H11_CategorySALES                      -0.592282       -0.000377
+191 H12_CategorySALES                      -2.754035       -0.000562
+192 H13_CategorySALES                       6.260907       -0.000250
+193 H11_CategoryOTHER                       1.547953        0.000514
+194 H12_CategoryOTHER                       0.393194       -0.000171
+195 H13_CategoryOTHER                       2.180982        0.000255
+196 H11_CategoryINFORMATIONTECHNOLOG        6.502995       -0.000385
+197 H12_CategoryINFORMATIONTECHNOLOG       -1.601912     0.000034784
+198 H13_CategoryINFORMATIONTECHNOLOG       -1.425114        0.000174
+199 H11_CategoryHR                          5.235997       -0.000627
+200 H12_CategoryHR                          1.332289       -0.000125
+201 H13_CategoryHR                          4.218613     0.000072202
+202 H11_CategoryHEALTHCARE                 -3.749716        0.000510
+203 H12_CategoryHEALTHCARE                 -2.740497        0.000540
+204 H13_CategoryHEALTHCARE                 -2.238391        0.000135
+205 H11_CategoryFITNESS                    -1.751742        0.000369
+206 H12_CategoryFITNESS                     2.996970     0.000075480
+207 H13_CategoryFITNESS                     5.990732        0.000441
+208 H11_CategoryDIGITALMEDIA                1.400607       -0.000157
+209 H12_CategoryDIGITALMEDIA               -4.131780        0.000372
+210 H13_CategoryDIGITALMEDIA               -4.148841       -0.000304
+211 H11_CategoryDESIGNER                    5.848396       -0.000355
+212 H12_CategoryDESIGNER                   -5.940325        0.000129
+213 H13_CategoryDESIGNER                   -2.343000        0.000530
+214 H11_CategoryCONSULTANT                  0.944239     0.000081074
+215 H12_CategoryCONSULTANT                 -1.439200       -0.000227
+216 H13_CategoryCONSULTANT                 -1.267169     0.000004026
+217 H11_CategoryBUSINESSDEVELOPMENT        -2.087385       -0.000123
+218 H12_CategoryBUSINESSDEVELOPMENT        -4.905681       -0.000142
+219 H13_CategoryBUSINESSDEVELOPMENT         3.219777     0.000049330
+220 BIAS_CategoryTEACHER                   -3.387720     0.000018501
+221 BIAS_CategorySALES                      0.203800       -0.000422
+222 BIAS_CategoryOTHER                      1.495857       -0.000329
+223 BIAS_CategoryINFORMATIONTECHNOLO       -2.593034       -0.000168
+224 BIAS_CategoryHR                        -2.312191    -0.000012715
+225 BIAS_CategoryHEALTHCARE                -3.374780       -0.000184
+226 BIAS_CategoryFITNESS                   -4.652821        0.000158
+227 BIAS_CategoryDIGITALMEDIA              -1.616109        0.000571
+228 BIAS_CategoryDESIGNER                  -3.513405     0.000080049
+229 BIAS_CategoryCONSULTANT                 0.517419     0.000089425
+230 BIAS_CategoryBUSINESSDEVELOPMENT        0.558439       -0.000283
+
+Value of Objective Function = 0.1634198205
+

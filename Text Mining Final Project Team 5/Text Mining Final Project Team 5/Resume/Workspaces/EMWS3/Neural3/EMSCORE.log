@@ -1,0 +1,204 @@
+*------------------------------------------------------------*
+* Score Log
+Date:                November 23, 2023
+Time:                22:14:09
+*------------------------------------------------------------*
+NOTE: This SAS session is using a registry in WORK.  All changes will be lost at the end of this session.
+11931  data work.outkey;
+11932  set EMWS3.Neural3_OUTKEY;
+11933  if upcase(ROLE) in('HIDDEN', 'STANDARD');
+11934  run;
+
+NOTE: There were 97 observations read from the data set EMWS3.NEURAL3_OUTKEY.
+NOTE: The data set WORK.OUTKEY has 45 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11935  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Neural3\EMFLOWSCORE.sas";
+11936  *------------------------------------------------------------*;
+11937  * Neural3: Scoring DATA data;
+11938  *------------------------------------------------------------*;
+11939  data EMWS3.Neural3_TRAIN
+11940  / view=EMWS3.Neural3_TRAIN
+11941  ;
+11942  set EMWS3.TextCluster10_TRAIN
+11943  ;
+11944  %inc emflow;
+12949  run;
+
+NOTE: DATA STEP view saved on file EMWS3.NEURAL3_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+12950  quit;
+12951  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+12952  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Neural3\EMFLOWSCORE.sas";
+12953  *------------------------------------------------------------*;
+12954  * Neural3: Scoring VALIDATE data;
+12955  *------------------------------------------------------------*;
+12956  data EMWS3.Neural3_VALIDATE
+12957  / view=EMWS3.Neural3_VALIDATE
+12958  ;
+12959  set EMWS3.TextCluster10_VALIDATE
+12960  ;
+12961  %inc emflow;
+13966  run;
+
+NOTE: DATA STEP view saved on file EMWS3.NEURAL3_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+13967  quit;
+13968  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+13969  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Neural3\EMFLOWSCORE.sas";
+13970  *------------------------------------------------------------*;
+13971  * Neural3: Scoring TEST data;
+13972  *------------------------------------------------------------*;
+13973  data EMWS3.Neural3_TEST
+13974  / view=EMWS3.Neural3_TEST
+13975  ;
+13976  set EMWS3.TextCluster10_TEST
+13977  ;
+13978  %inc emflow;
+14983  run;
+
+NOTE: DATA STEP view saved on file EMWS3.NEURAL3_TEST.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+14984  quit;
+14985  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+14986  *------------------------------------------------------------*;
+14987  * Neural3: Computing metadata for TRAIN data;
+14988  *------------------------------------------------------------*;
+
+NOTE: View EMWS3.NEURAL3_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+15361  data WORK.MODELTEMP_INFO;
+15362  set EMWS3.Neural3_EMINFO;
+15363  where DATA='Neural3' and KEY ^in('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+15364  run;
+
+NOTE: There were 0 observations read from the data set EMWS3.NEURAL3_EMINFO.
+      WHERE (DATA='Neural3') and KEY not in ('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+NOTE: The data set WORK.MODELTEMP_INFO has 0 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+15365  data EMWS3.Neural3_EMINFO;
+15366  length TARGET KEY $32 DATA $43;
+15367  input TARGET KEY DATA $;
+15368  cards;
+
+NOTE: The data set EMWS3.NEURAL3_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+15372  run;
+15373  data EMWS3.Neural3_EMINFO;
+15374  set EMWS3.Neural3_EMINFO WORK.MODELTEMP_INFO;
+15375  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.NEURAL3_EMINFO.
+NOTE: There were 0 observations read from the data set WORK.MODELTEMP_INFO.
+NOTE: The data set EMWS3.NEURAL3_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+15376  proc sort data = EMWS3.Neural3_EMINFO NOTHREADS;
+15377  by TARGET KEY;
+15378  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.NEURAL3_EMINFO.
+NOTE: The data set EMWS3.NEURAL3_EMINFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+15379  proc sort data = EMWS3.TextCluster10_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+15380  by TARGET KEY;
+15381  run;
+
+NOTE: There were 6 observations read from the data set EMWS3.TEXTCLUSTER10_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 6 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+15382  proc sort data = EMWS3.Neural3_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+15383  by TARGET KEY;
+15384  run;
+
+NOTE: Input data set is already sorted; it has been copied to the output data set.
+NOTE: There were 3 observations read from the data set EMWS3.NEURAL3_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+15385  data EMWS3.Neural3_EMINFO;
+15386  merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+15387  by TARGET KEY;
+15388  run;
+
+NOTE: There were 6 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 3 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS3.NEURAL3_EMINFO has 9 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+15389  proc datasets lib=work nolist;
+15390  delete TEMP_INFO SORTEDEMINFO;
+15391  run;
+
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+15392  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: View EMWS3.NEURAL3_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+NOTE: View EMWS3.NEURAL3_VALIDATE.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+NOTE: View EMWS3.NEURAL3_TEST.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      

@@ -1,0 +1,44 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Score Output Variables
+
+Variable Name                       Function          Creator        Label
+
+EM_CLASSIFICATION                   CLASSIFICATION    Score2         Prediction for Category                                           
+EM_CLASSTARGET                      ASSESS            Score2         Target Variable: Category                                         
+EM_EVENTPROBABILITY                 PREDICT           Score2         Probability for level INFORMATION-TECHNOLOGY of Category          
+EM_PROBABILITY                      PREDICT           Score2         Probability of Classification                                     
+EM_SEGMENT                          TRANSFORM         Score2         Segment                                                           
+F_Category                          CLASSIFICATION    Neural10       From: Category                                                    
+I_Category                          CLASSIFICATION    Neural10       Into: Category                                                    
+P_CategoryDESIGNER                  PREDICT           Neural10       Predicted: Category=DESIGNER                                      
+P_CategoryHR                        PREDICT           Neural10       Predicted: Category=HR                                            
+P_CategoryINFORMATION_TECHNOLOGY    PREDICT           Neural10       Predicted: Category=INFORMATION-TECHNOLOGY                        
+R_CategoryDESIGNER                  RESIDUAL          Neural10       Residual: Category=DESIGNER                                       
+R_CategoryHR                        RESIDUAL          Neural10       Residual: Category=HR                                             
+R_CategoryINFORMATION_TECHNOLOGY    RESIDUAL          Neural10       Residual: Category=INFORMATION-TECHNOLOGY                         
+TextCluster_SVD1                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD10                   TRANSFORM         TextCluster                                                                      
+TextCluster_SVD2                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD3                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD4                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD5                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD6                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD7                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD8                    TRANSFORM         TextCluster                                                                      
+TextCluster_SVD9                    TRANSFORM         TextCluster                                                                      
+TextCluster_cluster_                TRANSFORM         TextCluster                                                                      
+TextCluster_prob1                   TRANSFORM         TextCluster                                                                      
+TextCluster_prob2                   TRANSFORM         TextCluster                                                                      
+TextCluster_prob3                   TRANSFORM         TextCluster                                                                      
+TextTopic2_1                        TRANSFORM         TextTopic2     _1_0_technology,+technology,+organization,information,+application
+TextTopic2_2                        TRANSFORM         TextTopic2     _1_0_hr,+policy,+benefit,+resource,+train                         
+TextTopic2_3                        TRANSFORM         TextTopic2     _1_0_designer,+action,designer,+design,adobe                      
+TextTopic2_raw1                     TRANSFORM         TextTopic2     technology,+technology,+organization,information,+application     
+TextTopic2_raw2                     TRANSFORM         TextTopic2     hr,+policy,+benefit,+resource,+train                              
+TextTopic2_raw3                     TRANSFORM         TextTopic2     designer,+action,designer,+design,adobe                           
+U_Category                          CLASSIFICATION    Neural10       Unnormalized Into: Category                                       
+_DOCUMENT_                          TRANSFORM         TextTopic2     Document                                                          
+_WARN_                              ASSESS            Neural10       Warnings                                                          

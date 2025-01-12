@@ -1,0 +1,975 @@
+*------------------------------------------------------------*
+* Score Log
+Date:                November 27, 2023
+Time:                18:16:31
+*------------------------------------------------------------*
+NOTE: View EMWS3.NEURAL8_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+NOTE: View EMWS3.NEURAL8_TRAIN.VIEW used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.00 seconds
+      
+19071  /* Generate assessment metadata, which will be used to generate assessment data step */
+19072  /* code, such as retrieving names of temporary variables and summary variables,      */
+19073  /* labels, etc.  It is used in almost all the assessment computations such as lift,  */
+19074  /* roc, index, scoreDist and could be thought as a global variable in assessment     */
+19075  /* computation.                                                                      */
+19076  data work.ASSESS_0SW01JY_assessMeta_3o15x4;
+19077  length VARIABLE $32 FORMAT $44 TYPE $32 PARENT $32 LEVEL $32 PROPERTY $32 MEASUREMENT $10 LAST_LEVEL $32 GEN_VAR_IN_TEMP_DATA $32 RESULT_MEAN $32 RESULT_MEAN_LABEL $100 RESULT_MIN $32 RESULT_MIN_LABEL $100 MIN_ADJUSTED $32 RESULT_MAX $32
+19077! RESULT_MAX_LABEL
+19078     $100 MAX_ADJUSTED $32 RESULT_COUNT $32 RESULT_COUNT_LABEL $100 TEMPORARY_VARIABLE $32;
+19079  VARIABLE = "Category";
+19080  PARENT = "";
+19081  FORMAT = "";
+19082  TYPE = "";
+19083  LEVEL = '';
+19084  PROPERTY = "TARGET";
+19085  MEASUREMENT = "NOMINAL";
+19086  LAST_LEVEL = '';
+19087  GEN_VAR_IN_TEMP_DATA = "Category";
+19088  RESULT_MEAN = "";
+19089  RESULT_MEAN_LABEL = "";
+19090  RESULT_MIN = "";
+19091  RESULT_MIN_LABEL = "";
+19092  MIN_ADJUSTED = "";
+19093  RESULT_MAX = "";
+19094  RESULT_MAX_LABEL = "";
+19095  MAX_ADJUSTED = "";
+19096  RESULT_COUNT = "";
+19097  RESULT_COUNT_LABEL = "";
+19098  TEMPORARY_VARIABLE = "Category_t2roUCG3nCI1FBs";
+19099  output;
+19100  VARIABLE = "F_Category_TEACHER";
+19101  FORMAT = "";
+19102  TYPE = "";
+19103  PARENT = "F_Category";
+19104  LEVEL = "TEACHER";
+19105  PROPERTY = "TARGET_LEVEL";
+19106  MEASUREMENT = "INTERVAL";
+19107  LAST_LEVEL = "ADVOCATE";
+19108  GEN_VAR_IN_TEMP_DATA = "F_Category_TEACH_iQsWaz5oyhNBZgp";
+19109  RESULT_MEAN = "F_Category_mean_jrOfv4BOARi6jU2";
+19110  /* adjust for tied cases */
+19111  RESULT_MEAN_LABEL = "";
+19112  RESULT_MIN = "";
+19113  RESULT_MIN_LABEL = "";
+19114  RESULT_MAX = "";
+19115  RESULT_MAX_LABEL = "";
+19116  RESULT_COUNT = "NumberOfEvents";
+19117  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19118  TEMPORARY_VARIABLE = "F_Category_TEACH_WKYaSjpaLqm3aaF";
+19119  output;
+19120  VARIABLE = "F_Category_SALES";
+19121  FORMAT = "";
+19122  TYPE = "";
+19123  PARENT = "F_Category";
+19124  LEVEL = "SALES";
+19125  PROPERTY = "TARGET_LEVEL";
+19126  MEASUREMENT = "INTERVAL";
+19127  LAST_LEVEL = "ADVOCATE";
+19128  GEN_VAR_IN_TEMP_DATA = "F_Category_SALES_0SEzpRobyOhZQYt";
+19129  RESULT_MEAN = "F_Category_mean_IrVi4K7NLZZJ5b6";
+19130  /* adjust for tied cases */
+19131  RESULT_MEAN_LABEL = "";
+19132  RESULT_MIN = "";
+19133  RESULT_MIN_LABEL = "";
+19134  RESULT_MAX = "";
+19135  RESULT_MAX_LABEL = "";
+19136  RESULT_COUNT = "NumberOfEvents";
+19137  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19138  TEMPORARY_VARIABLE = "F_Category_SALES_si9oJ3txOhvMwUF";
+19139  output;
+19140  VARIABLE = "F_Category_OTHER";
+19141  FORMAT = "";
+19142  TYPE = "";
+19143  PARENT = "F_Category";
+19144  LEVEL = "OTHER";
+19145  PROPERTY = "TARGET_LEVEL";
+19146  MEASUREMENT = "INTERVAL";
+19147  LAST_LEVEL = "ADVOCATE";
+19148  GEN_VAR_IN_TEMP_DATA = "F_Category_OTHER_XYL3QgCpixRehFP";
+19149  RESULT_MEAN = "F_Category_mean_M96bmbcOhXg0_Zz";
+19150  /* adjust for tied cases */
+19151  RESULT_MEAN_LABEL = "";
+19152  RESULT_MIN = "";
+19153  RESULT_MIN_LABEL = "";
+19154  RESULT_MAX = "";
+19155  RESULT_MAX_LABEL = "";
+19156  RESULT_COUNT = "NumberOfEvents";
+19157  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19158  TEMPORARY_VARIABLE = "F_Category_OTHER_Z5_RaO3sKN31T3o";
+19159  output;
+19160  VARIABLE = "F_Category_INFORMATION_TEC";
+19161  FORMAT = "";
+19162  TYPE = "";
+19163  PARENT = "F_Category";
+19164  LEVEL = "INFORMATION-TECHNOLOGY";
+19165  PROPERTY = "TARGET_LEVEL";
+19166  MEASUREMENT = "INTERVAL";
+19167  LAST_LEVEL = "ADVOCATE";
+19168  GEN_VAR_IN_TEMP_DATA = "F_Category_INFOR_Hxx1uhWdjM1sYo5";
+19169  RESULT_MEAN = "F_Category_mean_szhbouuJtZ_67vo";
+19170  /* adjust for tied cases */
+19171  RESULT_MEAN_LABEL = "";
+19172  RESULT_MIN = "";
+19173  RESULT_MIN_LABEL = "";
+19174  RESULT_MAX = "";
+19175  RESULT_MAX_LABEL = "";
+19176  RESULT_COUNT = "NumberOfEvents";
+19177  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19178  TEMPORARY_VARIABLE = "F_Category_INFOR_7uMggnOOZ_pUxDL";
+19179  output;
+19180  VARIABLE = "F_Category_HR";
+19181  FORMAT = "";
+19182  TYPE = "";
+19183  PARENT = "F_Category";
+19184  LEVEL = "HR";
+19185  PROPERTY = "TARGET_LEVEL";
+19186  MEASUREMENT = "INTERVAL";
+19187  LAST_LEVEL = "ADVOCATE";
+19188  GEN_VAR_IN_TEMP_DATA = "F_Category_HR_inz4FV6MDBX4wZl";
+19189  RESULT_MEAN = "F_Category_mean_c3lG1cTnECUImXj";
+19190  /* adjust for tied cases */
+19191  RESULT_MEAN_LABEL = "";
+19192  RESULT_MIN = "";
+19193  RESULT_MIN_LABEL = "";
+19194  RESULT_MAX = "";
+19195  RESULT_MAX_LABEL = "";
+19196  RESULT_COUNT = "NumberOfEvents";
+19197  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19198  TEMPORARY_VARIABLE = "F_Category_HR_Escfjqpv2eFBMol";
+19199  output;
+19200  VARIABLE = "F_Category_HEALTHCARE";
+19201  FORMAT = "";
+19202  TYPE = "";
+19203  PARENT = "F_Category";
+19204  LEVEL = "HEALTHCARE";
+19205  PROPERTY = "TARGET_LEVEL";
+19206  MEASUREMENT = "INTERVAL";
+19207  LAST_LEVEL = "ADVOCATE";
+19208  GEN_VAR_IN_TEMP_DATA = "F_Category_HEALT_QE4SmQ3crJcRZl4";
+19209  RESULT_MEAN = "F_Category_mean_pAsCZjjTwC29T16";
+19210  /* adjust for tied cases */
+19211  RESULT_MEAN_LABEL = "";
+19212  RESULT_MIN = "";
+19213  RESULT_MIN_LABEL = "";
+19214  RESULT_MAX = "";
+19215  RESULT_MAX_LABEL = "";
+19216  RESULT_COUNT = "NumberOfEvents";
+19217  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19218  TEMPORARY_VARIABLE = "F_Category_HEALT_nFY9E0BYBf0OUpz";
+19219  output;
+19220  VARIABLE = "F_Category_FITNESS";
+19221  FORMAT = "";
+19222  TYPE = "";
+19223  PARENT = "F_Category";
+19224  LEVEL = "FITNESS";
+19225  PROPERTY = "TARGET_LEVEL";
+19226  MEASUREMENT = "INTERVAL";
+19227  LAST_LEVEL = "ADVOCATE";
+19228  GEN_VAR_IN_TEMP_DATA = "F_Category_FITNE_60hgxGgL_fOCY5_";
+19229  RESULT_MEAN = "F_Category_mean_x1n2FTlAcd4IOTt";
+19230  /* adjust for tied cases */
+19231  RESULT_MEAN_LABEL = "";
+19232  RESULT_MIN = "";
+19233  RESULT_MIN_LABEL = "";
+19234  RESULT_MAX = "";
+19235  RESULT_MAX_LABEL = "";
+19236  RESULT_COUNT = "NumberOfEvents";
+19237  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19238  TEMPORARY_VARIABLE = "F_Category_FITNE_sE0Snhmw35FLZHK";
+19239  output;
+19240  VARIABLE = "F_Category_DIGITAL_MEDIA";
+19241  FORMAT = "";
+19242  TYPE = "";
+19243  PARENT = "F_Category";
+19244  LEVEL = "DIGITAL-MEDIA";
+19245  PROPERTY = "TARGET_LEVEL";
+19246  MEASUREMENT = "INTERVAL";
+19247  LAST_LEVEL = "ADVOCATE";
+19248  GEN_VAR_IN_TEMP_DATA = "F_Category_DIGIT_D09Md5eiyal3gK7";
+19249  RESULT_MEAN = "F_Category_mean_XtEpOHLUTT7i87C";
+19250  /* adjust for tied cases */
+19251  RESULT_MEAN_LABEL = "";
+19252  RESULT_MIN = "";
+19253  RESULT_MIN_LABEL = "";
+19254  RESULT_MAX = "";
+19255  RESULT_MAX_LABEL = "";
+19256  RESULT_COUNT = "NumberOfEvents";
+19257  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19258  TEMPORARY_VARIABLE = "F_Category_DIGIT_Hu3rszeDRu1X3xq";
+19259  output;
+19260  VARIABLE = "F_Category_DESIGNER";
+19261  FORMAT = "";
+19262  TYPE = "";
+19263  PARENT = "F_Category";
+19264  LEVEL = "DESIGNER";
+19265  PROPERTY = "TARGET_LEVEL";
+19266  MEASUREMENT = "INTERVAL";
+19267  LAST_LEVEL = "ADVOCATE";
+19268  GEN_VAR_IN_TEMP_DATA = "F_Category_DESIG_A2PgmaLCtLF023x";
+19269  RESULT_MEAN = "F_Category_mean_5cJtvHOdpwiL_cM";
+19270  /* adjust for tied cases */
+19271  RESULT_MEAN_LABEL = "";
+19272  RESULT_MIN = "";
+19273  RESULT_MIN_LABEL = "";
+19274  RESULT_MAX = "";
+19275  RESULT_MAX_LABEL = "";
+19276  RESULT_COUNT = "NumberOfEvents";
+19277  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19278  TEMPORARY_VARIABLE = "F_Category_DESIG_1ZV0miv9hytYe2R";
+19279  output;
+19280  VARIABLE = "F_Category_CONSULTANT";
+19281  FORMAT = "";
+19282  TYPE = "";
+19283  PARENT = "F_Category";
+19284  LEVEL = "CONSULTANT";
+19285  PROPERTY = "TARGET_LEVEL";
+19286  MEASUREMENT = "INTERVAL";
+19287  LAST_LEVEL = "ADVOCATE";
+19288  GEN_VAR_IN_TEMP_DATA = "F_Category_CONSU_cJpEXb5NbX9TnGP";
+19289  RESULT_MEAN = "F_Category_mean_7gIUAVhv6mU6nMc";
+19290  /* adjust for tied cases */
+19291  RESULT_MEAN_LABEL = "";
+19292  RESULT_MIN = "";
+19293  RESULT_MIN_LABEL = "";
+19294  RESULT_MAX = "";
+19295  RESULT_MAX_LABEL = "";
+19296  RESULT_COUNT = "NumberOfEvents";
+19297  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19298  TEMPORARY_VARIABLE = "F_Category_CONSU_zFa6ve8hYiog1zG";
+19299  output;
+19300  VARIABLE = "F_Category_BUSINESS_DEVELOPMENT";
+19301  FORMAT = "";
+19302  TYPE = "";
+19303  PARENT = "F_Category";
+19304  LEVEL = "BUSINESS-DEVELOPMENT";
+19305  PROPERTY = "TARGET_LEVEL";
+19306  MEASUREMENT = "INTERVAL";
+19307  LAST_LEVEL = "ADVOCATE";
+19308  GEN_VAR_IN_TEMP_DATA = "F_Category_BUSIN_aj7czi2OguzJ3Wy";
+19309  RESULT_MEAN = "F_Category_mean_sjQZFCxWu2UXGZ4";
+19310  /* adjust for tied cases */
+19311  RESULT_MEAN_LABEL = "";
+19312  RESULT_MIN = "";
+19313  RESULT_MIN_LABEL = "";
+19314  RESULT_MAX = "";
+19315  RESULT_MAX_LABEL = "";
+19316  RESULT_COUNT = "NumberOfEvents";
+19317  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19318  TEMPORARY_VARIABLE = "F_Category_BUSIN_OEJ0sMdhr8OFz83";
+19319  output;
+19320  VARIABLE = "F_Category_ADVOCATE";
+19321  FORMAT = "";
+19322  TYPE = "";
+19323  PARENT = "F_Category";
+19324  LEVEL = "ADVOCATE";
+19325  PROPERTY = "TARGET_LEVEL";
+19326  MEASUREMENT = "INTERVAL";
+19327  LAST_LEVEL = "ADVOCATE";
+19328  GEN_VAR_IN_TEMP_DATA = "F_Category_ADVOC_hsY8t9pu0163wIP";
+19329  RESULT_MEAN = "F_Category_mean_Nh8JZt2Jhm5cig3";
+19330  /* adjust for tied cases */
+19331  RESULT_MEAN_LABEL = "";
+19332  RESULT_MIN = "";
+19333  RESULT_MIN_LABEL = "";
+19334  RESULT_MAX = "";
+19335  RESULT_MAX_LABEL = "";
+19336  RESULT_COUNT = "NumberOfEvents";
+19337  RESULT_COUNT_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_NumEvent_vlabel, NOQUOTE))";
+19338  TEMPORARY_VARIABLE = "F_Category_ADVOC_NvJyFgQY6TCT1FJ";
+19339  output;
+19340  VARIABLE = "P_CategoryTEACHER";
+19341  FORMAT = "";
+19342  TYPE = "";
+19343  PARENT = "";
+19344  LEVEL = "TEACHER";
+19345  PROPERTY = "POSTERIOR_LEVEL";
+19346  MEASUREMENT = "INTERVAL";
+19347  LAST_LEVEL = "";
+19348  GEN_VAR_IN_TEMP_DATA = "P_CategoryTEACHER";
+19349  RESULT_MEAN = "_meanP_";
+19350  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19351  RESULT_MIN = "_minP_";
+19352  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19353  MIN_ADJUSTED = "P_Catego_minAdjusted_ZmlNaLGKs";
+19354  RESULT_MAX = "_maxP_";
+19355  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19356  MAX_ADJUSTED = "P_Catego_maxAdjusted_0dSt9N4Mm";
+19357  RESULT_COUNT = "";
+19358  RESULT_COUNT_LABEL = "";
+19359  TEMPORARY_VARIABLE = "P_CategoryTEACHE_mwBCsKwhdJIXQO_";
+19360  output;
+19361  VARIABLE = "P_CategorySALES";
+19362  FORMAT = "";
+19363  TYPE = "";
+19364  PARENT = "";
+19365  LEVEL = "SALES";
+19366  PROPERTY = "POSTERIOR_LEVEL";
+19367  MEASUREMENT = "INTERVAL";
+19368  LAST_LEVEL = "";
+19369  GEN_VAR_IN_TEMP_DATA = "P_CategorySALES";
+19370  RESULT_MEAN = "_meanP_";
+19371  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19372  RESULT_MIN = "_minP_";
+19373  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19374  MIN_ADJUSTED = "P_Catego_minAdjusted_5mL3YZ4fy";
+19375  RESULT_MAX = "_maxP_";
+19376  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19377  MAX_ADJUSTED = "P_Catego_maxAdjusted_23zWsKeCO";
+19378  RESULT_COUNT = "";
+19379  RESULT_COUNT_LABEL = "";
+19380  TEMPORARY_VARIABLE = "P_CategorySALES_x7l4106NQ18QppK";
+19381  output;
+19382  VARIABLE = "P_CategoryOTHER";
+19383  FORMAT = "";
+19384  TYPE = "";
+19385  PARENT = "";
+19386  LEVEL = "OTHER";
+19387  PROPERTY = "POSTERIOR_LEVEL";
+19388  MEASUREMENT = "INTERVAL";
+19389  LAST_LEVEL = "";
+19390  GEN_VAR_IN_TEMP_DATA = "P_CategoryOTHER";
+19391  RESULT_MEAN = "_meanP_";
+19392  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19393  RESULT_MIN = "_minP_";
+19394  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19395  MIN_ADJUSTED = "P_Catego_minAdjusted_zjN0xFolw";
+19396  RESULT_MAX = "_maxP_";
+19397  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19398  MAX_ADJUSTED = "P_Catego_maxAdjusted_57h6Pvx1v";
+19399  RESULT_COUNT = "";
+19400  RESULT_COUNT_LABEL = "";
+19401  TEMPORARY_VARIABLE = "P_CategoryOTHER_6BVQOJc9Zo74jsS";
+19402  output;
+19403  VARIABLE = "P_CategoryINFORMATION_TECHNOLOGY";
+19404  FORMAT = "";
+19405  TYPE = "";
+19406  PARENT = "";
+19407  LEVEL = "INFORMATION-TECHNOLOGY";
+19408  PROPERTY = "POSTERIOR_LEVEL";
+19409  MEASUREMENT = "INTERVAL";
+19410  LAST_LEVEL = "";
+19411  GEN_VAR_IN_TEMP_DATA = "P_CategoryINFORMATION_TECHNOLOGY";
+19412  RESULT_MEAN = "_meanP_";
+19413  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19414  RESULT_MIN = "_minP_";
+19415  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19416  MIN_ADJUSTED = "P_Catego_minAdjusted_gVHZ7MOmK";
+19417  RESULT_MAX = "_maxP_";
+19418  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19419  MAX_ADJUSTED = "P_Catego_maxAdjusted_11v8nL81P";
+19420  RESULT_COUNT = "";
+19421  RESULT_COUNT_LABEL = "";
+19422  TEMPORARY_VARIABLE = "P_CategoryINFORM_7G1E7KZz9HvEYox";
+19423  output;
+19424  VARIABLE = "P_CategoryHR";
+19425  FORMAT = "";
+19426  TYPE = "";
+19427  PARENT = "";
+19428  LEVEL = "HR";
+19429  PROPERTY = "POSTERIOR_LEVEL";
+19430  MEASUREMENT = "INTERVAL";
+19431  LAST_LEVEL = "";
+19432  GEN_VAR_IN_TEMP_DATA = "P_CategoryHR";
+19433  RESULT_MEAN = "_meanP_";
+19434  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19435  RESULT_MIN = "_minP_";
+19436  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19437  MIN_ADJUSTED = "P_Catego_minAdjusted_qJ2934dUl";
+19438  RESULT_MAX = "_maxP_";
+19439  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19440  MAX_ADJUSTED = "P_Catego_maxAdjusted_jjG6WNgKv";
+19441  RESULT_COUNT = "";
+19442  RESULT_COUNT_LABEL = "";
+19443  TEMPORARY_VARIABLE = "P_CategoryHR_zMsriFW5iH6rAaW";
+19444  output;
+19445  VARIABLE = "P_CategoryHEALTHCARE";
+19446  FORMAT = "";
+19447  TYPE = "";
+19448  PARENT = "";
+19449  LEVEL = "HEALTHCARE";
+19450  PROPERTY = "POSTERIOR_LEVEL";
+19451  MEASUREMENT = "INTERVAL";
+19452  LAST_LEVEL = "";
+19453  GEN_VAR_IN_TEMP_DATA = "P_CategoryHEALTHCARE";
+19454  RESULT_MEAN = "_meanP_";
+19455  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19456  RESULT_MIN = "_minP_";
+19457  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19458  MIN_ADJUSTED = "P_Catego_minAdjusted_vj2evEojW";
+19459  RESULT_MAX = "_maxP_";
+19460  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19461  MAX_ADJUSTED = "P_Catego_maxAdjusted_8jP93Ojt1";
+19462  RESULT_COUNT = "";
+19463  RESULT_COUNT_LABEL = "";
+19464  TEMPORARY_VARIABLE = "P_CategoryHEALTH_mLgrPtKhTusOoNL";
+19465  output;
+19466  VARIABLE = "P_CategoryFITNESS";
+19467  FORMAT = "";
+19468  TYPE = "";
+19469  PARENT = "";
+19470  LEVEL = "FITNESS";
+19471  PROPERTY = "POSTERIOR_LEVEL";
+19472  MEASUREMENT = "INTERVAL";
+19473  LAST_LEVEL = "";
+19474  GEN_VAR_IN_TEMP_DATA = "P_CategoryFITNESS";
+19475  RESULT_MEAN = "_meanP_";
+19476  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19477  RESULT_MIN = "_minP_";
+19478  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19479  MIN_ADJUSTED = "P_Catego_minAdjusted_TGe5L0eH8";
+19480  RESULT_MAX = "_maxP_";
+19481  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19482  MAX_ADJUSTED = "P_Catego_maxAdjusted_CaT1ZXSZX";
+19483  RESULT_COUNT = "";
+19484  RESULT_COUNT_LABEL = "";
+19485  TEMPORARY_VARIABLE = "P_CategoryFITNES_8pf2yavcYn8y0Ny";
+19486  output;
+19487  VARIABLE = "P_CategoryDIGITAL_MEDIA";
+19488  FORMAT = "";
+19489  TYPE = "";
+19490  PARENT = "";
+19491  LEVEL = "DIGITAL-MEDIA";
+19492  PROPERTY = "POSTERIOR_LEVEL";
+19493  MEASUREMENT = "INTERVAL";
+19494  LAST_LEVEL = "";
+19495  GEN_VAR_IN_TEMP_DATA = "P_CategoryDIGITAL_MEDIA";
+19496  RESULT_MEAN = "_meanP_";
+19497  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19498  RESULT_MIN = "_minP_";
+19499  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19500  MIN_ADJUSTED = "P_Catego_minAdjusted_CjPxuL8rE";
+19501  RESULT_MAX = "_maxP_";
+19502  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19503  MAX_ADJUSTED = "P_Catego_maxAdjusted_l3V005TVH";
+19504  RESULT_COUNT = "";
+19505  RESULT_COUNT_LABEL = "";
+19506  TEMPORARY_VARIABLE = "P_CategoryDIGITA_j2hocFNR8POE8iE";
+19507  output;
+19508  VARIABLE = "P_CategoryDESIGNER";
+19509  FORMAT = "";
+19510  TYPE = "";
+19511  PARENT = "";
+19512  LEVEL = "DESIGNER";
+19513  PROPERTY = "POSTERIOR_LEVEL";
+19514  MEASUREMENT = "INTERVAL";
+19515  LAST_LEVEL = "";
+19516  GEN_VAR_IN_TEMP_DATA = "P_CategoryDESIGNER";
+19517  RESULT_MEAN = "_meanP_";
+19518  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19519  RESULT_MIN = "_minP_";
+19520  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19521  MIN_ADJUSTED = "P_Catego_minAdjusted_8GdhpX0OH";
+19522  RESULT_MAX = "_maxP_";
+19523  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19524  MAX_ADJUSTED = "P_Catego_maxAdjusted_qV3vaTYuP";
+19525  RESULT_COUNT = "";
+19526  RESULT_COUNT_LABEL = "";
+19527  TEMPORARY_VARIABLE = "P_CategoryDESIGN_OJh2yALPjdWzZZK";
+19528  output;
+19529  VARIABLE = "P_CategoryCONSULTANT";
+19530  FORMAT = "";
+19531  TYPE = "";
+19532  PARENT = "";
+19533  LEVEL = "CONSULTANT";
+19534  PROPERTY = "POSTERIOR_LEVEL";
+19535  MEASUREMENT = "INTERVAL";
+19536  LAST_LEVEL = "";
+19537  GEN_VAR_IN_TEMP_DATA = "P_CategoryCONSULTANT";
+19538  RESULT_MEAN = "_meanP_";
+19539  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19540  RESULT_MIN = "_minP_";
+19541  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19542  MIN_ADJUSTED = "P_Catego_minAdjusted_3wSAwlpee";
+19543  RESULT_MAX = "_maxP_";
+19544  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19545  MAX_ADJUSTED = "P_Catego_maxAdjusted_EaCIoZItv";
+19546  RESULT_COUNT = "";
+19547  RESULT_COUNT_LABEL = "";
+19548  TEMPORARY_VARIABLE = "P_CategoryCONSUL_hHE7EARPs78q7p4";
+19549  output;
+19550  VARIABLE = "P_CategoryBUSINESS_DEVELOPMENT";
+19551  FORMAT = "";
+19552  TYPE = "";
+19553  PARENT = "";
+19554  LEVEL = "BUSINESS-DEVELOPMENT";
+19555  PROPERTY = "POSTERIOR_LEVEL";
+19556  MEASUREMENT = "INTERVAL";
+19557  LAST_LEVEL = "";
+19558  GEN_VAR_IN_TEMP_DATA = "P_CategoryBUSINESS_DEVELOPMENT";
+19559  RESULT_MEAN = "_meanP_";
+19560  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19561  RESULT_MIN = "_minP_";
+19562  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19563  MIN_ADJUSTED = "P_Catego_minAdjusted_9sZPgzYAI";
+19564  RESULT_MAX = "_maxP_";
+19565  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19566  MAX_ADJUSTED = "P_Catego_maxAdjusted_FsnjFzRqK";
+19567  RESULT_COUNT = "";
+19568  RESULT_COUNT_LABEL = "";
+19569  TEMPORARY_VARIABLE = "P_CategoryBUSINE_OIq0MgHsYjprPZq";
+19570  output;
+19571  VARIABLE = "P_CategoryADVOCATE";
+19572  FORMAT = "";
+19573  TYPE = "";
+19574  PARENT = "";
+19575  LEVEL = "ADVOCATE";
+19576  PROPERTY = "POSTERIOR_LEVEL";
+19577  MEASUREMENT = "INTERVAL";
+19578  LAST_LEVEL = "";
+19579  GEN_VAR_IN_TEMP_DATA = "P_CategoryADVOCATE";
+19580  RESULT_MEAN = "_meanP_";
+19581  RESULT_MEAN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMean_vlabel, NOQUOTE))";
+19582  RESULT_MIN = "_minP_";
+19583  RESULT_MIN_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMin_vlabel, NOQUOTE))";
+19584  MIN_ADJUSTED = "P_Catego_minAdjusted_RrXSxYq4C";
+19585  RESULT_MAX = "_maxP_";
+19586  RESULT_MAX_LABEL = "%sysfunc(sasmsg(sashelp.dmine, assmt_probMax_vlabel, NOQUOTE))";
+19587  MAX_ADJUSTED = "P_Catego_maxAdjusted_j9fHFvoJ5";
+19588  RESULT_COUNT = "";
+19589  RESULT_COUNT_LABEL = "";
+19590  TEMPORARY_VARIABLE = "P_CategoryADVOCA_4pj3xrtTh3j0hcP";
+19591  output;
+19592  run;
+
+NOTE: The data set WORK.ASSESS_0SW01JY_ASSESSMETA_3O15X4 has 25 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+      
+
+19593  /* Generate temporary dataset and obtain summary statistics such as total number of   */
+19594  /* obserations, frequency of target.  However, summary statistics for class reporting */
+19595  /* variabels are not computed here since if there exist class reporting variables,    */
+19596  /* then PROC DMDB will be called. And there is no need to compute interval reporting  */
+19597  /* summary statisitcs, if any.                                                        */
+19598  data work.ASSESS_0SW01JY_normSD_yD4sPu(drop=
+19599  _numberOfObservation_
+19600  _levelFrequency_1
+19601  _levelFrequency_2
+19602  _levelFrequency_3
+19603  _levelFrequency_4
+19604  _levelFrequency_5
+19605  _levelFrequency_6
+19606  _levelFrequency_7
+19607  _levelFrequency_8
+19608  _levelFrequency_9
+19609  _levelFrequency_10
+19610  _levelFrequency_11
+19611  _levelFrequency_12
+19612  )
+19613  work.ASSESS_0SW01JY_meansAndTi_X2DW2h (keep=
+19614  _numberOfObservation_
+19615  _levelFrequency_1
+19616  _levelFrequency_2
+19617  _levelFrequency_3
+19618  _levelFrequency_4
+19619  _levelFrequency_5
+19620  _levelFrequency_6
+19621  _levelFrequency_7
+19622  _levelFrequency_8
+19623  _levelFrequency_9
+19624  _levelFrequency_10
+19625  _levelFrequency_11
+19626  _levelFrequency_12
+19627  );
+19628  set EMWS3.Neural8_TRAIN(
+19629  where=(
+19630  (Category ^= ' ')
+19631  )
+19632  ) end=_lastObservation_;
+19633  keep frequency_hRMT6Z;
+19634  frequency_hRMT6Z = 1;
+19635  keep I_Category F_Category;
+19636  keep F_Category_TEACH_iQsWaz5oyhNBZgp;
+19637  if (F_Category = 'TEACHER') then do;
+19638  F_Category_TEACH_iQsWaz5oyhNBZgp = 1;
+19639  end;
+19640  else do;
+19641  F_Category_TEACH_iQsWaz5oyhNBZgp = 0;
+19642  end;
+19643  keep F_Category_SALES_0SEzpRobyOhZQYt;
+19644  if (F_Category = 'SALES') then do;
+19645  F_Category_SALES_0SEzpRobyOhZQYt = 1;
+19646  end;
+19647  else do;
+19648  F_Category_SALES_0SEzpRobyOhZQYt = 0;
+19649  end;
+19650  keep F_Category_OTHER_XYL3QgCpixRehFP;
+19651  if (F_Category = 'OTHER') then do;
+19652  F_Category_OTHER_XYL3QgCpixRehFP = 1;
+19653  end;
+19654  else do;
+19655  F_Category_OTHER_XYL3QgCpixRehFP = 0;
+19656  end;
+19657  keep F_Category_INFOR_Hxx1uhWdjM1sYo5;
+19658  if (F_Category = 'INFORMATION-TECHNOLOGY') then do;
+19659  F_Category_INFOR_Hxx1uhWdjM1sYo5 = 1;
+19660  end;
+19661  else do;
+19662  F_Category_INFOR_Hxx1uhWdjM1sYo5 = 0;
+19663  end;
+19664  keep F_Category_HR_inz4FV6MDBX4wZl;
+19665  if (F_Category = 'HR') then do;
+19666  F_Category_HR_inz4FV6MDBX4wZl = 1;
+19667  end;
+19668  else do;
+19669  F_Category_HR_inz4FV6MDBX4wZl = 0;
+19670  end;
+19671  keep F_Category_HEALT_QE4SmQ3crJcRZl4;
+19672  if (F_Category = 'HEALTHCARE') then do;
+19673  F_Category_HEALT_QE4SmQ3crJcRZl4 = 1;
+19674  end;
+19675  else do;
+19676  F_Category_HEALT_QE4SmQ3crJcRZl4 = 0;
+19677  end;
+19678  keep F_Category_FITNE_60hgxGgL_fOCY5_;
+19679  if (F_Category = 'FITNESS') then do;
+19680  F_Category_FITNE_60hgxGgL_fOCY5_ = 1;
+19681  end;
+19682  else do;
+19683  F_Category_FITNE_60hgxGgL_fOCY5_ = 0;
+19684  end;
+19685  keep F_Category_DIGIT_D09Md5eiyal3gK7;
+19686  if (F_Category = 'DIGITAL-MEDIA') then do;
+19687  F_Category_DIGIT_D09Md5eiyal3gK7 = 1;
+19688  end;
+19689  else do;
+19690  F_Category_DIGIT_D09Md5eiyal3gK7 = 0;
+19691  end;
+19692  keep F_Category_DESIG_A2PgmaLCtLF023x;
+19693  if (F_Category = 'DESIGNER') then do;
+19694  F_Category_DESIG_A2PgmaLCtLF023x = 1;
+19695  end;
+19696  else do;
+19697  F_Category_DESIG_A2PgmaLCtLF023x = 0;
+19698  end;
+19699  keep F_Category_CONSU_cJpEXb5NbX9TnGP;
+19700  if (F_Category = 'CONSULTANT') then do;
+19701  F_Category_CONSU_cJpEXb5NbX9TnGP = 1;
+19702  end;
+19703  else do;
+19704  F_Category_CONSU_cJpEXb5NbX9TnGP = 0;
+19705  end;
+19706  keep F_Category_BUSIN_aj7czi2OguzJ3Wy;
+19707  if (F_Category = 'BUSINESS-DEVELOPMENT') then do;
+19708  F_Category_BUSIN_aj7czi2OguzJ3Wy = 1;
+19709  end;
+19710  else do;
+19711  F_Category_BUSIN_aj7czi2OguzJ3Wy = 0;
+19712  end;
+19713  keep F_Category_ADVOC_hsY8t9pu0163wIP;
+19714  if (F_Category = 'ADVOCATE') then do;
+19715  F_Category_ADVOC_hsY8t9pu0163wIP = 1;
+19716  end;
+19717  else do;
+19718  F_Category_ADVOC_hsY8t9pu0163wIP = 0;
+19719  end;
+19720  keep P_CategoryTEACHER;
+19721  keep P_CategorySALES;
+19722  keep P_CategoryOTHER;
+19723  keep P_CategoryINFORMATION_TECHNOLOGY;
+19724  keep P_CategoryHR;
+19725  keep P_CategoryHEALTHCARE;
+19726  keep P_CategoryFITNESS;
+19727  keep P_CategoryDIGITAL_MEDIA;
+19728  keep P_CategoryDESIGNER;
+19729  keep P_CategoryCONSULTANT;
+19730  keep P_CategoryBUSINESS_DEVELOPMENT;
+19731  keep P_CategoryADVOCATE;
+19732  output work.ASSESS_0SW01JY_normSD_yD4sPu;
+19733  keep _numberOfObservation_;
+19734  retain _numberOfObservation_ 0;
+19735  _numberOfObservation_ + frequency_hRMT6Z;
+19736  keep _levelFrequency_1;
+19737  retain _levelFrequency_1 0;
+19738  if (F_Category = 'TEACHER') then do;
+19739  _levelFrequency_1 + frequency_hRMT6Z;
+19740  end;
+19741  keep _levelFrequency_2;
+19742  retain _levelFrequency_2 0;
+19743  if (F_Category = 'SALES') then do;
+19744  _levelFrequency_2 + frequency_hRMT6Z;
+19745  end;
+19746  keep _levelFrequency_3;
+19747  retain _levelFrequency_3 0;
+19748  if (F_Category = 'OTHER') then do;
+19749  _levelFrequency_3 + frequency_hRMT6Z;
+19750  end;
+19751  keep _levelFrequency_4;
+19752  retain _levelFrequency_4 0;
+19753  if (F_Category = 'INFORMATION-TECHNOLOGY') then do;
+19754  _levelFrequency_4 + frequency_hRMT6Z;
+19755  end;
+19756  keep _levelFrequency_5;
+19757  retain _levelFrequency_5 0;
+19758  if (F_Category = 'HR') then do;
+19759  _levelFrequency_5 + frequency_hRMT6Z;
+19760  end;
+19761  keep _levelFrequency_6;
+19762  retain _levelFrequency_6 0;
+19763  if (F_Category = 'HEALTHCARE') then do;
+19764  _levelFrequency_6 + frequency_hRMT6Z;
+19765  end;
+19766  keep _levelFrequency_7;
+19767  retain _levelFrequency_7 0;
+19768  if (F_Category = 'FITNESS') then do;
+19769  _levelFrequency_7 + frequency_hRMT6Z;
+19770  end;
+19771  keep _levelFrequency_8;
+19772  retain _levelFrequency_8 0;
+19773  if (F_Category = 'DIGITAL-MEDIA') then do;
+19774  _levelFrequency_8 + frequency_hRMT6Z;
+19775  end;
+19776  keep _levelFrequency_9;
+19777  retain _levelFrequency_9 0;
+19778  if (F_Category = 'DESIGNER') then do;
+19779  _levelFrequency_9 + frequency_hRMT6Z;
+19780  end;
+19781  keep _levelFrequency_10;
+19782  retain _levelFrequency_10 0;
+19783  if (F_Category = 'CONSULTANT') then do;
+19784  _levelFrequency_10 + frequency_hRMT6Z;
+19785  end;
+19786  keep _levelFrequency_11;
+19787  retain _levelFrequency_11 0;
+19788  if (F_Category = 'BUSINESS-DEVELOPMENT') then do;
+19789  _levelFrequency_11 + frequency_hRMT6Z;
+19790  end;
+19791  keep _levelFrequency_12;
+19792  retain _levelFrequency_12 0;
+19793  if (F_Category = 'ADVOCATE') then do;
+19794  _levelFrequency_12 + frequency_hRMT6Z;
+19795  end;
+19796  if _lastObservation_ then do;
+19797  output work.ASSESS_0SW01JY_meansAndTi_X2DW2h;
+19798  end;
+19799  run;
+
+NOTE: View EMWS3.NEURAL8_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+NOTE: There were 674 observations read from the data set EMWS3.TEXTCLUSTER9_TRAIN.
+NOTE: There were 674 observations read from the data set EMWS3.NEURAL8_TRAIN.
+      WHERE Category not = ' ';
+NOTE: The data set WORK.ASSESS_0SW01JY_NORMSD_YD4SPU has 674 observations and 27 variables.
+NOTE: The data set WORK.ASSESS_0SW01JY_MEANSANDTI_X2DW2H has 1 observations and 13 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+19800  data WORK._EMRANK;
+19801  set EMWS3.MdlComp_EMRANK;
+19802  where MODEL = "Neural8" and TARGET = "Category" and dataRole="TRAIN";
+19803  run;
+
+NOTE: There were 20 observations read from the data set EMWS3.MDLCOMP_EMRANK.
+      WHERE (MODEL='Neural8') and (TARGET='Category') and (dataRole='TRAIN');
+NOTE: The data set WORK._EMRANK has 20 observations and 38 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+19804  data work._augment;
+19805  do BIN= 1 to 20;
+19806  DECILE = BIN*5;
+19807  output;
+19808  end;
+19809  run;
+
+NOTE: The data set WORK._AUGMENT has 20 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+19810  data WORK._EMRANK;
+19811  merge WORK._AUGMENT WORK._EMRANK;
+19812  by BIN;
+19813  run;
+
+NOTE: There were 20 observations read from the data set WORK._AUGMENT.
+NOTE: There were 20 observations read from the data set WORK._EMRANK.
+NOTE: The data set WORK._EMRANK has 20 observations and 38 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+19814  data WORK._EMRANK;
+19815  set WORK._EMRANK end=_lastObservation_;
+19816  retain _previousMinP_ _previousMaxP_;
+19817  retain _group_ 1;
+19818  keep event;
+19819  keep bin _cutoff_ _group_;
+19820  if (bin > 1) then do;
+19821  bin = bin - 1;
+19822  _cutoff_ = (_maxP_ + _previousMinP_) / 2;
+19823  if (abs(_previousMaxP_ - _previousMinP_) < 1E-6) then do;
+19824  /* tied */
+19825  _cutoff_ = max((_minP_ + _maxP_)/2, min(_cutoff_, _previousMinP_/*-1E-6*/
+19826  ));
+19827  end;
+19828  else if (abs(_maxP_ - _minP_) < 1E-6) then do;
+19829  /* next tied */
+19830  _cutoff_ = min((_previousMinP_ + _previousMaxP_)/2, max(_cutoff_, _maxP_/*+ 1E-6*/
+19831  ));
+19832  end;
+19833  output;
+19834  *if ( abs((_maxP_ +_minP_)/2 - (_previousMaxP_ + _previousMinP_)/2) > 1E-6) then do;
+19835  * _group_ + 1;
+19836  *end;
+19837  if (_maxP_ le _previousMinP_ - 1E-6) then do;
+19838  _group_ + 1;
+19839  end;
+19840  else if (abs(_maxP_ - _previousMinP_) < 1E-6) then do;
+19841  if (abs(_maxP_ - _minP_) > 1E-6) then do;
+19842  _group_ + 1;
+19843  end;
+19844  end;
+19845  bin + 1;
+19846  /* correct the previous change */
+19847  end;
+19848  if (_lastObservation_) then do;
+19849  _cutoff_ = .;
+19850  output;
+19851  end;
+19852  _previousMinP_ = _minP_;
+19853  _previousMaxP_ = _maxP_;
+19854  run;
+
+NOTE: There were 20 observations read from the data set WORK._EMRANK.
+NOTE: The data set WORK._EMRANK has 20 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+19855  data WORK._EMRANK;
+19856  set WORK._EMRANK;
+19857  by _group_;
+19858  retain _start_;
+19859  if (first._group_) then do;
+19860  _start_ = _n_;
+19861  end;
+19862  if (last._group_) then do;
+19863  _end_ = _n_;
+19864  output;
+19865  end;
+19866  run;
+
+NOTE: There were 20 observations read from the data set WORK._EMRANK.
+NOTE: The data set WORK._EMRANK has 20 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: This SAS session is using a registry in WORK.  All changes will be lost at the end of this session.
+19867  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\MdlComp\EMFLOWSCORE.sas";
+19868  *------------------------------------------------------------*;
+19869  * MdlComp: Scoring NEURAL8_TRAIN data;
+19870  *------------------------------------------------------------*;
+19871  data EMWS3.MdlComp_TRAIN
+19872  / view=EMWS3.MdlComp_TRAIN
+19873  ;
+19874  set EMWS3.Neural8_TRAIN
+19875  ;
+19876  %inc emflow;
+19956   run;
+
+NOTE: DATA STEP view saved on file EMWS3.MDLCOMP_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS3.NEURAL8_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+19957   quit;
+19958   filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+19959   filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\MdlComp\EMFLOWSCORE.sas";
+19960   *------------------------------------------------------------*;
+19961   * MdlComp: Scoring NEURAL8_VALIDATE data;
+19962   *------------------------------------------------------------*;
+19963   data EMWS3.MdlComp_VALIDATE
+19964   / view=EMWS3.MdlComp_VALIDATE
+19965   ;
+19966   set EMWS3.Neural8_VALIDATE
+19967   ;
+19968   %inc emflow;
+20048   run;
+
+NOTE: DATA STEP view saved on file EMWS3.MDLCOMP_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS3.NEURAL8_VALIDATE.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+20049   quit;
+20050   filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+20051   filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\MdlComp\EMFLOWSCORE.sas";
+20052   *------------------------------------------------------------*;
+20053   * MdlComp: Scoring NEURAL8_TEST data;
+20054   *------------------------------------------------------------*;
+20055   data EMWS3.MdlComp_TEST
+20056   / view=EMWS3.MdlComp_TEST
+20057   ;
+20058   set EMWS3.Neural8_TEST
+20059   ;
+20060   %inc emflow;
+20140   run;
+
+NOTE: DATA STEP view saved on file EMWS3.MDLCOMP_TEST.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS3.NEURAL8_TEST.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+20141   quit;
+20142   filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+20143   *------------------------------------------------------------*;
+20144   * MdlComp: Computing metadata for TRAIN data;
+20145   *------------------------------------------------------------*;
+
+NOTE: View EMWS3.MDLCOMP_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+      
+NOTE: View EMWS3.MDLCOMP_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+NOTE: View EMWS3.MDLCOMP_VALIDATE.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.00 seconds
+      
+NOTE: View EMWS3.MDLCOMP_TEST.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.00 seconds
+      

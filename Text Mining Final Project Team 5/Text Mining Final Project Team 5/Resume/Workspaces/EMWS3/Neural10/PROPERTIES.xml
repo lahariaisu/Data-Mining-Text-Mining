@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  UseEstimates="N" NetworkArchitecture="MLP" DirectConnection="N" Hidden="3" Prelim="Y"
+ PreliminaryRuns="5" PrelimMaxiter="10" PrelimMaxTime="1 HOUR" Maxiter="50" Maxtime="4 HOURS"
+ TrainingTechnique="DEFAULT" ConvDefaults="Y" AbsConvValue="-1.34078E154" AbsFValue="0"
+ AbsFTime="1" AbsGValue="0.00001" AbsGTime="1" AbsXValue="1E-8" AbsXTime="1" FConvValue="0"
+ FConvTime="1" GConvValue="1E-6" GConvTime="1" ModelSelectionCriterion="PROFIT/LOSS"
+ SuppressOutput="N" Residuals="Y" Standardizations="N" HiddenUnits="N" TrainCode=""
+ PrelimOutest="" Outest="" Outfit="" InitialDs="" CodefileRes="" CodefileNoRes=""
+ AddHidden="Y" HiddenCombFunction="DEFAULT" HiddenActivation="DEFAULT" HiddenBias="Y"
+ TargetCombFunction="DEFAULT" TargetActivation="DEFAULT" TargetError="DEFAULT" TargetBias="Y"
+ InitialSeed="12345" RandDist="NORMAL" RandScale="0.1" RandLoc="0" InputStandardization="STD"
+ WeightDecay="0" Accelerate="1.2" Decelerate="0.5" Learn="0.1" MaxLearn="50" MinLearn="0.00001"
+ Momentum="0" MaxMomentum="1.75" Tilt="0" ForceRun="N" RunAction="Train" Component="NeuralNetwork"
+ RawCreateTime="2016396416.1" CreateTime="23NOV2023:22:06:56" RunId="b4414a1e-81aa-4113-ac1e-5e9394613dd5"
+>
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES ><![CDATA[
+EMNOTES
+]]>
+</FILEPROPERTIES><EMTARGETATTRIBUTES >
+<CATEGORY >
+<DECDATA  Table="EMWS3.Neural10_Category_DD">
+<DATA >
+<OBS  CATEGORY="HR" COUNT="4" DATAPRIOR="0.5" TRAINPRIOR="0.5" DECPRIOR="." DECISION1="1"
+ DECISION2="0"/>
+<OBS  CATEGORY="DESIGNER" COUNT="4" DATAPRIOR="0.5" TRAINPRIOR="0.5" DECPRIOR="." DECISION1="0"
+ DECISION2="1"/>
+</DATA>
+<METADATA >
+<VARIABLE  NAME="Category" LABEL="" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="COUNT" LABEL="Level Counts" LENGTH="8" FORMAT="" TYPE="N"/>
+<VARIABLE  NAME="DATAPRIOR" LABEL="Data Proportions" LENGTH="8" FORMAT="" TYPE="N"/>
+<VARIABLE  NAME="TRAINPRIOR" LABEL="Training Proportions" LENGTH="8" FORMAT="" TYPE="N"/>
+<VARIABLE  NAME="DECPRIOR" LABEL="Decision Priors" LENGTH="8" FORMAT="" TYPE="N"/>
+<VARIABLE  NAME="DECISION1" LABEL="HR" LENGTH="8" FORMAT="" TYPE="N"/>
+<VARIABLE  NAME="DECISION2" LABEL="DESIGNER" LENGTH="8" FORMAT="" TYPE="N"/>
+</METADATA>
+</DECDATA>
+<DECMETA  Table="EMWS3.Neural10_Category_DM">
+<DATA >
+<OBS  _TYPE_="MATRIX" VARIABLE="" LABEL="" LEVEL="PROFIT" EVENT="" ORDER="" FORMAT="" TYPE=""
+ COST="" USE="N"/>
+<OBS  _TYPE_="TARGET" VARIABLE="Category" LABEL="Category" LEVEL="NOMINAL" EVENT="HR" ORDER=""
+ FORMAT="$8." TYPE="C" COST="" USE=""/>
+<OBS  _TYPE_="DECISION" VARIABLE="DECISION1" LABEL="HR" LEVEL="" EVENT="" ORDER="" FORMAT=""
+ TYPE="N" COST="" USE="Y"/>
+<OBS  _TYPE_="DECISION" VARIABLE="DECISION2" LABEL="DESIGNER" LEVEL="" EVENT="" ORDER=""
+ FORMAT="" TYPE="N" COST="" USE="Y"/>
+<OBS  _TYPE_="DATAPRIOR" VARIABLE="DATAPRIOR" LABEL="Data Prior" LEVEL="" EVENT="" ORDER=""
+ FORMAT="" TYPE="N" COST="" USE="N"/>
+<OBS  _TYPE_="TRAINPRIOR" VARIABLE="TRAINPRIOR" LABEL="Training Prior" LEVEL="" EVENT=""
+ ORDER="" FORMAT="" TYPE="N" COST="" USE="N"/>
+<OBS  _TYPE_="DECPRIOR" VARIABLE="DECPRIOR" LABEL="Decision Prior" LEVEL="" EVENT="" ORDER=""
+ FORMAT="" TYPE="N" COST="" USE="N"/>
+<OBS  _TYPE_="PREDICTED" VARIABLE="P_CategoryHR" LABEL="Predicted: Category=HR" LEVEL="HR"
+ EVENT="" ORDER="" FORMAT="" TYPE="N" COST="" USE=""/>
+<OBS  _TYPE_="RESIDUAL" VARIABLE="R_CategoryHR" LABEL="Residual: Category=HR" LEVEL="HR"
+ EVENT="" ORDER="" FORMAT="" TYPE="N" COST="" USE=""/>
+<OBS  _TYPE_="PREDICTED" VARIABLE="P_CategoryDESIGNER" LABEL="Predicted: Category=DESIGNER"
+ LEVEL="DESIGNER" EVENT="" ORDER="" FORMAT="" TYPE="N" COST="" USE=""/>
+<OBS  _TYPE_="RESIDUAL" VARIABLE="R_CategoryDESIGNER" LABEL="Residual: Category=DESIGNER"
+ LEVEL="DESIGNER" EVENT="" ORDER="" FORMAT="" TYPE="N" COST="" USE=""/>
+<OBS  _TYPE_="FROM" VARIABLE="F_Category" LABEL="From: Category" LEVEL="" EVENT="" ORDER=""
+ FORMAT="" TYPE="C" COST="" USE=""/>
+<OBS  _TYPE_="INTO" VARIABLE="I_Category" LABEL="Into: Category" LEVEL="" EVENT="" ORDER=""
+ FORMAT="" TYPE="C" COST="" USE=""/>
+</DATA>
+<METADATA >
+<VARIABLE  NAME="_TYPE_" LABEL="Type" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="VARIABLE" LABEL="Variable" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="LABEL" LABEL="Label" LENGTH="256" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="LEVEL" LABEL="Measurement Level" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="EVENT" LABEL="Target Event" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="ORDER" LABEL="Order" LENGTH="10" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="FORMAT" LABEL="Format" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="TYPE" LABEL="Type" LENGTH="1" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="COST" LABEL="Cost" LENGTH="32" FORMAT="" TYPE="C"/>
+<VARIABLE  NAME="USE" LABEL="Use" LENGTH="1" FORMAT="" TYPE="C"/>
+</METADATA>
+</DECMETA>
+</CATEGORY>
+</EMTARGETATTRIBUTES>
+</_ROOT_>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  Location="CATALOG" Catalog="SASHELP.EMTXTEXT.TOPIC.SOURCE" topTermCnt="0" autoTopicCnt="12"
+ autoTopic="N" ForceRun="N" RunAction="Train" Component="TextTopic" initTopics=""
+ tm_topic_node="" tm_topic_dataset="" RawCreateTime="2015545509.2" CreateTime="14NOV2023:01:45:09"
+ topics="" augTopics="" RunId="9f6344c8-00a0-4267-b70f-0d2d6f8a7115">
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES ><![CDATA[
+USERTRAINCODE
+USERSCORECODE
+USERREPORTCODE
+INITTOPICS
+TOPIC_CUTOFFS
+]]>
+</FILEPROPERTIES></_ROOT_>

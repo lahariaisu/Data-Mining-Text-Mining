@@ -1,0 +1,1187 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+          Measurement    Frequency
+ Role        Level         Count
+
+TARGET      NOMINAL          1    
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.994     0.989    0.952      0.388        0.928        0.508  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                _VKS_              _VBINNED_
+                                                                PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS    CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.951     0.902     0.78     0.041     0.764      0.581  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.904     0.807     0.758     0.188     0.714      0.511  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.947     0.894    0.838      0.019        0.824        0.398  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category        0.9      0.799     0.761     0.019     0.746      0.722  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.909     0.818     0.758     0.019     0.727      0.343  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.995     0.99     0.961      0.246        0.95         0.429  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.969     0.937     0.866     0.031      0.85      0.088  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.97       0.94     0.802     0.193     0.766      0.348  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                      BINNED_KS_
+                                                             _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_     KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.989     0.979    0.92       0.15        0.906        0.48   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.925     0.851     0.742     0.146      0.71      0.146  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.931     0.862     0.766     0.066     0.762      0.081  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.995     0.99     0.961      0.235        0.95         0.426  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.968     0.936     0.866      0.03      0.85      0.093  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.97      0.939     0.802     0.012     0.766      0.378  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.947     0.895    0.834       0.02        0.824        0.38   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.895      0.79     0.737      0.02     0.719       0.38  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.926     0.851     0.794      0.02     0.772      0.343  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.966     0.932    0.879      0.355        0.852        0.33   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.891     0.782     0.654     0.337     0.636      0.129  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.914     0.828     0.786     0.288     0.762       0.33  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.995     0.99     0.959      0.209        0.95         0.434  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.968     0.936     0.866     0.033      0.85       0.1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.97       0.94     0.802     0.012     0.766      0.404  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.953     0.906    0.841      0.021        0.826        0.423  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.919     0.838     0.801     0.021     0.785      0.344  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.92      0.839     0.746     0.021     0.726      0.344  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.968     0.936    0.851       0.01        0.824        0.102  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.923     0.846     0.732      0.01     0.728      0.102  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.908     0.817     0.695      0.01     0.681      0.102  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category       0.96     0.92     0.821      0.152        0.809        0.245  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.917     0.833     0.783     0.195      0.78      0.249  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.913     0.827     0.691     0.109     0.659      0.112  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.997     0.994    0.978      0.117        0.971        0.488  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.973     0.946     0.871     0.029      0.85      0.087  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.962     0.924     0.818     0.034     0.818      0.433  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.983     0.966    0.888      0.152        0.885        0.461  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.947     0.894     0.791      0.25     0.764      0.569  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.96       0.92     0.834     0.019     0.814      0.029  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.997     0.994    0.976      0.096        0.971        0.504  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.973     0.946     0.874     0.039      0.85      0.105  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.962     0.924     0.822     0.038     0.818      0.466  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.961     0.922    0.837      0.011        0.815        0.188  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.932     0.865     0.756     0.011     0.753      0.188  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.87       0.74     0.639     0.011     0.617       0.1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.994     0.988    0.952      0.211        0.917        0.196  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.934     0.867     0.761     0.144     0.745      0.315  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                _TKS_              _TBINNED_
+                                                                PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS    CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.937     0.873     0.75     0.068     0.714      0.473  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.997     0.994    0.976      0.102        0.971        0.509  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.974     0.947     0.871     0.039      0.85      0.112  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.963     0.927     0.818     0.044     0.818      0.488  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.956     0.912    0.826      0.011        0.803        0.091  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.926     0.851     0.743     0.011     0.735      0.171  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.861     0.722     0.675     0.011     0.659      0.091  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.965     0.93     0.884      0.024        0.87         0.421  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.922     0.844     0.868     0.024     0.868      0.818  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.957     0.914     0.881     0.024     0.869      0.421  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                      BINNED_KS_
+                                                             _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_     KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.995     0.991    0.96       0.16        0.917        0.142  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.976     0.953     0.874     0.277     0.868       0.5   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.996     0.992     0.957     0.162     0.921      0.476  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.997     0.994    0.961      0.182        0.95         0.486  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.979     0.957     0.912     0.019     0.885      0.039  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.989     0.977     0.941     0.161     0.921      0.448  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.913     0.826    0.695      0.095        0.69         0.115  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.897     0.795     0.737     0.239     0.692      0.226  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                _TKS_              _TBINNED_
+                                                                PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS    CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.929     0.858     0.77      0.25     0.762      0.253  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.997     0.994    0.961      0.144        0.95         0.489  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.98      0.959     0.912     0.023     0.885      0.048  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.989     0.977     0.941     0.162     0.921      0.474  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.951     0.902    0.847      0.019        0.827        0.431  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.927     0.853     0.874     0.019     0.869      0.431  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.972     0.944     0.897     0.019     0.875      0.431  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.998     0.997    0.992      0.334        0.971        0.479  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.948     0.895     0.874     0.243     0.868      0.543  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.994     0.987     0.964     0.347     0.921      0.639  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category      0.998     0.996    0.976      0.054        0.971        0.496  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.96       0.92     0.876     0.115     0.868      0.538  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.994     0.988     0.929     0.085     0.921      0.498  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category       0.95      0.9     0.846      0.019        0.826        0.423  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.949     0.899     0.901     0.019     0.879      0.827  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.964     0.928     0.881     0.019     0.872      0.423  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+
+ 1     Category     Category       0.99     0.98     0.932      0.061        0.928        0.44   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.904     0.808     0.783     0.091     0.764      0.528  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+
+ 1     Category     Category       0.953     0.906     0.814     0.037     0.814      0.051  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+
+
+
+
+
+
+Fit Statistics
+Model Selection based on Test:  Roc Index (_TAUR_)
+
+                                                                      Train:                           Valid:
+                                                            Test:     Average          Train:          Average          Valid:
+Selected    Model                                            Roc      Squared    Misclassification     Squared    Misclassification
+ Model      Node       Model Description                    Index      Error            Rate            Error            Rate
+
+   Y        Neural8    Neural Network Mutual Info Low       0.996    0.039000         0.33086         0.044949         0.40494     
+            Reg8       Regression Mutual Info High          0.994    0.036108         0.32789         0.039874         0.33086     
+            Neural9    Neural Network Mutual Info High      0.994    0.033478         0.28190         0.050016         0.44938     
+            Reg9       Regression Mutual Info Low           0.989    0.037779         0.32938         0.040997         0.34321     
+            Reg7       Regression Mutual Info Medium        0.989    0.037720         0.32938         0.041008         0.34815     
+            Tree7      Decision Tree Mutual Info Medium     0.972    0.051490         0.52819         0.053802         0.53827     
+            Reg3       Regression IDF Low                   0.970    0.041295         0.36350         0.047257         0.41235     
+            Reg        Regression IDF Medium                0.970    0.041472         0.36647         0.047390         0.41481     
+            Reg2       Regression IDF High                  0.970    0.041607         0.36647         0.047715         0.41728     
+            Tree8      Decision Tree Mutual Info High       0.964    0.052229         0.53264         0.053317         0.53086     
+            Reg5       Regression Entropy High              0.963    0.042171         0.37834         0.047921         0.42716     
+            Reg6       Regression Entrpy Low                0.962    0.042053         0.37389         0.047300         0.42716     
+            Reg4       Regression Entropy Medium            0.962    0.042082         0.37389         0.047535         0.42222     
+            Neural4    Neural Network Entropy Medium        0.960    0.044121         0.39021         0.053347         0.48642     
+            Tree9      Decision Tree Mutual Info Low        0.957    0.052032         0.53412         0.054233         0.54321     
+            Reg10      Regression Interpretable             0.953    0.039976         0.35015         0.052763         0.45185     
+            Neural5    Neural Network Entropy High          0.937    0.042785         0.36647         0.056326         0.52346     
+            Neural     Neural Network IDF Medium            0.931    0.047242         0.42285         0.062769         0.59753     
+            Neural7    Neural Network Mutual Info Medium    0.929    0.041936         0.39169         0.053147         0.48148     
+            Tree       Decision Tree IDF Medium             0.926    0.056411         0.58309         0.063571         0.62222     
+            Tree2      Decision Tree IDF High               0.920    0.056347         0.57715         0.063000         0.61235     
+            Neural2    Neural Network IDF High              0.914    0.056093         0.57122         0.065117         0.65432     
+            Neural6    Neural Network Entropy Low           0.913    0.048429         0.43323         0.056129         0.53086     
+            Tree3      Decision Tree IDF Low                0.909    0.056425         0.59347         0.061678         0.62716     
+            Tree6      Decision Tree Entropy Low            0.908    0.055918         0.53858         0.059712         0.57778     
+            Neural3    Neural Network IDF Low               0.904    0.050332         0.47329         0.055396         0.52593     
+            Tree4      Decision Tree Entropy Medium         0.870    0.056149         0.53264         0.060178         0.55802     
+            Tree5      Decision Tree Entropy High           0.861    0.057944         0.58902         0.062775         0.60988     
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+
+
+
+
+
+
+Fit Statistics Table
+Target: Category
+
+Data Role=Train
+
+Statistics                                                        Neural8       Reg8    Neural9       Reg9       Reg7      Tree7       Reg3        Reg       Reg2      Tree8
+
+Train: Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff       0.14       0.50       0.48       0.49       0.49       0.43       0.43       0.43       0.43       0.42
+Train: Kolmogorov-Smirnov Statistic                                  0.96       0.98       0.99       0.96       0.96       0.85       0.96       0.96       0.96       0.85
+Train: Akaike's Information Criterion                             1739.22    1460.47    1865.11    1511.54    1511.14        .      1721.82    1728.58    1732.56        .  
+Train: Average Squared Error                                         0.04       0.04       0.03       0.04       0.04       0.05       0.04       0.04       0.04       0.05
+Train: Roc Index                                                     1.00       1.00       1.00       1.00       1.00       0.95       1.00       1.00       1.00       0.95
+Train: Average Error Function                                        0.18       0.15       0.14       0.16       0.16        .         0.18       0.18       0.18        .  
+Train: Cumulative Percent Captured Response                         94.00     100.00     100.00      98.00      98.00      86.63      98.00      98.00      98.00      86.59
+Train: Percent Captured Response                                    30.00      32.00      34.00      32.00      32.00      29.30      32.00      32.00      32.00      30.36
+Selection Criterion: Test:  Roc Index                                1.00       0.99       0.99       0.99       0.99       0.97       0.97       0.97       0.97       0.96
+Train: Degrees of Freedom for Error                               7268.00    7304.00    7067.00    7315.00    7315.00        .      7293.00    7293.00    7293.00        .  
+Train: Model Degrees of Freedom                                    146.00     110.00     347.00      99.00      99.00        .       121.00     121.00     121.00        .  
+Train: Total Degrees of Freedom                                   7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00
+Train: Divisor for ASE                                            8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00
+Train: Error Function                                             1447.22    1240.47    1171.11    1313.54    1313.14        .      1479.82    1486.58    1490.56        .  
+Train: Final Prediction Error                                        0.04       0.04       0.04       0.04       0.04        .         0.04       0.04       0.04        .  
+Train: Gain                                                        831.71     891.18     891.18     871.35     871.35     758.65     871.35     871.35     871.35     758.29
+Train: Gini Coefficient                                              0.99       1.00       1.00       0.99       0.99       0.90       0.99       0.99       0.99       0.90
+Train: Bin-Based Two-Way Kolmogorov-Smirnov Statistic                0.92       0.97       0.97       0.95       0.95       0.83       0.95       0.95       0.95       0.83
+Train: Kolmogorov-Smirnov Probability Cutoff                         0.16       0.05       0.33       0.18       0.14       0.02       0.25       0.24       0.21       0.02
+Train: Cumulative Lift                                               9.32       9.91       9.91       9.71       9.71       8.59       9.71       9.71       9.71       8.58
+Train: Lift                                                          5.95       6.34       6.74       6.34       6.34       5.81       6.34       6.34       6.34       6.02
+Train: Maximum Absolute Error                                        1.00       1.00       1.00       1.00       1.00       0.99       1.00       1.00       1.00       0.99
+Train: Misclassification Rate                                        0.33       0.33       0.28       0.33       0.33       0.53       0.36       0.37       0.37       0.53
+Train: Mean Squared Error                                            0.04       0.04       0.04       0.04       0.04        .         0.04       0.04       0.04        .  
+Train: Sum of Frequencies                                          674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00
+Train: Number of Estimated Weights                                 146.00     110.00     347.00      99.00      99.00        .       121.00     121.00     121.00        .  
+Train: Root Average Squared Error                                    0.20       0.19       0.18       0.19       0.19       0.23       0.20       0.20       0.20       0.23
+Train: Cumulative Percent Response                                  69.12      73.53      73.53      72.06      72.06      63.70      72.06      72.06      72.06      63.67
+Train: Percent Response                                             44.12      47.06      50.00      47.06      47.06      43.08      47.06      47.06      47.06      44.65
+Train: Root Final Prediction Error                                   0.20       0.19       0.19       0.20       0.20        .         0.21       0.21       0.21        .  
+Train: Root Mean Squared Error                                       0.20       0.19       0.19       0.20       0.20        .         0.20       0.21       0.21        .  
+Train: Schwarz's Bayesian Criterion                               2748.24    2220.69    4263.27    2195.75    2195.34        .      2558.06    2564.83    2568.81        .  
+Train: Sum of Squared Errors                                       315.43     292.04     270.77     305.55     305.08     416.45     333.99     335.43     336.52     422.43
+Train: Sum of Case Weights Times Freq                             8088.00    8088.00    8088.00    8088.00    8088.00        .      8088.00    8088.00    8088.00        .  
+Train: Number of Wrong Classifications                             223.00        .       190.00        .          .          .          .          .          .          .  
+
+   Reg5       Reg6       Reg4    Neural4      Tree9      Reg10    Neural5     Neural    Neural7       Tree      Tree2    Neural2    Neural6      Tree3      Tree6    Neural3      Tree4      Tree5
+
+   0.51       0.49       0.50       0.46       0.42       0.44       0.20       0.48       0.12       0.38       0.42       0.33       0.25       0.40       0.10       0.51       0.19       0.09
+   0.98       0.98       0.98       0.89       0.88       0.93       0.95       0.92       0.70       0.83       0.84       0.88       0.82       0.84       0.85       0.95       0.84       0.83
+1751.82    1746.09    1748.79    2168.29        .      2204.09    2226.35    2237.30    1917.19        .          .      2779.13    2211.09        .          .      2239.61        .          .  
+   0.04       0.04       0.04       0.04       0.05       0.04       0.04       0.05       0.04       0.06       0.06       0.06       0.05       0.06       0.06       0.05       0.06       0.06
+   1.00       1.00       1.00       0.98       0.97       0.99       0.99       0.99       0.91       0.95       0.95       0.97       0.96       0.95       0.97       0.99       0.96       0.96
+   0.19       0.19       0.19       0.21        .         0.17       0.19       0.21       0.18        .          .         0.26       0.23        .          .         0.23        .          .  
+ 100.00     100.00     100.00      92.00      90.62      96.00      94.00      94.00      62.00      86.36      86.53      84.00      80.00      86.41      77.30      96.00      77.80      76.89
+  34.00      34.00      34.00      26.00      34.98      28.00      28.00      28.00      32.00      36.04      30.43      28.00      28.00      33.52      19.76      30.00      22.75      21.85
+   0.96       0.96       0.96       0.96       0.96       0.95       0.94       0.93       0.93       0.93       0.92       0.91       0.91       0.91       0.91       0.90       0.87       0.86
+7304.00    7304.00    7304.00    7160.00        .      6996.00    7067.00    7163.00    7184.00        .          .      7067.00    7235.00        .          .      7241.00        .          .  
+ 110.00     110.00     110.00     254.00        .       418.00     347.00     251.00     230.00        .          .       347.00     179.00        .          .       173.00        .          .  
+7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00    7414.00
+8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00    8088.00
+1531.82    1526.09    1528.79    1660.29        .      1368.09    1532.35    1735.30    1457.19        .          .      2085.13    1853.09        .          .      1893.61        .          .  
+   0.04       0.04       0.04       0.05        .         0.04       0.05       0.05       0.04        .          .         0.06       0.05        .          .         0.05        .          .  
+ 891.18     891.18     891.18     811.88     798.19     851.53     831.71     831.71     514.53     755.97     757.67     732.59     692.94     756.49     666.17     851.53     671.11     662.16
+   0.99       0.99       0.99       0.97       0.93       0.98       0.99       0.98       0.83       0.90       0.91       0.93       0.92       0.89       0.94       0.99       0.92       0.91
+   0.97       0.97       0.97       0.89       0.87       0.93       0.92       0.91       0.69       0.82       0.83       0.85       0.81       0.82       0.82       0.93       0.82       0.80
+   0.10       0.12       0.10       0.15       0.02       0.06       0.21       0.15       0.10       0.02       0.02       0.36       0.15       0.02       0.01       0.39       0.01       0.01
+   9.91       9.91       9.91       9.12       8.98       9.52       9.32       9.32       6.15       8.56       8.58       8.33       7.93       8.56       7.66       9.52       7.71       7.62
+   6.74       6.74       6.74       5.15       6.93       5.55       5.55       5.55       6.34       7.14       6.03       5.55       5.55       6.65       3.92       5.95       4.51       4.33
+   1.00       1.00       1.00       1.00       0.99       1.00       1.00       1.00       1.00       0.98       0.99       1.00       1.00       0.98       1.00       1.00       0.99       0.99
+   0.38       0.37       0.37       0.39       0.53       0.35       0.37       0.42       0.39       0.58       0.58       0.57       0.43       0.59       0.54       0.47       0.53       0.59
+   0.04       0.04       0.04       0.05        .         0.04       0.04       0.05       0.04        .          .         0.06       0.05        .          .         0.05        .          .  
+ 674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00     674.00
+ 110.00     110.00     110.00     254.00        .       418.00     347.00     251.00     230.00        .          .       347.00     179.00        .          .       173.00        .          .  
+   0.21       0.21       0.21       0.21       0.23       0.20       0.21       0.22       0.20       0.24       0.24       0.24       0.22       0.24       0.24       0.22       0.24       0.24
+  73.53      73.53      73.53      67.65      66.63      70.59      69.12      69.12      45.59      63.50      63.63      61.76      58.82      63.54      56.84      70.59      57.20      56.54
+  50.00      50.00      50.00      38.24      51.45      41.18      41.18      41.18      47.06      53.00      44.75      41.18      41.18      49.30      29.06      44.12      33.46      32.13
+   0.21       0.21       0.21       0.22        .         0.21       0.22       0.22       0.21        .          .         0.25       0.23        .          .         0.23        .          .  
+   0.21       0.21       0.21       0.21        .         0.21       0.21       0.22       0.21        .          .         0.24       0.22        .          .         0.23        .          .  
+2512.05    2506.32    2509.02    3923.71        .      5092.94    4624.51    3971.99    3506.75        .          .      5177.29    3448.18        .          .      3435.23        .          .  
+ 341.08     340.12     340.36     356.85     420.84     323.32     346.04     382.09     339.18     456.26     455.73     453.68     391.70     456.37     452.26     407.09     454.13     468.65
+8088.00    8088.00    8088.00    8088.00        .      8088.00    8088.00    8088.00    8088.00        .          .      8088.00    8088.00        .          .      8088.00        .          .  
+    .          .          .       263.00        .          .       247.00     285.00     264.00        .          .       385.00     292.00        .          .       319.00        .          .  
+
+
+Data Role=Valid
+
+Statistics                                                        Neural8       Reg8    Neural9       Reg9       Reg7      Tree7       Reg3        Reg       Reg2      Tree8
+
+Valid: Kolmogorov-Smirnov Statistic                                  0.87       0.88       0.87       0.91       0.91       0.87       0.87       0.87       0.87       0.90
+Valid: Average Squared Error                                         0.04       0.04       0.05       0.04       0.04       0.05       0.05       0.05       0.05       0.05
+Valid: Roc Index                                                     0.98       0.96       0.95       0.98       0.98       0.93       0.97       0.97       0.97       0.95
+Valid: Average Error Function                                        0.22       0.21       0.30       0.20       0.20        .         0.22       0.23       0.23        .  
+Valid: Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff       0.50       0.54       0.54       0.04       0.05       0.43       0.09       0.09       0.10       0.83
+Valid: Cumulative Percent Captured Response                         90.32      90.32      90.32      90.32      90.32      90.36      87.10      83.87      83.87      91.32
+Valid: Percent Captured Response                                    35.48      38.71      32.26      41.94      38.71      41.72      32.26      29.03      29.03      44.55
+Valid: Divisor for VASE                                           4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00
+Valid: Error Function                                             1077.32    1020.95    1446.94     965.02     978.22        .      1092.08    1103.21    1123.01        .  
+Valid: Gain                                                        792.21     792.21     792.21     792.21     792.21     792.56     760.35     728.48     728.48     802.07
+Valid: Gini Coefficient                                              0.95       0.92       0.90       0.96       0.96       0.85       0.94       0.94       0.94       0.90
+Valid: Bin-Based Two-Way Kolmogorov-Smirnov Statistic                0.87       0.87       0.87       0.89       0.89       0.87       0.85       0.85       0.85       0.88
+Valid: Kolmogorov-Smirnov Probability Cutoff                         0.28       0.12       0.24       0.02       0.02       0.02       0.03       0.03       0.03       0.02
+Valid: Cumulative Lift                                               8.92       8.92       8.92       8.92       8.92       8.93       8.60       8.28       8.28       9.02
+Valid: Lift                                                          7.19       7.84       6.53       8.49       7.84       8.45       6.53       5.88       5.88       9.02
+Valid: Maximum Absolute Error                                        1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00
+Valid: Misclassification Rate                                        0.40       0.33       0.45       0.34       0.35       0.54       0.41       0.41       0.42       0.53
+Valid: Mean Squared Error                                            0.04       0.04       0.05       0.04       0.04        .         0.05       0.05       0.05        .  
+Valid: Sum of Frequencies                                          405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00
+Valid: Root Average Squared Error                                    0.21       0.20       0.22       0.20       0.20       0.23       0.22       0.22       0.22       0.23
+Valid: Cumulative Percent Response                                  68.29      68.29      68.29      68.29      68.29      68.32      65.85      63.41      63.41      69.05
+Valid: Percent Response                                             55.00      60.00      50.00      65.00      60.00      64.67      50.00      45.00      45.00      69.05
+Valid: Root Mean Squared Error                                       0.21       0.20       0.22       0.20       0.20        .         0.22       0.22       0.22        .  
+Valid: Sum of Squared Errors                                       218.45     193.79     243.08     199.24     199.30     261.48     229.67     230.31     231.89     259.12
+Valid: Sum of Case Weights Times Freq                             4860.00    4860.00    4860.00    4860.00    4860.00        .      4860.00    4860.00    4860.00        .  
+Valid: Number of Wrong Classifications                             164.00        .       182.00        .          .          .          .          .          .          .  
+
+   Reg5       Reg6       Reg4    Neural4      Tree9      Reg10    Neural5     Neural    Neural7       Tree      Tree2    Neural2    Neural6      Tree3      Tree6    Neural3      Tree4      Tree5
+
+   0.87       0.87       0.87       0.79       0.87       0.78       0.76       0.74       0.74       0.74       0.80       0.65       0.78       0.76       0.73       0.78       0.76       0.74
+   0.05       0.05       0.05       0.05       0.05       0.05       0.06       0.06       0.05       0.06       0.06       0.07       0.06       0.06       0.06       0.06       0.06       0.06
+   0.97       0.97       0.97       0.95       0.92       0.90       0.93       0.93       0.90       0.90       0.92       0.89       0.92       0.90       0.92       0.95       0.93       0.93
+   0.24       0.23       0.24       0.27        .         0.33       0.29       0.32       0.28        .          .         0.35       0.28        .          .         0.27        .          .  
+   0.11       0.09       0.11       0.57       0.82       0.53       0.32       0.15       0.23       0.38       0.34       0.13       0.25       0.72       0.10       0.58       0.19       0.17
+  80.65      83.87      83.87      80.65      90.32      80.65      70.97      74.19      58.06      69.13      74.19      64.52      74.19      79.03      74.06      80.65      74.19      72.43
+  25.81      29.03      29.03      25.81      44.06      29.03      16.13      19.35      22.58      33.72      36.19      19.35      25.81      38.03      27.48      29.03      36.19      35.33
+4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00    4860.00
+1164.47    1122.39    1142.19    1335.15        .      1611.13    1425.07    1574.29    1341.96        .          .      1693.02    1377.82        .          .      1306.85        .          .  
+ 696.62     728.48     728.48     696.62     792.21     696.62     601.02     632.89     473.56     582.92     632.89     537.29     632.89     680.68     631.53     696.62     632.89     615.44
+   0.95       0.95       0.95       0.89       0.84       0.81       0.87       0.85       0.80       0.79       0.84       0.78       0.83       0.80       0.85       0.90       0.87       0.85
+   0.85       0.85       0.85       0.76       0.87       0.76       0.75       0.71       0.69       0.72       0.79       0.64       0.78       0.75       0.73       0.76       0.75       0.74
+   0.04       0.03       0.04       0.25       0.02       0.09       0.14       0.15       0.24       0.02       0.02       0.34       0.20       0.02       0.01       0.04       0.01       0.01
+   7.97       8.28       8.28       7.97       8.92       7.97       7.01       7.33       5.74       6.83       7.33       6.37       7.33       7.81       7.32       7.97       7.33       7.15
+   5.23       5.88       5.88       5.23       8.92       5.88       3.27       3.92       4.57       6.83       7.33       3.92       5.23       7.70       5.57       5.88       7.33       7.15
+   1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00
+   0.43       0.43       0.42       0.49       0.54       0.45       0.52       0.60       0.48       0.62       0.61       0.65       0.53       0.63       0.58       0.53       0.56       0.61
+   0.05       0.05       0.05       0.05        .         0.05       0.06       0.06       0.05        .          .         0.07       0.06        .          .         0.06        .          .  
+ 405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00     405.00
+   0.22       0.22       0.22       0.23       0.23       0.23       0.24       0.25       0.23       0.25       0.25       0.26       0.24       0.25       0.24       0.24       0.25       0.25
+  60.98      63.41      63.41      60.98      68.29      60.98      53.66      56.10      43.90      52.27      56.10      48.78      56.10      59.76      55.99      60.98      56.10      54.76
+  40.00      45.00      45.00      40.00      68.29      45.00      25.00      30.00      35.00      52.27      56.10      30.00      40.00      58.95      42.60      45.00      56.10      54.76
+   0.22       0.22       0.22       0.23        .         0.23       0.24       0.25       0.23        .          .         0.26       0.24        .          .         0.24        .          .  
+ 232.90     229.88     231.02     259.27     263.57     256.43     273.74     305.06     258.29     308.96     306.18     316.47     272.79     299.75     290.20     269.22     292.47     305.09
+4860.00    4860.00    4860.00    4860.00        .      4860.00    4860.00    4860.00    4860.00        .          .      4860.00    4860.00        .          .      4860.00        .          .  
+    .          .          .       197.00        .          .       212.00     242.00     195.00        .          .       265.00     215.00        .          .       213.00        .          .  
+
+
+Data Role=Test
+
+Statistics                                                        Neural8       Reg8    Neural9       Reg9       Reg7      Tree7       Reg3        Reg       Reg2      Tree8
+
+Test:  Kolmogorov-Smirnov Statistic                                  0.96       0.93       0.96       0.94       0.94       0.90       0.80       0.80       0.80       0.88
+Test: Average Squared Error                                          0.04       0.04       0.05       0.04       0.04       0.05       0.04       0.04       0.05       0.06
+Test:  Roc Index                                                     1.00       0.99       0.99       0.99       0.99       0.97       0.97       0.97       0.97       0.96
+Test: Average Error Function                                         0.23       0.19       0.30       0.19       0.19        .         0.23       0.23       0.23        .  
+Test:  Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff       0.48       0.50       0.64       0.45       0.47       0.43       0.35       0.38       0.40       0.42
+Test: Cumulative Percent Captured Response                          95.24      95.24      95.24      95.24      95.24      91.00      80.95      80.95      80.95      90.71
+Test: Percent Captured Response                                     28.57      28.57      38.10      28.57      28.57      30.68      19.05      19.05      19.05      40.04
+Test: Divisor for TASE                                            3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00
+Test: Error Function                                               749.38     627.54     978.79     620.26     623.30        .       741.50     748.33     760.28        .  
+Test: Gain                                                         831.97     831.97     831.97     831.97     831.97     790.51     692.18     692.18     692.18     787.63
+Test:  Gini Coefficient                                              0.99       0.99       0.99       0.98       0.98       0.94       0.94       0.94       0.94       0.93
+Test:  Bin-Based Two-Way Kolmogorov-Smirnov Statistic                0.92       0.92       0.92       0.92       0.92       0.88       0.77       0.77       0.77       0.87
+Test:  Kolmogorov-Smirnov Probability Cutoff                         0.16       0.09       0.35       0.16       0.16       0.02       0.19       0.01       0.01       0.02
+Test: Cumulative Lift                                                9.32       9.32       9.32       9.32       9.32       8.91       7.92       7.92       7.92       8.88
+Test: Lift                                                           5.59       5.59       7.46       5.59       5.59       6.01       3.73       3.73       3.73       7.84
+Test: Maximum Absolute Error                                         1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00
+Test: Misclassification Rate                                         0.36       0.32       0.45       0.32       0.33       0.53       0.41       0.41       0.41       0.54
+Test: Lower 95% Conf. Limit for TMISC                                 .         0.27        .         0.27       0.28        .         0.35       0.35       0.35        .  
+Test: Upper 95% Conf. Limit for TMISC                                 .         0.38        .         0.38       0.39        .         0.47       0.47       0.47        .  
+Test: Mean Squared Error                                             0.04       0.04       0.05       0.04       0.04        .         0.04       0.04       0.05        .  
+Test: Sum of Frequencies                                           274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00
+Test: Root Average Squared Error                                     0.21       0.20       0.22       0.20       0.20       0.23       0.21       0.21       0.21       0.23
+Test: Cumulative Percent Response                                   71.43      71.43      71.43      71.43      71.43      68.25      60.71      60.71      60.71      68.03
+Test: Percent Response                                              42.86      42.86      57.14      42.86      42.86      46.03      28.57      28.57      28.57      60.06
+Test: Root Mean Squared Error                                        0.21       0.20       0.22       0.20       0.20        .         0.21       0.21       0.21        .  
+Test: Sum of Squared Errors                                        140.61     126.05     162.43     126.88     126.69     173.80     147.69     147.64     148.14     181.38
+Test: Sum of Case Weights Times Freq                              3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00
+Test: Number of Wrong Classifications                               99.00        .       123.00        .          .          .          .          .          .          .  
+
+   Reg5       Reg6       Reg4    Neural4      Tree9      Reg10    Neural5     Neural    Neural7       Tree      Tree2    Neural2    Neural6      Tree3      Tree6    Neural3      Tree4      Tree5
+
+   0.82       0.82       0.82       0.83       0.88       0.81       0.75       0.77       0.77       0.79       0.75       0.79       0.69       0.76       0.70       0.76       0.64       0.68
+   0.04       0.04       0.04       0.05       0.05       0.05       0.05       0.06       0.05       0.06       0.06       0.06       0.05       0.06       0.06       0.05       0.06       0.06
+   0.96       0.96       0.96       0.96       0.96       0.95       0.94       0.93       0.93       0.93       0.92       0.91       0.91       0.91       0.91       0.90       0.87       0.86
+   0.23       0.22       0.23       0.27        .         0.30       0.29       0.32       0.30        .          .         0.34       0.27        .          .         0.28        .          .  
+   0.49       0.43       0.47       0.03       0.42       0.05       0.47       0.08       0.25       0.34       0.34       0.33       0.11       0.34       0.10       0.51       0.10       0.09
+  85.71      85.71      85.71      71.43      90.48      80.95      76.19      76.19      61.90      68.57      69.05      76.19      61.90      74.29      54.17      76.19      51.83      53.57
+  19.05      19.05      19.05       9.52      39.81      19.05      19.05      19.05      23.81      35.24      33.96      23.81      14.29      40.95      20.83      19.05      23.26      24.59
+3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00
+ 760.74     739.01     748.81     902.96        .       974.21     968.02    1044.98     972.14        .          .      1113.83     880.25        .          .       912.95        .          .  
+ 738.78     738.78     738.78     598.98     785.37     692.18     645.58     645.58     505.78     571.02     575.68     645.58     505.78     626.94     430.06     645.58     407.21     424.23
+   0.93       0.92       0.92       0.92       0.91       0.91       0.87       0.86       0.86       0.85       0.84       0.83       0.83       0.82       0.82       0.81       0.74       0.72
+   0.82       0.82       0.82       0.81       0.87       0.81       0.71       0.76       0.76       0.77       0.73       0.76       0.66       0.73       0.68       0.71       0.62       0.66
+   0.04       0.03       0.04       0.02       0.02       0.04       0.07       0.07       0.25       0.02       0.02       0.29       0.11       0.02       0.01       0.19       0.01       0.01
+   8.39       8.39       8.39       6.99       8.85       7.92       7.46       7.46       6.06       6.71       6.76       7.46       6.06       7.27       5.30       7.46       5.07       5.24
+   3.73       3.73       3.73       1.86       7.79       3.73       3.73       3.73       4.66       6.90       6.65       4.66       2.80       8.01       4.08       3.73       4.55       4.81
+   1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00       1.00
+   0.40       0.41       0.40       0.54       0.53       0.45       0.47       0.59       0.46       0.58       0.58       0.61       0.48       0.61       0.57       0.54       0.58       0.61
+   0.34       0.35       0.34        .          .         0.39        .          .          .          .          .          .          .          .          .          .          .          .  
+   0.46       0.47       0.46        .          .         0.51        .          .          .          .          .          .          .          .          .          .          .          .  
+   0.04       0.04       0.04       0.05        .         0.05       0.05       0.06       0.05        .          .         0.06       0.05        .          .         0.05        .          .  
+ 274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00     274.00
+   0.21       0.21       0.21       0.23       0.23       0.22       0.23       0.25       0.23       0.24       0.25       0.25       0.23       0.24       0.24       0.23       0.25       0.25
+  64.29      64.29      64.29      53.57      67.86      60.71      57.14      57.14      46.43      51.43      51.79      57.14      46.43      55.71      40.63      57.14      38.87      40.18
+  28.57      28.57      28.57      14.29      59.71      28.57      28.57      28.57      35.71      52.86      50.94      35.71      21.43      61.43      31.25      28.57      34.89      36.88
+   0.21       0.21       0.21       0.23        .         0.22       0.23       0.25       0.23        .          .         0.25       0.23        .          .         0.23        .          .  
+ 146.66     144.79     145.62     177.74     177.97     163.80     177.92     208.16     176.54     194.75     199.79     206.76     177.32     192.43     192.64     180.01     198.96     206.73
+3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00    3288.00
+    .          .          .       148.00        .          .       129.00     163.00     127.00        .          .       166.00     131.00        .          .       147.00        .          .  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+
+
+
+
+
+
+Event Classification Table
+Model Selection based on Test:  Roc Index (_TAUR_)
+
+Model                                           Data                     Target       False       True        False       True
+Node       Model Description                    Role         Target      Label      Negative    Negative    Positive    Positive
+
+Neural3    Neural Network IDF Low               TRAIN       Category    Category        2          606         18          48   
+Neural3    Neural Network IDF Low               VALIDATE    Category    Category        6          357         17          25   
+Tree3      Decision Tree IDF Low                TRAIN       Category    Category        7          610         14          43   
+Tree3      Decision Tree IDF Low                VALIDATE    Category    Category        6          357         17          25   
+Reg3       Regression IDF Low                   TRAIN       Category    Category        3          615          9          47   
+Reg3       Regression IDF Low                   VALIDATE    Category    Category        6          364         10          25   
+Neural     Neural Network IDF Medium            TRAIN       Category    Category        6          620          4          44   
+Neural     Neural Network IDF Medium            VALIDATE    Category    Category        9          364         10          22   
+Reg        Regression IDF Medium                TRAIN       Category    Category        3          615          9          47   
+Reg        Regression IDF Medium                VALIDATE    Category    Category        6          364         10          25   
+Tree       Decision Tree IDF Medium             TRAIN       Category    Category        7          608         16          43   
+Tree       Decision Tree IDF Medium             VALIDATE    Category    Category        6          348         26          25   
+Neural2    Neural Network IDF High              TRAIN       Category    Category        4          576         48          46   
+Neural2    Neural Network IDF High              VALIDATE    Category    Category       10          349         25          21   
+Reg2       Regression IDF High                  TRAIN       Category    Category        3          615          9          47   
+Reg2       Regression IDF High                  VALIDATE    Category    Category        6          363         11          25   
+Tree2      Decision Tree IDF High               TRAIN       Category    Category        7          612         12          43   
+Tree2      Decision Tree IDF High               VALIDATE    Category    Category        4          348         26          27   
+Tree6      Decision Tree Entropy Low            TRAIN       Category    Category       17          618          6          33   
+Tree6      Decision Tree Entropy Low            VALIDATE    Category    Category        9          364         10          22   
+Neural6    Neural Network Entropy Low           TRAIN       Category    Category       18          608         16          32   
+Neural6    Neural Network Entropy Low           VALIDATE    Category    Category       14          366          8          17   
+Reg6       Regression Entrpy Low                TRAIN       Category    Category        4          613         11          46   
+Reg6       Regression Entrpy Low                VALIDATE    Category    Category        6          362         12          25   
+Neural4    Neural Network Entropy Medium        TRAIN       Category    Category        5          615          9          45   
+Neural4    Neural Network Entropy Medium        VALIDATE    Category    Category        6          360         14          25   
+Reg4       Regression Entropy Medium            TRAIN       Category    Category        3          616          8          47   
+Reg4       Regression Entropy Medium            VALIDATE    Category    Category        6          361         13          25   
+Tree4      Decision Tree Entropy Medium         TRAIN       Category    Category       16          616          8          34   
+Tree4      Decision Tree Entropy Medium         VALIDATE    Category    Category        8          356         18          23   
+Neural5    Neural Network Entropy High          TRAIN       Category    Category        7          611         13          43   
+Neural5    Neural Network Entropy High          VALIDATE    Category    Category        9          352         22          22   
+Reg5       Regression Entropy High              TRAIN       Category    Category        3          616          8          47   
+Reg5       Regression Entropy High              VALIDATE    Category    Category        6          361         13          25   
+Tree5      Decision Tree Entropy High           TRAIN       Category    Category       16          616          8          34   
+Tree5      Decision Tree Entropy High           VALIDATE    Category    Category        8          355         19          23   
+Tree9      Decision Tree Mutual Info Low        TRAIN       Category    Category        5          614         10          45   
+Tree9      Decision Tree Mutual Info Low        VALIDATE    Category    Category        3          361         13          28   
+Neural8    Neural Network Mutual Info Low       TRAIN       Category    Category        3          610         14          47   
+Neural8    Neural Network Mutual Info Low       VALIDATE    Category    Category        4          362         12          27   
+Reg9       Regression Mutual Info Low           TRAIN       Category    Category        3          617          7          47   
+Reg9       Regression Mutual Info Low           VALIDATE    Category    Category        5          366          8          26   
+Neural7    Neural Network Mutual Info Medium    TRAIN       Category    Category       18          570         54          32   
+Neural7    Neural Network Mutual Info Medium    VALIDATE    Category    Category       11          342         32          20   
+Reg7       Regression Mutual Info Medium        TRAIN       Category    Category        3          617          7          47   
+Reg7       Regression Mutual Info Medium        VALIDATE    Category    Category        5          366          8          26   
+Tree7      Decision Tree Mutual Info Medium     TRAIN       Category    Category        7          616          8          43   
+Tree7      Decision Tree Mutual Info Medium     VALIDATE    Category    Category        3          363         11          28   
+Neural9    Neural Network Mutual Info High      TRAIN       Category    Category        2          620          4          48   
+Neural9    Neural Network Mutual Info High      VALIDATE    Category    Category        4          363         11          27   
+Reg8       Regression Mutual Info High          TRAIN       Category    Category        2          616          8          48   
+Reg8       Regression Mutual Info High          VALIDATE    Category    Category        4          366          8          27   
+Tree8      Decision Tree Mutual Info High       TRAIN       Category    Category        7          615          9          43   
+Tree8      Decision Tree Mutual Info High       VALIDATE    Category    Category        2          361         13          29   
+Reg10      Regression Interpretable             TRAIN       Category    Category        5          618          6          45   
+Reg10      Regression Interpretable             VALIDATE    Category    Category        8          365          9          23   

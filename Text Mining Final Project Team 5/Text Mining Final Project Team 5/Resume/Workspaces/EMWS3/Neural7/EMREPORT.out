@@ -1,0 +1,323 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Fit Statistics
+
+Target=Category Target Label=Category
+
+   Fit
+Statistics    Statistics Label                     Train    Validation       Test
+
+ _DFT_        Total Degrees of Freedom           7414.00          .           .  
+ _DFE_        Degrees of Freedom for Error       7184.00          .           .  
+ _DFM_        Model Degrees of Freedom            230.00          .           .  
+ _NW_         Number of Estimated Weights         230.00          .           .  
+ _AIC_        Akaike's Information Criterion     1917.19          .           .  
+ _SBC_        Schwarz's Bayesian Criterion       3506.75          .           .  
+ _ASE_        Average Squared Error                 0.04         0.05        0.05
+ _MAX_        Maximum Absolute Error                1.00         1.00        1.00
+ _DIV_        Divisor for ASE                    8088.00      4860.00     3288.00
+ _NOBS_       Sum of Frequencies                  674.00       405.00      274.00
+ _RASE_       Root Average Squared Error            0.20         0.23        0.23
+ _SSE_        Sum of Squared Errors               339.18       258.29      176.54
+ _SUMW_       Sum of Case Weights Times Freq     8088.00      4860.00     3288.00
+ _FPE_        Final Prediction Error                0.04          .           .  
+ _MSE_        Mean Squared Error                    0.04         0.05        0.05
+ _RFPE_       Root Final Prediction Error           0.21          .           .  
+ _RMSE_       Root Mean Squared Error               0.21         0.23        0.23
+ _AVERR_      Average Error Function                0.18         0.28        0.30
+ _ERR_        Error Function                     1457.19      1341.96      972.14
+ _MISC_       Misclassification Rate                0.39         0.48        0.46
+ _WRONG_      Number of Wrong Classifications     264.00       195.00      127.00
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Classification Table
+
+Data Role=TRAIN Target Variable=Category Target Label=Category
+
+                                                      Target        Outcome     Frequency       Total
+Target                    Outcome                   Percentage    Percentage      Count      Percentage
+
+ADVOCATE                  ADVOCATE                    28.8889       22.8070         13         1.92878 
+BUSINESS-DEVELOPMENT      ADVOCATE                     2.2222        1.6667          1         0.14837 
+CONSULTANT                ADVOCATE                    24.4444       19.2982         11         1.63205 
+DIGITAL-MEDIA             ADVOCATE                     2.2222        2.1277          1         0.14837 
+HEALTHCARE                ADVOCATE                    11.1111        8.7719          5         0.74184 
+OTHER                     ADVOCATE                    22.2222       15.8730         10         1.48368 
+TEACHER                   ADVOCATE                     8.8889        8.0000          4         0.59347 
+ADVOCATE                  BUSINESS-DEVELOPMENT         1.7544        1.7544          1         0.14837 
+BUSINESS-DEVELOPMENT      BUSINESS-DEVELOPMENT        70.1754       66.6667         40         5.93472 
+DIGITAL-MEDIA             BUSINESS-DEVELOPMENT         1.7544        2.1277          1         0.14837 
+HEALTHCARE                BUSINESS-DEVELOPMENT         5.2632        5.2632          3         0.44510 
+OTHER                     BUSINESS-DEVELOPMENT         1.7544        1.5873          1         0.14837 
+SALES                     BUSINESS-DEVELOPMENT        19.2982       18.9655         11         1.63205 
+ADVOCATE                  CONSULTANT                  35.7143       17.5439         10         1.48368 
+CONSULTANT                CONSULTANT                  25.0000       12.2807          7         1.03858 
+FITNESS                   CONSULTANT                   3.5714        1.7241          1         0.14837 
+HEALTHCARE                CONSULTANT                   3.5714        1.7544          1         0.14837 
+INFORMATION-TECHNOLOGY    CONSULTANT                   3.5714        1.6949          1         0.14837 
+OTHER                     CONSULTANT                  21.4286        9.5238          6         0.89021 
+TEACHER                   CONSULTANT                   7.1429        4.0000          2         0.29674 
+BUSINESS-DEVELOPMENT      DESIGNER                     3.2787        3.3333          2         0.29674 
+DESIGNER                  DESIGNER                    83.6066       96.2264         51         7.56677 
+DIGITAL-MEDIA             DESIGNER                     4.9180        6.3830          3         0.44510 
+INFORMATION-TECHNOLOGY    DESIGNER                     4.9180        5.0847          3         0.44510 
+SALES                     DESIGNER                     3.2787        3.4483          2         0.29674 
+BUSINESS-DEVELOPMENT      DIGITAL-MEDIA                9.0909        5.0000          3         0.44510 
+DIGITAL-MEDIA             DIGITAL-MEDIA               84.8485       59.5745         28         4.15430 
+HEALTHCARE                DIGITAL-MEDIA                6.0606        3.5088          2         0.29674 
+ADVOCATE                  FITNESS                      1.3333        1.7544          1         0.14837 
+BUSINESS-DEVELOPMENT      FITNESS                      1.3333        1.6667          1         0.14837 
+FITNESS                   FITNESS                     65.3333       84.4828         49         7.27003 
+OTHER                     FITNESS                     10.6667       12.6984          8         1.18694 
+SALES                     FITNESS                     14.6667       18.9655         11         1.63205 
+TEACHER                   FITNESS                      6.6667       10.0000          5         0.74184 
+ADVOCATE                  HEALTHCARE                   7.3529        8.7719          5         0.74184 
+BUSINESS-DEVELOPMENT      HEALTHCARE                   8.8235       10.0000          6         0.89021 
+CONSULTANT                HEALTHCARE                  13.2353       15.7895          9         1.33531 
+DIGITAL-MEDIA             HEALTHCARE                  16.1765       23.4043         11         1.63205 
+FITNESS                   HEALTHCARE                   1.4706        1.7241          1         0.14837 
+HEALTHCARE                HEALTHCARE                  50.0000       59.6491         34         5.04451 
+OTHER                     HEALTHCARE                   1.4706        1.5873          1         0.14837 
+SALES                     HEALTHCARE                   1.4706        1.7241          1         0.14837 
+ADVOCATE                  HR                           1.7544        1.7544          1         0.14837 
+CONSULTANT                HR                           1.7544        1.7544          1         0.14837 
+FITNESS                   HR                           1.7544        1.7241          1         0.14837 
+HR                        HR                          89.4737       92.7273         51         7.56677 
+OTHER                     HR                           5.2632        4.7619          3         0.44510 
+ADVOCATE                  INFORMATION-TECHNOLOGY       5.2632        7.0175          4         0.59347 
+CONSULTANT                INFORMATION-TECHNOLOGY       9.2105       12.2807          7         1.03858 
+DESIGNER                  INFORMATION-TECHNOLOGY       2.6316        3.7736          2         0.29674 
+DIGITAL-MEDIA             INFORMATION-TECHNOLOGY       2.6316        4.2553          2         0.29674 
+HR                        INFORMATION-TECHNOLOGY       3.9474        5.4545          3         0.44510 
+INFORMATION-TECHNOLOGY    INFORMATION-TECHNOLOGY      72.3684       93.2203         55         8.16024 
+OTHER                     INFORMATION-TECHNOLOGY       3.9474        4.7619          3         0.44510 
+ADVOCATE                  OTHER                       10.8108        7.0175          4         0.59347 
+BUSINESS-DEVELOPMENT      OTHER                        2.7027        1.6667          1         0.14837 
+CONSULTANT                OTHER                       16.2162       10.5263          6         0.89021 
+FITNESS                   OTHER                        8.1081        5.1724          3         0.44510 
+OTHER                     OTHER                       45.9459       26.9841         17         2.52226 
+TEACHER                   OTHER                       16.2162       12.0000          6         0.89021 
+ADVOCATE                  SALES                        1.9608        1.7544          1         0.14837 
+BUSINESS-DEVELOPMENT      SALES                       11.7647       10.0000          6         0.89021 
+CONSULTANT                SALES                        1.9608        1.7544          1         0.14837 
+FITNESS                   SALES                        5.8824        5.1724          3         0.44510 
+HR                        SALES                        1.9608        1.8182          1         0.14837 
+OTHER                     SALES                        9.8039        7.9365          5         0.74184 
+SALES                     SALES                       64.7059       56.8966         33         4.89614 
+TEACHER                   SALES                        1.9608        2.0000          1         0.14837 
+ADVOCATE                  TEACHER                     19.7674       29.8246         17         2.52226 
+CONSULTANT                TEACHER                     17.4419       26.3158         15         2.22552 
+DIGITAL-MEDIA             TEACHER                      1.1628        2.1277          1         0.14837 
+HEALTHCARE                TEACHER                     13.9535       21.0526         12         1.78042 
+OTHER                     TEACHER                     10.4651       14.2857          9         1.33531 
+TEACHER                   TEACHER                     37.2093       64.0000         32         4.74777 
+
+
+Data Role=VALIDATE Target Variable=Category Target Label=Category
+
+                                                      Target        Outcome     Frequency       Total
+Target                    Outcome                   Percentage    Percentage      Count      Percentage
+
+ADVOCATE                  ADVOCATE                    28.5714       28.5714         10         2.46914 
+CONSULTANT                ADVOCATE                    22.8571       22.8571          8         1.97531 
+DIGITAL-MEDIA             ADVOCATE                     2.8571        3.4483          1         0.24691 
+FITNESS                   ADVOCATE                     2.8571        2.8571          1         0.24691 
+HEALTHCARE                ADVOCATE                    20.0000       21.2121          7         1.72840 
+INFORMATION-TECHNOLOGY    ADVOCATE                     2.8571        2.7778          1         0.24691 
+OTHER                     ADVOCATE                     8.5714        7.8947          3         0.74074 
+SALES                     ADVOCATE                     2.8571        2.9412          1         0.24691 
+TEACHER                   ADVOCATE                     8.5714        9.6774          3         0.74074 
+ADVOCATE                  BUSINESS-DEVELOPMENT         4.0816        5.7143          2         0.49383 
+BUSINESS-DEVELOPMENT      BUSINESS-DEVELOPMENT        48.9796       66.6667         24         5.92593 
+CONSULTANT                BUSINESS-DEVELOPMENT         4.0816        5.7143          2         0.49383 
+DIGITAL-MEDIA             BUSINESS-DEVELOPMENT         4.0816        6.8966          2         0.49383 
+FITNESS                   BUSINESS-DEVELOPMENT         2.0408        2.8571          1         0.24691 
+HEALTHCARE                BUSINESS-DEVELOPMENT         8.1633       12.1212          4         0.98765 
+OTHER                     BUSINESS-DEVELOPMENT         6.1224        7.8947          3         0.74074 
+SALES                     BUSINESS-DEVELOPMENT        22.4490       32.3529         11         2.71605 
+ADVOCATE                  CONSULTANT                   7.6923        2.8571          1         0.24691 
+CONSULTANT                CONSULTANT                  15.3846        5.7143          2         0.49383 
+DIGITAL-MEDIA             CONSULTANT                   7.6923        3.4483          1         0.24691 
+INFORMATION-TECHNOLOGY    CONSULTANT                   7.6923        2.7778          1         0.24691 
+OTHER                     CONSULTANT                  46.1538       15.7895          6         1.48148 
+SALES                     CONSULTANT                   7.6923        2.9412          1         0.24691 
+TEACHER                   CONSULTANT                   7.6923        3.2258          1         0.24691 
+BUSINESS-DEVELOPMENT      DESIGNER                     2.6316        2.7778          1         0.24691 
+DESIGNER                  DESIGNER                    71.0526       87.0968         27         6.66667 
+DIGITAL-MEDIA             DESIGNER                     7.8947       10.3448          3         0.74074 
+HR                        DESIGNER                     2.6316        3.1250          1         0.24691 
+INFORMATION-TECHNOLOGY    DESIGNER                    10.5263       11.1111          4         0.98765 
+SALES                     DESIGNER                     2.6316        2.9412          1         0.24691 
+TEACHER                   DESIGNER                     2.6316        3.2258          1         0.24691 
+BUSINESS-DEVELOPMENT      DIGITAL-MEDIA                7.6923        5.5556          2         0.49383 
+CONSULTANT                DIGITAL-MEDIA               11.5385        8.5714          3         0.74074 
+DESIGNER                  DIGITAL-MEDIA                7.6923        6.4516          2         0.49383 
+DIGITAL-MEDIA             DIGITAL-MEDIA               53.8462       48.2759         14         3.45679 
+FITNESS                   DIGITAL-MEDIA                3.8462        2.8571          1         0.24691 
+INFORMATION-TECHNOLOGY    DIGITAL-MEDIA                3.8462        2.7778          1         0.24691 
+OTHER                     DIGITAL-MEDIA                3.8462        2.6316          1         0.24691 
+SALES                     DIGITAL-MEDIA                7.6923        5.8824          2         0.49383 
+ADVOCATE                  FITNESS                      2.5641        2.8571          1         0.24691 
+BUSINESS-DEVELOPMENT      FITNESS                      5.1282        5.5556          2         0.49383 
+CONSULTANT                FITNESS                      5.1282        5.7143          2         0.49383 
+FITNESS                   FITNESS                     64.1026       71.4286         25         6.17284 
+HEALTHCARE                FITNESS                      2.5641        3.0303          1         0.24691 
+INFORMATION-TECHNOLOGY    FITNESS                      2.5641        2.7778          1         0.24691 
+OTHER                     FITNESS                      7.6923        7.8947          3         0.74074 
+SALES                     FITNESS                      5.1282        5.8824          2         0.49383 
+TEACHER                   FITNESS                      5.1282        6.4516          2         0.49383 
+ADVOCATE                  HEALTHCARE                   5.5556        5.7143          2         0.49383 
+BUSINESS-DEVELOPMENT      HEALTHCARE                   2.7778        2.7778          1         0.24691 
+CONSULTANT                HEALTHCARE                  19.4444       20.0000          7         1.72840 
+DIGITAL-MEDIA             HEALTHCARE                  19.4444       24.1379          7         1.72840 
+HEALTHCARE                HEALTHCARE                  44.4444       48.4848         16         3.95062 
+OTHER                     HEALTHCARE                   5.5556        5.2632          2         0.49383 
+SALES                     HEALTHCARE                   2.7778        2.9412          1         0.24691 
+CONSULTANT                HR                           5.7143        5.7143          2         0.49383 
+FITNESS                   HR                           5.7143        5.7143          2         0.49383 
+HR                        HR                          77.1429       84.3750         27         6.66667 
+OTHER                     HR                          11.4286       10.5263          4         0.98765 
+ADVOCATE                  INFORMATION-TECHNOLOGY       4.8780        5.7143          2         0.49383 
+CONSULTANT                INFORMATION-TECHNOLOGY       9.7561       11.4286          4         0.98765 
+DIGITAL-MEDIA             INFORMATION-TECHNOLOGY       2.4390        3.4483          1         0.24691 
+HR                        INFORMATION-TECHNOLOGY       7.3171        9.3750          3         0.74074 
+INFORMATION-TECHNOLOGY    INFORMATION-TECHNOLOGY      68.2927       77.7778         28         6.91358 
+OTHER                     INFORMATION-TECHNOLOGY       7.3171        7.8947          3         0.74074 
+ADVOCATE                  OTHER                       23.0769        8.5714          3         0.74074 
+BUSINESS-DEVELOPMENT      OTHER                        7.6923        2.7778          1         0.24691 
+CONSULTANT                OTHER                       15.3846        5.7143          2         0.49383 
+FITNESS                   OTHER                       15.3846        5.7143          2         0.49383 
+OTHER                     OTHER                       15.3846        5.2632          2         0.49383 
+TEACHER                   OTHER                       23.0769        9.6774          3         0.74074 
+ADVOCATE                  SALES                        7.1429        5.7143          2         0.49383 
+BUSINESS-DEVELOPMENT      SALES                       17.8571       13.8889          5         1.23457 
+DESIGNER                  SALES                        7.1429        6.4516          2         0.49383 
+FITNESS                   SALES                        7.1429        5.7143          2         0.49383 
+HR                        SALES                        3.5714        3.1250          1         0.24691 
+SALES                     SALES                       53.5714       44.1176         15         3.70370 
+TEACHER                   SALES                        3.5714        3.2258          1         0.24691 
+ADVOCATE                  TEACHER                     23.0769       34.2857         12         2.96296 
+CONSULTANT                TEACHER                      5.7692        8.5714          3         0.74074 
+FITNESS                   TEACHER                      1.9231        2.8571          1         0.24691 
+HEALTHCARE                TEACHER                      9.6154       15.1515          5         1.23457 
+OTHER                     TEACHER                     21.1538       28.9474         11         2.71605 
+TEACHER                   TEACHER                     38.4615       64.5161         20         4.93827 
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Event Classification Table
+
+Data Role=TRAIN Target=Category Target Label=Category
+
+  False       True        False       True
+Negative    Negative    Positive    Positive
+
+   18          570         54          32   
+
+
+Data Role=VALIDATE Target=Category Target Label=Category
+
+  False       True        False       True
+Negative    Negative    Positive    Positive
+
+   11          342         32          20   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Assessment Score Rankings
+
+Data Role=TRAIN Target Variable=Category Target Label=Category
+
+                                                                                           Mean
+                               Cumulative        %       Cumulative      Number of      Posterior
+Depth       Gain      Lift        Lift       Response    % Response    Observations    Probability
+
+   5     494.706    5.94706      5.94706      44.1176      44.1176          34           0.30759  
+  10     514.529    6.34353      6.14529      47.0588      45.5882          34           0.26043  
+  15     388.980    2.37882      4.88980      17.6471      36.2745          34           0.25047  
+  20     289.422    0.81697      3.89422       6.0606      28.8889          33           0.23179  
+  25     242.982    1.58588      3.42982      11.7647      25.4438          34           0.17844  
+  30     212.099    1.58588      3.12099      11.7647      23.1527          34           0.11791  
+  35     168.458    0.00000      2.68458       0.0000      19.9153          33           0.06660  
+  40     144.637    0.79294      2.44637       5.8824      18.1481          34           0.03957  
+  45     117.276    0.00000      2.17276       0.0000      16.1184          34           0.03299  
+  50     100.000    0.40848      2.00000       3.0303      14.8368          33           0.02245  
+  55      81.671    0.00000      1.81671       0.0000      13.4771          34           0.01119  
+  60      66.420    0.00000      1.66420       0.0000      12.3457          34           0.00409  
+  65      53.531    0.00000      1.53531       0.0000      11.3895          34           0.00144  
+  70      42.797    0.00000      1.42797       0.0000      10.5932          33           0.00069  
+  75      33.202    0.00000      1.33202       0.0000       9.8814          34           0.00044  
+  80      24.815    0.00000      1.24815       0.0000       9.2593          34           0.00030  
+  85      17.627    0.00000      1.17627       0.0000       8.7260          33           0.00020  
+  90      11.038    0.00000      1.11038       0.0000       8.2372          34           0.00012  
+  95       5.148    0.00000      1.05148       0.0000       7.8003          34           0.00003  
+ 100       0.000    0.00000      1.00000       0.0000       7.4184          33           0.00000  
+
+
+Data Role=VALIDATE Target Variable=Category Target Label=Category
+
+                                                                                           Mean
+                               Cumulative        %       Cumulative      Number of      Posterior
+Depth       Gain      Lift        Lift       Response    % Response    Observations    Probability
+
+   5     584.332    6.84332      6.84332      52.3810      52.3810          21           0.30159  
+  10     473.564    4.57258      5.73564      35.0000      43.9024          20           0.25762  
+  15     414.014    3.91935      5.14014      30.0000      39.3443          20           0.24831  
+  20     319.355    1.30645      4.19355      10.0000      32.0988          20           0.22609  
+  25     233.017    0.00000      3.33017       0.0000      25.4902          21           0.17716  
+  30     199.841    1.30645      2.99841      10.0000      22.9508          20           0.11491  
+  35     166.811    0.65323      2.66811       5.0000      20.4225          20           0.04516  
+  40     133.871    0.00000      2.33871       0.0000      17.9012          20           0.03391  
+  45     114.172    0.62212      2.14172       4.7619      16.3934          21           0.02270  
+  50      93.072    0.00000      1.93072       0.0000      14.7783          20           0.00858  
+  55      75.756    0.00000      1.75756       0.0000      13.4529          20           0.00341  
+  60      61.290    0.00000      1.61290       0.0000      12.3457          20           0.00123  
+  65      48.460    0.00000      1.48460       0.0000      11.3636          21           0.00059  
+  70      38.005    0.00000      1.38005       0.0000      10.5634          20           0.00042  
+  75      28.926    0.00000      1.28926       0.0000       9.8684          20           0.00032  
+  80      20.968    0.00000      1.20968       0.0000       9.2593          20           0.00024  
+  85      13.604    0.00000      1.13604       0.0000       8.6957          21           0.00016  
+  90       7.380    0.00000      1.07380       0.0000       8.2192          20           0.00007  
+  95       1.801    0.00000      1.01801       0.0000       7.7922          20           0.00001  
+ 100       0.000    0.65323      1.00000       5.0000       7.6543          20           0.00000  
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Assessment Score Distribution
+
+Data Role=TRAIN Target Variable=Category Target Label=Category
+
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+
+ 0.35-0.40        0           2         0.35147         0.2967 
+ 0.30-0.35        9           9         0.32088         2.6706 
+ 0.25-0.30       25          45         0.26252        10.3858 
+ 0.20-0.25        7          42         0.23382         7.2700 
+ 0.15-0.20        2          25         0.17761         4.0059 
+ 0.10-0.15        3          29         0.12452         4.7478 
+ 0.05-0.10        1          35         0.07113         5.3412 
+ 0.00-0.05        3         437         0.00894        65.2819 
+
+
+Data Role=VALIDATE Target Variable=Category Target Label=Category
+
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+
+ 0.30-0.35        3           5         0.33390         1.9753 
+ 0.25-0.30       18          24         0.26375        10.3704 
+ 0.20-0.25        5          28         0.23139         8.1481 
+ 0.15-0.20        0          16         0.17910         3.9506 
+ 0.10-0.15        1          15         0.13598         3.9506 
+ 0.05-0.10        1          13         0.06957         3.4568 
+ 0.00-0.05        3         273         0.00707        68.1481 

@@ -1,0 +1,248 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 26, 2023
+Time:                19:43:05
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+ Role        Level         Count
+ 
+TARGET      NOMINAL          1
+ 
+ 
+ 
+ 
+ 
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+ 
+ 1     Category     Category      0.998     0.997    0.962      0.319        0.95         0.534
+ 
+ 
+ 
+ 
+ 
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+ 
+ 1     Category     Category       0.944     0.888     0.793     0.152      0.78      0.243
+ 
+ 
+ 
+ 
+ 
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+ 
+ 1     Category     Category       0.966     0.933     0.837     0.452     0.818      0.594
+ 
+ 
+ 
+ 
+ 
+                                                                                       BINNED_KS_
+                                                              _KS_PROB_                   PROB_
+Obs     TARGET     TARGETLABEL    _AUR_    _GINI_      KS       CUTOFF     _KS_BIN_      CUTOFF
+ 
+ 1     Category     Category      0.998     0.997    0.992      0.334        0.971        0.479
+ 
+ 
+ 
+ 
+ 
+                                                                 _VKS_              _VBINNED_
+                                                                 PROB_     _VKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _VAUR_    _VGINI_     VKS     CUTOFF_     BIN_     CUTOFF_
+ 
+ 1     Category     Category       0.948     0.895     0.874     0.243     0.868      0.543
+ 
+ 
+ 
+ 
+ 
+                                                                 _TKS_              _TBINNED_
+                                                                 PROB_     _TKS_     KS_PROB_
+Obs     TARGET     TARGETLABEL    _TAUR_    _TGINI_     TKS     CUTOFF_     BIN_     CUTOFF_
+ 
+ 1     Category     Category       0.994     0.987     0.964     0.347     0.921      0.639
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fit Statistics
+Model Selection based on Train: Roc Index (_AUR_)
+ 
+                                                                      Train:                           Valid:
+                                                           Train:     Average          Train:          Average          Valid:
+Selected     Model                                           Roc      Squared    Misclassification     Squared    Misclassification
+ Model        Node             Model Description            Index      Error            Rate            Error            Rate
+ 
+   Y        Neural9     Neural Network Mutual Info High     0.998    0.033478         0.28190         0.050016         0.44938
+            Neural11    Neural Network Text Topic           0.998    0.031201         0.25371         0.050086         0.43951
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fit Statistics Table
+Target: Category
+ 
+Data Role=Train
+ 
+Statistics                                                        Neural9    Neural11
+ 
+Train: Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff       0.48        0.53
+Train: Kolmogorov-Smirnov Statistic                                  0.99        0.96
+Train: Akaike's Information Criterion                             1865.11     1899.76
+Train: Average Squared Error                                         0.03        0.03
+Train: Roc Index                                                     1.00        1.00
+Train: Average Error Function                                        0.14        0.14
+Train: Cumulative Percent Captured Response                        100.00       98.00
+Train: Percent Captured Response                                    34.00       30.00
+Selection Criterion: Train: Roc Index                                1.00        1.00
+Train: Degrees of Freedom for Error                               7067.00     7031.00
+Train: Model Degrees of Freedom                                    347.00      383.00
+Train: Total Degrees of Freedom                                   7414.00     7414.00
+Train: Divisor for ASE                                            8088.00     8088.00
+Train: Error Function                                             1171.11     1133.76
+Train: Final Prediction Error                                        0.04        0.03
+Train: Gain                                                        891.18      871.35
+Train: Gini Coefficient                                              1.00        1.00
+Train: Bin-Based Two-Way Kolmogorov-Smirnov Statistic                0.97        0.95
+Train: Kolmogorov-Smirnov Probability Cutoff                         0.33        0.32
+Train: Cumulative Lift                                               9.91        9.71
+Train: Lift                                                          6.74        5.95
+Train: Maximum Absolute Error                                        1.00        1.00
+Train: Misclassification Rate                                        0.28        0.25
+Train: Mean Squared Error                                            0.04        0.03
+Train: Sum of Frequencies                                          674.00      674.00
+Train: Number of Estimated Weights                                 347.00      383.00
+Train: Root Average Squared Error                                    0.18        0.18
+Train: Cumulative Percent Response                                  73.53       72.06
+Train: Percent Response                                             50.00       44.12
+Train: Root Final Prediction Error                                   0.19        0.19
+Train: Root Mean Squared Error                                       0.19        0.18
+Train: Schwarz's Bayesian Criterion                               4263.27     4546.72
+Train: Sum of Squared Errors                                       270.77      252.36
+Train: Sum of Case Weights Times Freq                             8088.00     8088.00
+Train: Number of Wrong Classifications                             190.00      171.00
+ 
+ 
+Data Role=Valid
+ 
+Statistics                                                        Neural9    Neural11
+ 
+Valid: Kolmogorov-Smirnov Statistic                                  0.87        0.79
+Valid: Average Squared Error                                         0.05        0.05
+Valid: Roc Index                                                     0.95        0.94
+Valid: Average Error Function                                        0.30        0.26
+Valid: Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff       0.54        0.24
+Valid: Cumulative Percent Captured Response                         90.32       77.42
+Valid: Percent Captured Response                                    32.26       22.58
+Valid: Divisor for VASE                                           4860.00     4860.00
+Valid: Error Function                                             1446.94     1254.05
+Valid: Gain                                                        792.21      664.75
+Valid: Gini Coefficient                                              0.90        0.89
+Valid: Bin-Based Two-Way Kolmogorov-Smirnov Statistic                0.87        0.78
+Valid: Kolmogorov-Smirnov Probability Cutoff                         0.24        0.15
+Valid: Cumulative Lift                                               8.92        7.65
+Valid: Lift                                                          6.53        4.57
+Valid: Maximum Absolute Error                                        1.00        1.00
+Valid: Misclassification Rate                                        0.45        0.44
+Valid: Mean Squared Error                                            0.05        0.05
+Valid: Sum of Frequencies                                          405.00      405.00
+Valid: Root Average Squared Error                                    0.22        0.22
+Valid: Cumulative Percent Response                                  68.29       58.54
+Valid: Percent Response                                             50.00       35.00
+Valid: Root Mean Squared Error                                       0.22        0.22
+Valid: Sum of Squared Errors                                       243.08      243.42
+Valid: Sum of Case Weights Times Freq                             4860.00     4860.00
+Valid: Number of Wrong Classifications                             182.00      178.00
+ 
+ 
+Data Role=Test
+ 
+Statistics                                                        Neural9    Neural11
+ 
+Test:  Kolmogorov-Smirnov Statistic                                  0.96        0.84
+Test: Average Squared Error                                          0.05        0.05
+Test:  Roc Index                                                     0.99        0.97
+Test: Average Error Function                                         0.30        0.29
+Test:  Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff       0.64        0.59
+Test: Cumulative Percent Captured Response                          95.24       85.71
+Test: Percent Captured Response                                     38.10       28.57
+Test: Divisor for TASE                                            3288.00     3288.00
+Test: Error Function                                               978.79      960.91
+Test: Gain                                                         831.97      738.78
+Test:  Gini Coefficient                                              0.99        0.93
+Test:  Bin-Based Two-Way Kolmogorov-Smirnov Statistic                0.92        0.82
+Test:  Kolmogorov-Smirnov Probability Cutoff                         0.35        0.45
+Test: Cumulative Lift                                                9.32        8.39
+Test: Lift                                                           7.46        5.59
+Test: Maximum Absolute Error                                         1.00        1.00
+Test: Misclassification Rate                                         0.45        0.43
+Test: Lower 95% Conf. Limit for TMISC                                 .           .
+Test: Upper 95% Conf. Limit for TMISC                                 .           .
+Test: Mean Squared Error                                             0.05        0.05
+Test: Sum of Frequencies                                           274.00      274.00
+Test: Root Average Squared Error                                     0.22        0.23
+Test: Cumulative Percent Response                                   71.43       64.29
+Test: Percent Response                                              57.14       42.86
+Test: Root Mean Squared Error                                        0.22        0.23
+Test: Sum of Squared Errors                                        162.43      170.99
+Test: Sum of Case Weights Times Freq                              3288.00     3288.00
+Test: Number of Wrong Classifications                              123.00      119.00
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Event Classification Table
+Model Selection based on Train: Roc Index (_AUR_)
+ 
+ Model                                         Data                     Target       False       True        False       True
+  Node             Model Description           Role         Target      Label      Negative    Negative    Positive    Positive
+ 
+Neural11    Neural Network Text Topic          TRAIN       Category    Category        2          614         10          48
+Neural11    Neural Network Text Topic          VALIDATE    Category    Category        8          357         17          23
+Neural9     Neural Network Mutual Info High    TRAIN       Category    Category        2          620          4          48
+Neural9     Neural Network Mutual Info High    VALIDATE    Category    Category        4          363         11          27
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*

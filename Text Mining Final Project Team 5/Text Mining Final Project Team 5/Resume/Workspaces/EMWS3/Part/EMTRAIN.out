@@ -1,0 +1,25 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+          Measurement    Frequency
+Role         Level         Count
+
+ID          NOMINAL          1    
+TARGET      NOMINAL          1    
+TEXT        NOMINAL          1    
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Partition Summary
+
+                                     Number of
+Type             Data Set          Observations
+
+DATA        EMWS3.FIMPORT_train        1353    
+TRAIN       EMWS3.Part_TRAIN            674    
+VALIDATE    EMWS3.Part_VALIDATE         405    
+TEST        EMWS3.Part_TEST             274    

@@ -1,0 +1,2936 @@
+*------------------------------------------------------------*
+* Score Log
+Date:                November 23, 2023
+Time:                22:13:10
+*------------------------------------------------------------*
+17294  %let EMEXCEPTIONSTRING=;
+17295  *------------------------------------------------------------*;
+17296  * SCORE: Tree7;
+17297  *------------------------------------------------------------*;
+17298  %let EM_ACTION = SCORE;
+17299  %let syscc = 0;
+17300  %macro main;
+17301  
+17302    %if %upcase(&EM_ACTION) = CREATE %then %do;
+17303      filename temp catalog 'sashelp.emmodl.tree_create.source';
+17304      %include temp;
+17305      filename temp;
+17306  
+17307      %em_tree_create;
+17308    %end;
+17309  
+17310     %else
+17311     %if %upcase(&EM_ACTION) = TRAIN %then %do;
+17312  
+17313         filename temp catalog 'sashelp.emmodl.tree_train.source';
+17314         %include temp;
+17315         filename temp;
+17316         %em_tree_train;
+17317     %end;
+17318  
+17319    %else
+17320    %if %upcase(&EM_ACTION) = SCORE %then %do;
+17321      filename temp catalog 'sashelp.emmodl.tree_score.source';
+17322      %include temp;
+17323      filename temp;
+17324  
+17325      %em_tree_score;
+17326  
+17327    %end;
+17328  
+17329    %else
+17330    %if %upcase(&EM_ACTION) = REPORT %then %do;
+17331  
+17332         filename temp catalog 'sashelp.emmodl.tree_report.source';
+17333         %include temp;
+17334         filename temp;
+17335  
+17336         %em_tree_report;
+17337     %end;
+17338  
+17339    %else
+17340    %if %upcase(&EM_ACTION) = OPENINT %then %do;
+17341  
+17342         filename temp catalog 'sashelp.emmodl.tree_actions.source';
+17343         %include temp;
+17344         filename temp;
+17345         %EM_TREE_OPENTREEVIEWER;
+17346  
+17347     %end;
+17348  
+17349    %else
+17350    %if %upcase(&EM_ACTION) = CLOSEINT %then %do;
+17351  
+17352         filename temp catalog 'sashelp.emmodl.tree_actions.source';
+17353         %include temp;
+17354         filename temp;
+17355         %EM_TREE_CLOSETREEVIEWER;
+17356  
+17357     %end;
+17358  
+17359  
+17360     %doendm:
+17361  %mend main;
+17362  
+17363  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.TREE_SCORE.SOURCE.
+17365 +%macro em_tree_score;
+17367 +   /* determine if multiple targets will be processed */
+17368 +   %let em_tree_multipleTargets=N;
+17369 +   %let em_tree_numTarget=1;
+17370 +   %if "&EM_PROPERTY_USEMULTIPLETARGET" eq "Y" %then %do;
+17371 +      /* determine if there are any ordinal target variables - if so, multiple targets are not supported */
+17372 +      %if &EM_NUM_ORDINAL_TARGET gt 0 %then %do;
+17373 +         %let em_tree_multipleTargets=N;
+17374 +      %end;
+17375 +      %else %do;
+17376 +         /* create macro array of targets  */
+17377 +         data _null_;
+17378 +           set &EM_DATA_VARIABLESET(where=(ROLE='TARGET' AND LEVEL^='ORDINAL')) end=eof;
+17379 +           call symput('em_tree_targetVars'!!strip(put(_N_, BEST.)), strip(Name));
+17380 +           if eof then
+17381 +             call symput('em_tree_numTarget', strip(put(_N_, BEST.)));
+17382 +        run;
+17384 +        %if &em_tree_numTarget gt 1 %then %do;
+17385 +           %let em_tree_multipleTargets=Y;
+17386 +        %end;
+17387 +      %end;
+17388 +   %end;
+17390 +   /* build flow and publish scoring code */
+17391 +   %EM_GETNAME(key=TREEFLOW, type=FILE, extension=sas);
+17392 +   %EM_GETNAME(key=TREEPUBLISH, type=FILE, extension=sas);
+17394 +   filename treeflow "&EM_USER_TREEFLOW";
+17395 +   filename treepub "&EM_USER_TREEPUBLISH";
+17397 +   filename flowref  "&EM_FILE_EMFLOWSCORECODE";
+17398 +   filename pubref   "&EM_FILE_EMPUBLISHSCORECODE";
+17400 +   %em_copyfile(infref=treeflow, outfref=flowref);
+17401 +   %em_copyfile(infref=treepub, outfref=pubref);
+17403 +   filename treeflow;
+17404 +   filename treepub;
+17406 +   /* if priors are used, add code to generate unadjusted residuals in export */
+17407 +   %let useAdjPriors = N;
+17408 +   data _null_;
+17409 +     set &EM_DEC_DECMETA(where=(_TYPE_="DECPRIOR"));
+17410 +     if USE="Y" then call symput('useAdjPriors', 'Y');
+17411 +   run;
+17412 +   %if (("&em_tree_multipleTargets" eq "N") AND ("&useAdjPriors" eq "Y")) %then %do;
+17413 +      filename temp catalog 'sashelp.emutil.em_makeunadjustedresidualvars.source';
+17414 +      %include temp;
+17415 +      filename temp;
+17417 +      %EM_GETNAME(key=adjResidualCode, type=FILE, extension=sas);
+17418 +      filename adjref "&EM_USER_adjResidualCode";
+17419 +      %makeUnadjustedResidualVars(target=%EM_TARGET, decmeta=&EM_DEC_DECMETA, fref=adjref);
+17421 +      %em_copyfile(infref=adjref, outfref=flowref, append=Y);
+17423 +      filename adjref;
+17424 +   %end;
+17426 +   /* LEAF */
+17427 +   %if "&EM_PROPERTY_LEAFID" eq "Y" %then %do;
+17428 +      data _null_;
+17429 +        file flowref mod;
+17430 +        put 'drop _LEAF_;';
+17431 +      run;
+17433 +      data _null_;
+17434 +        file pubref mod;
+17435 +        put 'drop _LEAF_;';
+17436 +      run;
+17438 +   %end;
+17440 +   filename flowref;
+17441 +   filename pubref;
+17443 +   /* em_metachange code */
+17444 +   %if "&EM_PROPERTY_LEAFID" eq "Y" %then %do;
+17445 +     %EM_METACHANGE(name=_NODE_, role=&EM_PROPERTY_NODEROLE, LEVEL=NOMINAL);
+17446 +   %end;
+17448 +   /* variable selection based on importance stat    */
+17449 +   %if "&EM_PROPERTY_VARSELECTION" eq "Y" %then %do;
+17450 +     %EM_GETNAME(key=OUTIMPORT, type=DATA);
+17451 +     %let dsid = %sysfunc(open(&EM_USER_OUTIMPORT(where=(IMPORTANCE<0.05))));
+17452 +     %let varnum = %sysfunc(varnum(&dsid, NAME));
+17453 +     %let obs = %sysfunc(fetch(&dsid));
+17454 +     %do %while(&obs=0);
+17455 +       %let temp = %nrbquote(%sysfunc(getvarc(&dsid, &varnum)));
+17456 +       %let varname = %nrbquote(%sysfunc(tranwrd(&temp,  %str(%"),"")));
+17457 +       %EM_METACHANGE(name=&varname, role=REJECTED);
+17458 +       %let obs = %sysfunc(fetch(&dsid));
+17459 +     %end;
+17460 +     %if &dsid %then %let dsid=%sysfunc(close(&dsid));
+17461 +   %end;
+17463 +   /* set Q_ varaibles to role of ASSESS when in the presense of prior probabilities */
+17464 +   %if %sysfunc(exist(&EM_DEC_DECMETA)) %then %do;
+17465 +    %let tree_pred_vars = ;
+17466 +    %let tree_pred_lvl =;
+17467 +    %let numpred= 0;
+17469 +    data _null_;
+17470 +     set &EM_DEC_DECMETA(where=(_TYPE_="PREDICTED")) end=eof;
+17471 +     call symput('tree_pred_vars'!!strip(put(_N_, BEST.)), strip(VARIABLE));
+17472 +     call symput('tree_pred_lvl'!!strip(put(_N_, BEST.)), strip(LEVEL));
+17473 +     if eof then
+17474 +       call symput('numpred', strip(put(_N_, BEST.)));
+17475 +    run;
+17476 +   %end;
+17478 +   %if &numpred ne 0 %then %do;
+17479 +    %do i=1 %to &numpred;
+17480 +      %let qpred = Q%substr(&&tree_pred_vars&i,2);
+17481 +      %EM_METACHANGE(name=&qpred, role=ASSESS);
+17482 +    %end;
+17483 +   %end;
+17485 +   /* determine if multiple targets will be processed */
+17486 +   %let em_tree_multipleTargets=N;
+17487 +   %let em_tree_numTarget=1;
+17488 +   %if "&EM_PROPERTY_USEMULTIPLETARGET" eq "Y" %then %do;
+17489 +      /* determine if there are any ordinal target variables - if so, multiple targets are not supported */
+17490 +      %if &EM_NUM_ORDINAL_TARGET gt 0 %then %do;
+17491 +         %let em_tree_multipleTargets=N;
+17492 +      %end;
+17493 +      %else %do;
+17494 +        data _null_;
+17495 +          set &EM_DATA_VARIABLESET(where=(ROLE='TARGET' AND LEVEL^='ORDINAL')) end=eof;
+17496 +          if eof then
+17497 +            call symput('em_tree_numTarget', strip(put(_N_, BEST.)));
+17498 +        run;
+17500 +        %if &em_tree_numTarget gt 1 %then %do;
+17501 +           %let em_tree_multipleTargets=Y;
+17502 +        %end;
+17503 +     %end;
+17504 +   %end;
+17506 +   /* need to include this code to do the %em_report for OUTIMPORT here instead of in Report code so _loop data set is created when group processing */
+17507 +   %if "&em_tree_multipleTargets" eq "N" %then %do;
+17509 +      /* variable importance */
+17510 +      %EM_GETNAME(key=OUTIMPORT, type=DATA);
+17511 +      %if %sysfunc(exist(&EM_USER_OUTIMPORT)) eq 1 %then %do;
+17513 +         %let validexist=0;
+17514 +         %if (("&EM_IMPORT_VALIDATE" ne "") AND (%sysfunc(exist(&EM_IMPORT_VALIDATE)) or %sysfunc(exist(&EM_IMPORT_VALIDATE,VIEW)))) %then %do;
+17515 +           %let validexist=1;
+17516 +         %end;
+17518 +         /* determine if vars exists - properties could indicate they are they but freeze=Y would mean the node wasn't retrained */
+17519 +         /* and the columns may not be generated                                                                                 */
+17520 +         %let em_tree_cvexists=;
+17521 +         %let em_tree_surrexists=.;
+17522 +         data _null_;
+17523 +            set &EM_USER_OUTIMPORT (obs=2) end=eof;
+17524 +            if eof then do ;
+17525 +               call symput("em_tree_cvexists" , strip(put(cvimportance,best.))) ;
+17526 +               call symput("em_tree_surrexists", strip(put(nsurrogates, best.)));
+17527 +            end;
+17528 +         run;
+17530 +         data &EM_USER_OUTIMPORT;
+17531 +            set &EM_USER_OUTIMPORT;
+17533 +            /* format columns based on Precison value specified */
+17534 +            format importance 15.&EM_PROPERTY_PRECISION
+17535 +                 %if &validexist %then %do;
+17536 +                   vimportance ratio 15.&EM_PROPERTY_PRECISION
+17537 +                 %end;
+17538 +                 %if "&EM_TREE_CVEXISTS" ne "." %then %do;
+17539 +                   cvimportance vimportance ratio 15.&EM_PROPERTY_PRECISION
+17540 +                 %end;
+17541 +            ;
+17542 +            label  NAME       = "%sysfunc(sasmsg(sashelp.dmine, meta_name_vlabel, noquote))"
+17543 +                 LABEL        = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, noquote))"
+17544 +                 NRULES       = "%sysfunc(sasmsg(sashelp.dmine, rpt_nrules_vlabel, noquote))"
+17545 +                 IMPORTANCE   = "%sysfunc(sasmsg(sashelp.dmine, rpt_importance_vlabel, noquote))"
+17546 +                 %if "&em_tree_surrexists" ne "" %then %do;
+17547 +                   NSURROGATES  = "%sysfunc(sasmsg(sashelp.dmine, rpt_nsurrogates_vlabel, noquote))"
+17548 +                 %end;
+17549 +                 %if &validexist %then %do;
+17550 +                   VIMPORTANCE = "%sysfunc(sasmsg(sashelp.dmine, rpt_vimportance_vlabel, noquote))"
+17551 +                   RATIO       = "%sysfunc(sasmsg(sashelp.dmine, rpt_ratio_vlabel, noquote))"
+17552 +                 %end;
+17553 +                 %if "&EM_TREE_CVEXISTS" ne "" %then %do;
+17554 +                   VIMPORTANCE = "%sysfunc(sasmsg(sashelp.dmine, rpt_vimportance_vlabel, noquote))"
+17555 +                   CVIMPORTANCE =  "%sysfunc(sasmsg(sashelp.dmine, rpt_cvimport_vlabel, noquote))"
+17556 +                   CVRULES= "%sysfunc(sasmsg(sashelp.dmine, rpt_cvrules_vlabel, noquote))"
+17557 +                   RATIO = "%sysfunc(sasmsg(sashelp.dmine, rpt_ratio_vlabel, noquote))"
+17558 +                 %end;
+17559 +            ;
+17560 +         run;
+17562 +         %EM_REPORT(key=OUTIMPORT, viewtype=DATA, block=MODEL, description=IMPORTANCE, autodisplay=N);
+17563 +      %end;
+17564 +   %end;
+17566 +   %doendm:
+17567 +%mend em_tree_score;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+
+NOTE: The file FLOWREF is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=23Nov2023:22:13:09,
+      Create Time=23Nov2023:22:13:09
+
+NOTE: 505 records were written to the file FLOWREF.
+      The minimum record length was 1.
+      The maximum record length was 77.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The file PUBREF is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMPUBLISHSCORE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=23Nov2023:22:13:09,
+      Create Time=23Nov2023:22:13:09
+
+NOTE: 425 records were written to the file PUBREF.
+      The minimum record length was 1.
+      The maximum record length was 72.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: Fileref TREEFLOW has been deassigned.
+NOTE: Fileref TREEPUB has been deassigned.
+
+NOTE: There were 1 observations read from the data set EMWS3.TREE7_CATEGORY_DM.
+      WHERE _TYPE_='DECPRIOR';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The file FLOWREF is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=24963,
+      Last Modified=23Nov2023:22:13:09,
+      Create Time=23Nov2023:22:13:09
+
+NOTE: 1 record was written to the file FLOWREF.
+      The minimum record length was 12.
+      The maximum record length was 12.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The file PUBREF is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMPUBLISHSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=21390,
+      Last Modified=23Nov2023:22:13:09,
+      Create Time=23Nov2023:22:13:09
+
+NOTE: 1 record was written to the file PUBREF.
+      The minimum record length was 12.
+      The maximum record length was 12.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: Fileref FLOWREF has been deassigned.
+NOTE: Fileref PUBREF has been deassigned.
+
+NOTE: The data set WORK.EM_METACHANGE has 1 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 2 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 2 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 3 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 3 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 4 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 4 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 5 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 6 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 6 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 7 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 7 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 8 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 9 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 10 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 10 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 11 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 11 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 12 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 12 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 13 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 13 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 14 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 14 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 15 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 15 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 16 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 16 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 17 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 17 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 18 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 18 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 19 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 19 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 20 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 20 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 21 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 21 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 22 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 22 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 23 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 23 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 24 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 24 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 25 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 25 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 26 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 26 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 27 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 27 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 28 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 28 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 29 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 29 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 30 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 30 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 31 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 31 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 32 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 32 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 33 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 33 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 34 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 34 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 35 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 35 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 36 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 36 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 37 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 37 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 38 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 38 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 39 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 39 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 40 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 40 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 41 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 41 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 42 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 42 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 43 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 43 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 44 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 44 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 45 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 45 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 46 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 46 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 47 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 47 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 48 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 48 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 49 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 49 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 50 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 50 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 51 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 51 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 52 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 52 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 53 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 53 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 54 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 54 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 55 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 55 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 56 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 12 observations read from the data set EMWS3.TREE7_CATEGORY_DM.
+      WHERE _TYPE_='PREDICTED';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 56 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 57 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 57 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 58 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 58 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 59 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 59 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 60 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 60 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 61 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 61 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 62 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 62 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 63 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 63 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 64 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 64 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 65 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 65 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 66 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 66 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 67 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 67 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 68 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: Variable cvimportance is uninitialized.
+NOTE: Variable nsurrogates is uninitialized.
+NOTE: There were 2 observations read from the data set EMWS3.TREE7_OUTIMPORT.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: Variable NSURROGATES is uninitialized.
+NOTE: Variable CVIMPORTANCE is uninitialized.
+NOTE: Variable CVRULES is uninitialized.
+NOTE: There were 61 observations read from the data set EMWS3.TREE7_OUTIMPORT.
+NOTE: The data set EMWS3.TREE7_OUTIMPORT has 61 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+17568  
+17569  *------------------------------------------------------------*;
+17570  * End SCORE: Tree7;
+17571  *------------------------------------------------------------*;
+
+17572  proc sort data=WORK.EM_METACHANGE;
+17573  by key uname;
+17574  run;
+
+NOTE: There were 68 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 68 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17575  filename x "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\CDELTA_TRAIN.sas";
+17576  data _null_;
+17577  file x;
+17578  put 'if upcase(NAME) = "Q_CATEGORYADVOCATE" then do;';
+17579  put 'ROLE = "ASSESS";';
+17580  put 'end;';
+17581  put 'else ';
+17582  put 'if upcase(NAME) = "Q_CATEGORYBUSINESS_DEVELOPMENT" then do;';
+17583  put 'ROLE = "ASSESS";';
+17584  put 'end;';
+17585  put 'else ';
+17586  put 'if upcase(NAME) = "Q_CATEGORYCONSULTANT" then do;';
+17587  put 'ROLE = "ASSESS";';
+17588  put 'end;';
+17589  put 'else ';
+17590  put 'if upcase(NAME) = "Q_CATEGORYDESIGNER" then do;';
+17591  put 'ROLE = "ASSESS";';
+17592  put 'end;';
+17593  put 'else ';
+17594  put 'if upcase(NAME) = "Q_CATEGORYDIGITAL_MEDIA" then do;';
+17595  put 'ROLE = "ASSESS";';
+17596  put 'end;';
+17597  put 'else ';
+17598  put 'if upcase(NAME) = "Q_CATEGORYFITNESS" then do;';
+17599  put 'ROLE = "ASSESS";';
+17600  put 'end;';
+17601  put 'else ';
+17602  put 'if upcase(NAME) = "Q_CATEGORYHEALTHCARE" then do;';
+17603  put 'ROLE = "ASSESS";';
+17604  put 'end;';
+17605  put 'else ';
+17606  put 'if upcase(NAME) = "Q_CATEGORYHR" then do;';
+17607  put 'ROLE = "ASSESS";';
+17608  put 'end;';
+17609  put 'else ';
+17610  put 'if upcase(NAME) = "Q_CATEGORYINFORMATION_TECHNOLOGY" then do;';
+17611  put 'ROLE = "ASSESS";';
+17612  put 'end;';
+17613  put 'else ';
+17614  put 'if upcase(NAME) = "Q_CATEGORYOTHER" then do;';
+17615  put 'ROLE = "ASSESS";';
+17616  put 'end;';
+17617  put 'else ';
+17618  put 'if upcase(NAME) = "Q_CATEGORYSALES" then do;';
+17619  put 'ROLE = "ASSESS";';
+17620  put 'end;';
+17621  put 'else ';
+17622  put 'if upcase(NAME) = "Q_CATEGORYTEACHER" then do;';
+17623  put 'ROLE = "ASSESS";';
+17624  put 'end;';
+17625  put 'else ';
+17626  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD1" then do;';
+17627  put 'ROLE = "REJECTED";';
+17628  put 'end;';
+17629  put 'else ';
+17630  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD10" then do;';
+17631  put 'ROLE = "REJECTED";';
+17632  put 'end;';
+17633  put 'else ';
+17634  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD11" then do;';
+17635  put 'ROLE = "REJECTED";';
+17636  put 'end;';
+17637  put 'else ';
+17638  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD12" then do;';
+17639  put 'ROLE = "REJECTED";';
+17640  put 'end;';
+17641  put 'else ';
+17642  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD13" then do;';
+17643  put 'ROLE = "REJECTED";';
+17644  put 'end;';
+17645  put 'else ';
+17646  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD14" then do;';
+17647  put 'ROLE = "REJECTED";';
+17648  put 'end;';
+17649  put 'else ';
+17650  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD15" then do;';
+17651  put 'ROLE = "REJECTED";';
+17652  put 'end;';
+17653  put 'else ';
+17654  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD16" then do;';
+17655  put 'ROLE = "REJECTED";';
+17656  put 'end;';
+17657  put 'else ';
+17658  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD17" then do;';
+17659  put 'ROLE = "REJECTED";';
+17660  put 'end;';
+17661  put 'else ';
+17662  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD18" then do;';
+17663  put 'ROLE = "REJECTED";';
+17664  put 'end;';
+17665  put 'else ';
+17666  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD19" then do;';
+17667  put 'ROLE = "REJECTED";';
+17668  put 'end;';
+17669  put 'else ';
+17670  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD20" then do;';
+17671  put 'ROLE = "REJECTED";';
+17672  put 'end;';
+17673  put 'else ';
+17674  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD21" then do;';
+17675  put 'ROLE = "REJECTED";';
+17676  put 'end;';
+17677  put 'else ';
+17678  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD22" then do;';
+17679  put 'ROLE = "REJECTED";';
+17680  put 'end;';
+17681  put 'else ';
+17682  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD23" then do;';
+17683  put 'ROLE = "REJECTED";';
+17684  put 'end;';
+17685  put 'else ';
+17686  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD24" then do;';
+17687  put 'ROLE = "REJECTED";';
+17688  put 'end;';
+17689  put 'else ';
+17690  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD25" then do;';
+17691  put 'ROLE = "REJECTED";';
+17692  put 'end;';
+17693  put 'else ';
+17694  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD26" then do;';
+17695  put 'ROLE = "REJECTED";';
+17696  put 'end;';
+17697  put 'else ';
+17698  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD27" then do;';
+17699  put 'ROLE = "REJECTED";';
+17700  put 'end;';
+17701  put 'else ';
+17702  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD28" then do;';
+17703  put 'ROLE = "REJECTED";';
+17704  put 'end;';
+17705  put 'else ';
+17706  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD29" then do;';
+17707  put 'ROLE = "REJECTED";';
+17708  put 'end;';
+17709  put 'else ';
+17710  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD30" then do;';
+17711  put 'ROLE = "REJECTED";';
+17712  put 'end;';
+17713  put 'else ';
+17714  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD31" then do;';
+17715  put 'ROLE = "REJECTED";';
+17716  put 'end;';
+17717  put 'else ';
+17718  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD32" then do;';
+17719  put 'ROLE = "REJECTED";';
+17720  put 'end;';
+17721  put 'else ';
+17722  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD33" then do;';
+17723  put 'ROLE = "REJECTED";';
+17724  put 'end;';
+17725  put 'else ';
+17726  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD34" then do;';
+17727  put 'ROLE = "REJECTED";';
+17728  put 'end;';
+17729  put 'else ';
+17730  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD35" then do;';
+17731  put 'ROLE = "REJECTED";';
+17732  put 'end;';
+17733  put 'else ';
+17734  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD36" then do;';
+17735  put 'ROLE = "REJECTED";';
+17736  put 'end;';
+17737  put 'else ';
+17738  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD37" then do;';
+17739  put 'ROLE = "REJECTED";';
+17740  put 'end;';
+17741  put 'else ';
+17742  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD38" then do;';
+17743  put 'ROLE = "REJECTED";';
+17744  put 'end;';
+17745  put 'else ';
+17746  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD39" then do;';
+17747  put 'ROLE = "REJECTED";';
+17748  put 'end;';
+17749  put 'else ';
+17750  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD4" then do;';
+17751  put 'ROLE = "REJECTED";';
+17752  put 'end;';
+17753  put 'else ';
+17754  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD40" then do;';
+17755  put 'ROLE = "REJECTED";';
+17756  put 'end;';
+17757  put 'else ';
+17758  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD41" then do;';
+17759  put 'ROLE = "REJECTED";';
+17760  put 'end;';
+17761  put 'else ';
+17762  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD42" then do;';
+17763  put 'ROLE = "REJECTED";';
+17764  put 'end;';
+17765  put 'else ';
+17766  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD43" then do;';
+17767  put 'ROLE = "REJECTED";';
+17768  put 'end;';
+17769  put 'else ';
+17770  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD44" then do;';
+17771  put 'ROLE = "REJECTED";';
+17772  put 'end;';
+17773  put 'else ';
+17774  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD45" then do;';
+17775  put 'ROLE = "REJECTED";';
+17776  put 'end;';
+17777  put 'else ';
+17778  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD46" then do;';
+17779  put 'ROLE = "REJECTED";';
+17780  put 'end;';
+17781  put 'else ';
+17782  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD47" then do;';
+17783  put 'ROLE = "REJECTED";';
+17784  put 'end;';
+17785  put 'else ';
+17786  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD48" then do;';
+17787  put 'ROLE = "REJECTED";';
+17788  put 'end;';
+17789  put 'else ';
+17790  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD49" then do;';
+17791  put 'ROLE = "REJECTED";';
+17792  put 'end;';
+17793  put 'else ';
+17794  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD50" then do;';
+17795  put 'ROLE = "REJECTED";';
+17796  put 'end;';
+17797  put 'else ';
+17798  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD51" then do;';
+17799  put 'ROLE = "REJECTED";';
+17800  put 'end;';
+17801  put 'else ';
+17802  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD52" then do;';
+17803  put 'ROLE = "REJECTED";';
+17804  put 'end;';
+17805  put 'else ';
+17806  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD53" then do;';
+17807  put 'ROLE = "REJECTED";';
+17808  put 'end;';
+17809  put 'else ';
+17810  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD54" then do;';
+17811  put 'ROLE = "REJECTED";';
+17812  put 'end;';
+17813  put 'else ';
+17814  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD55" then do;';
+17815  put 'ROLE = "REJECTED";';
+17816  put 'end;';
+17817  put 'else ';
+17818  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD56" then do;';
+17819  put 'ROLE = "REJECTED";';
+17820  put 'end;';
+17821  put 'else ';
+17822  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD57" then do;';
+17823  put 'ROLE = "REJECTED";';
+17824  put 'end;';
+17825  put 'else ';
+17826  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD58" then do;';
+17827  put 'ROLE = "REJECTED";';
+17828  put 'end;';
+17829  put 'else ';
+17830  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD59" then do;';
+17831  put 'ROLE = "REJECTED";';
+17832  put 'end;';
+17833  put 'else ';
+17834  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD60" then do;';
+17835  put 'ROLE = "REJECTED";';
+17836  put 'end;';
+17837  put 'else ';
+17838  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD61" then do;';
+17839  put 'ROLE = "REJECTED";';
+17840  put 'end;';
+17841  put 'else ';
+17842  put 'if upcase(NAME) = "TEXTCLUSTER11_SVD7" then do;';
+17843  put 'ROLE = "REJECTED";';
+17844  put 'end;';
+17845  put 'else ';
+17846  put 'if upcase(NAME) = "_NODE_" then do;';
+17847  put 'ROLE = "SEGMENT";';
+17848  put 'LEVEL = "NOMINAL";';
+17849  put 'end;';
+17850  run;
+
+NOTE: The file X is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\CDELTA_TRAIN.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=23Nov2023:22:13:10,
+      Create Time=19Nov2023:19:24:25
+
+NOTE: 272 records were written to the file X.
+      The minimum record length was 4.
+      The maximum record length was 61.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+17851  filename x;
+NOTE: Fileref X has been deassigned.
+
+17852  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas";
+17853  *------------------------------------------------------------*;
+17854  * Tree7: Scoring DATA data;
+17855  *------------------------------------------------------------*;
+17856  data EMWS3.Tree7_TRAIN
+17857  / view=EMWS3.Tree7_TRAIN
+17858  ;
+17859  set EMWS3.TextCluster11_TRAIN
+17860  ;
+17861  %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas.
+17862 +****************************************************************;
+17863 +******             DECISION TREE SCORING CODE             ******;
+17864 +****************************************************************;
+17865 +
+17866 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+17867 +LENGTH F_Category  $   22;
+17868 +LENGTH I_Category  $   22;
+17869 +LENGTH U_Category  $   22;
+17870 +LENGTH _WARN_  $    4;
+17871 +
+17872 +******              LABELS FOR NEW VARIABLES              ******;
+17873 +label _NODE_ = 'Node' ;
+17874 +label _LEAF_ = 'Leaf' ;
+17875 +label P_CategoryHR = 'Predicted: Category=HR' ;
+17876 +label P_CategoryDESIGNER = 'Predicted: Category=DESIGNER' ;
+17877 +label P_CategoryINFORMATION_TECHNOLOGY =
+17878 +'Predicted: Category=INFORMATION-TECHNOLOGY' ;
+17879 +label P_CategoryTEACHER = 'Predicted: Category=TEACHER' ;
+17880 +label P_CategoryADVOCATE = 'Predicted: Category=ADVOCATE' ;
+17881 +label P_CategoryBUSINESS_DEVELOPMENT =
+17882 +'Predicted: Category=BUSINESS-DEVELOPMENT' ;
+17883 +label P_CategoryHEALTHCARE = 'Predicted: Category=HEALTHCARE' ;
+17884 +label P_CategoryFITNESS = 'Predicted: Category=FITNESS' ;
+17885 +label P_CategoryOTHER = 'Predicted: Category=OTHER' ;
+17886 +label P_CategorySALES = 'Predicted: Category=SALES' ;
+17887 +label P_CategoryCONSULTANT = 'Predicted: Category=CONSULTANT' ;
+17888 +label P_CategoryDIGITAL_MEDIA = 'Predicted: Category=DIGITAL-MEDIA' ;
+17889 +label Q_CategoryHR = 'Unadjusted P: Category=HR' ;
+17890 +label Q_CategoryDESIGNER = 'Unadjusted P: Category=DESIGNER' ;
+17891 +label Q_CategoryINFORMATION_TECHNOLOGY =
+17892 +'Unadjusted P: Category=INFORMATION-TECHNOLOGY' ;
+17893 +label Q_CategoryTEACHER = 'Unadjusted P: Category=TEACHER' ;
+17894 +label Q_CategoryADVOCATE = 'Unadjusted P: Category=ADVOCATE' ;
+17895 +label Q_CategoryBUSINESS_DEVELOPMENT =
+17896 +'Unadjusted P: Category=BUSINESS-DEVELOPMENT' ;
+17897 +label Q_CategoryHEALTHCARE = 'Unadjusted P: Category=HEALTHCARE' ;
+17898 +label Q_CategoryFITNESS = 'Unadjusted P: Category=FITNESS' ;
+17899 +label Q_CategoryOTHER = 'Unadjusted P: Category=OTHER' ;
+17900 +label Q_CategorySALES = 'Unadjusted P: Category=SALES' ;
+17901 +label Q_CategoryCONSULTANT = 'Unadjusted P: Category=CONSULTANT' ;
+17902 +label Q_CategoryDIGITAL_MEDIA = 'Unadjusted P: Category=DIGITAL-MEDIA' ;
+17903 +label V_CategoryHR = 'Validated: Category=HR' ;
+17904 +label V_CategoryDESIGNER = 'Validated: Category=DESIGNER' ;
+17905 +label V_CategoryINFORMATION_TECHNOLOGY =
+17906 +'Validated: Category=INFORMATION-TECHNOLOGY' ;
+17907 +label V_CategoryTEACHER = 'Validated: Category=TEACHER' ;
+17908 +label V_CategoryADVOCATE = 'Validated: Category=ADVOCATE' ;
+17909 +label V_CategoryBUSINESS_DEVELOPMENT =
+17910 +'Validated: Category=BUSINESS-DEVELOPMENT' ;
+17911 +label V_CategoryHEALTHCARE = 'Validated: Category=HEALTHCARE' ;
+17912 +label V_CategoryFITNESS = 'Validated: Category=FITNESS' ;
+17913 +label V_CategoryOTHER = 'Validated: Category=OTHER' ;
+17914 +label V_CategorySALES = 'Validated: Category=SALES' ;
+17915 +label V_CategoryCONSULTANT = 'Validated: Category=CONSULTANT' ;
+17916 +label V_CategoryDIGITAL_MEDIA = 'Validated: Category=DIGITAL-MEDIA' ;
+17917 +label R_CategoryHR = 'Residual: Category=HR' ;
+17918 +label R_CategoryDESIGNER = 'Residual: Category=DESIGNER' ;
+17919 +label R_CategoryINFORMATION_TECHNOLOGY =
+17920 +'Residual: Category=INFORMATION-TECHNOLOGY' ;
+17921 +label R_CategoryTEACHER = 'Residual: Category=TEACHER' ;
+17922 +label R_CategoryADVOCATE = 'Residual: Category=ADVOCATE' ;
+17923 +label R_CategoryBUSINESS_DEVELOPMENT =
+17924 +'Residual: Category=BUSINESS-DEVELOPMENT' ;
+17925 +label R_CategoryHEALTHCARE = 'Residual: Category=HEALTHCARE' ;
+17926 +label R_CategoryFITNESS = 'Residual: Category=FITNESS' ;
+17927 +label R_CategoryOTHER = 'Residual: Category=OTHER' ;
+17928 +label R_CategorySALES = 'Residual: Category=SALES' ;
+17929 +label R_CategoryCONSULTANT = 'Residual: Category=CONSULTANT' ;
+17930 +label R_CategoryDIGITAL_MEDIA = 'Residual: Category=DIGITAL-MEDIA' ;
+17931 +label F_Category = 'From: Category' ;
+17932 +label I_Category = 'Into: Category' ;
+17933 +label U_Category = 'Unnormalized Into: Category' ;
+17934 +label _WARN_ = 'Warnings' ;
+17935 +
+17936 +
+17937 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+17938 +LENGTH _ARBFMT_22 $     22; DROP _ARBFMT_22;
+17939 +_ARBFMT_22 = ' '; /* Initialize to avoid warning. */
+17940 +
+17941 +
+17942 +_ARBFMT_22 = PUT( Category , $22.);
+17943 + %DMNORMCP( _ARBFMT_22, F_Category );
+17944 +
+17945 +******             ASSIGN OBSERVATION TO NODE             ******;
+17946 +IF  NOT MISSING(TextCluster11_SVD3 ) AND
+17947 +      0.28196358819982 <= TextCluster11_SVD3  THEN DO;
+17948 +  _NODE_  =                    3;
+17949 +  _LEAF_  =                    8;
+17950 +  P_CategoryHR  =     0.85964912280701;
+17951 +  P_CategoryDESIGNER  =                    0;
+17952 +  P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+17953 +  P_CategoryTEACHER  =                    0;
+17954 +  P_CategoryADVOCATE  =     0.03508771929824;
+17955 +  P_CategoryBUSINESS_DEVELOPMENT  =     0.01754385964912;
+17956 +  P_CategoryHEALTHCARE  =     0.03508771929824;
+17957 +  P_CategoryFITNESS  =     0.01754385964912;
+17958 +  P_CategoryOTHER  =     0.01754385964912;
+17959 +  P_CategorySALES  =                    0;
+17960 +  P_CategoryCONSULTANT  =     0.01754385964912;
+17961 +  P_CategoryDIGITAL_MEDIA  =                    0;
+17962 +  Q_CategoryHR  =     0.85964912280701;
+17963 +  Q_CategoryDESIGNER  =                    0;
+17964 +  Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+17965 +  Q_CategoryTEACHER  =                    0;
+17966 +  Q_CategoryADVOCATE  =     0.03508771929824;
+17967 +  Q_CategoryBUSINESS_DEVELOPMENT  =     0.01754385964912;
+17968 +  Q_CategoryHEALTHCARE  =     0.03508771929824;
+17969 +  Q_CategoryFITNESS  =     0.01754385964912;
+17970 +  Q_CategoryOTHER  =     0.01754385964912;
+17971 +  Q_CategorySALES  =                    0;
+17972 +  Q_CategoryCONSULTANT  =     0.01754385964912;
+17973 +  Q_CategoryDIGITAL_MEDIA  =                    0;
+17974 +  V_CategoryHR  =     0.78378378378378;
+17975 +  V_CategoryDESIGNER  =                    0;
+17976 +  V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+17977 +  V_CategoryTEACHER  =                    0;
+17978 +  V_CategoryADVOCATE  =                    0;
+17979 +  V_CategoryBUSINESS_DEVELOPMENT  =     0.02702702702702;
+17980 +  V_CategoryHEALTHCARE  =     0.08108108108108;
+17981 +  V_CategoryFITNESS  =     0.02702702702702;
+17982 +  V_CategoryOTHER  =                    0;
+17983 +  V_CategorySALES  =                    0;
+17984 +  V_CategoryCONSULTANT  =     0.05405405405405;
+17985 +  V_CategoryDIGITAL_MEDIA  =     0.02702702702702;
+17986 +  I_Category  = 'HR' ;
+17987 +  U_Category  = 'HR' ;
+17988 +  END;
+17989 +ELSE DO;
+17990 +  IF  NOT MISSING(TextCluster11_SVD6 ) AND
+17991 +    TextCluster11_SVD6  <    -0.24286093887231 THEN DO;
+17992 +    IF  NOT MISSING(TextCluster11_SVD9 ) AND
+17993 +          0.13101413665189 <= TextCluster11_SVD9  THEN DO;
+17994 +      _NODE_  =                    9;
+17995 +      _LEAF_  =                    2;
+17996 +      P_CategoryHR  =                    0;
+17997 +      P_CategoryDESIGNER  =                  0.4;
+17998 +      P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+17999 +      P_CategoryTEACHER  =                    0;
+18000 +      P_CategoryADVOCATE  =                    0;
+18001 +      P_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18002 +      P_CategoryHEALTHCARE  =                    0;
+18003 +      P_CategoryFITNESS  =                    0;
+18004 +      P_CategoryOTHER  =                    0;
+18005 +      P_CategorySALES  =                    0;
+18006 +      P_CategoryCONSULTANT  =                    0;
+18007 +      P_CategoryDIGITAL_MEDIA  =                  0.6;
+18008 +      Q_CategoryHR  =                    0;
+18009 +      Q_CategoryDESIGNER  =                  0.4;
+18010 +      Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18011 +      Q_CategoryTEACHER  =                    0;
+18012 +      Q_CategoryADVOCATE  =                    0;
+18013 +      Q_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18014 +      Q_CategoryHEALTHCARE  =                    0;
+18015 +      Q_CategoryFITNESS  =                    0;
+18016 +      Q_CategoryOTHER  =                    0;
+18017 +      Q_CategorySALES  =                    0;
+18018 +      Q_CategoryCONSULTANT  =                    0;
+18019 +      Q_CategoryDIGITAL_MEDIA  =                  0.6;
+18020 +      V_CategoryHR  =                    0;
+18021 +      V_CategoryDESIGNER  =                 0.25;
+18022 +      V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18023 +      V_CategoryTEACHER  =                    0;
+18024 +      V_CategoryADVOCATE  =                 0.25;
+18025 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18026 +      V_CategoryHEALTHCARE  =                    0;
+18027 +      V_CategoryFITNESS  =                    0;
+18028 +      V_CategoryOTHER  =                    0;
+18029 +      V_CategorySALES  =                    0;
+18030 +      V_CategoryCONSULTANT  =                    0;
+18031 +      V_CategoryDIGITAL_MEDIA  =                  0.5;
+18032 +      I_Category  = 'DIGITAL-MEDIA' ;
+18033 +      U_Category  = 'DIGITAL-MEDIA' ;
+18034 +      END;
+18035 +    ELSE DO;
+18036 +      _NODE_  =                    8;
+18037 +      _LEAF_  =                    1;
+18038 +      P_CategoryHR  =                    0;
+18039 +      P_CategoryDESIGNER  =     0.93333333333333;
+18040 +      P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18041 +      P_CategoryTEACHER  =                    0;
+18042 +      P_CategoryADVOCATE  =                    0;
+18043 +      P_CategoryBUSINESS_DEVELOPMENT  =     0.02222222222222;
+18044 +      P_CategoryHEALTHCARE  =                    0;
+18045 +      P_CategoryFITNESS  =                    0;
+18046 +      P_CategoryOTHER  =                    0;
+18047 +      P_CategorySALES  =     0.04444444444444;
+18048 +      P_CategoryCONSULTANT  =                    0;
+18049 +      P_CategoryDIGITAL_MEDIA  =                    0;
+18050 +      Q_CategoryHR  =                    0;
+18051 +      Q_CategoryDESIGNER  =     0.93333333333333;
+18052 +      Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18053 +      Q_CategoryTEACHER  =                    0;
+18054 +      Q_CategoryADVOCATE  =                    0;
+18055 +      Q_CategoryBUSINESS_DEVELOPMENT  =     0.02222222222222;
+18056 +      Q_CategoryHEALTHCARE  =                    0;
+18057 +      Q_CategoryFITNESS  =                    0;
+18058 +      Q_CategoryOTHER  =                    0;
+18059 +      Q_CategorySALES  =     0.04444444444444;
+18060 +      Q_CategoryCONSULTANT  =                    0;
+18061 +      Q_CategoryDIGITAL_MEDIA  =                    0;
+18062 +      V_CategoryHR  =                    0;
+18063 +      V_CategoryDESIGNER  =     0.86666666666666;
+18064 +      V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18065 +      V_CategoryTEACHER  =     0.06666666666666;
+18066 +      V_CategoryADVOCATE  =                    0;
+18067 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18068 +      V_CategoryHEALTHCARE  =                    0;
+18069 +      V_CategoryFITNESS  =                    0;
+18070 +      V_CategoryOTHER  =                    0;
+18071 +      V_CategorySALES  =     0.06666666666666;
+18072 +      V_CategoryCONSULTANT  =                    0;
+18073 +      V_CategoryDIGITAL_MEDIA  =                    0;
+18074 +      I_Category  = 'DESIGNER' ;
+18075 +      U_Category  = 'DESIGNER' ;
+18076 +      END;
+18077 +    END;
+18078 +  ELSE DO;
+18079 +    IF  NOT MISSING(TextCluster11_SVD3 ) AND
+18080 +      TextCluster11_SVD3  <    -0.42848187206424 THEN DO;
+18081 +      _NODE_  =                   10;
+18082 +      _LEAF_  =                    3;
+18083 +      P_CategoryHR  =                    0;
+18084 +      P_CategoryDESIGNER  =                    0;
+18085 +      P_CategoryINFORMATION_TECHNOLOGY  =     0.01960784313725;
+18086 +      P_CategoryTEACHER  =     0.84313725490196;
+18087 +      P_CategoryADVOCATE  =     0.05882352941176;
+18088 +      P_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18089 +      P_CategoryHEALTHCARE  =     0.01960784313725;
+18090 +      P_CategoryFITNESS  =     0.05882352941176;
+18091 +      P_CategoryOTHER  =                    0;
+18092 +      P_CategorySALES  =                    0;
+18093 +      P_CategoryCONSULTANT  =                    0;
+18094 +      P_CategoryDIGITAL_MEDIA  =                    0;
+18095 +      Q_CategoryHR  =                    0;
+18096 +      Q_CategoryDESIGNER  =                    0;
+18097 +      Q_CategoryINFORMATION_TECHNOLOGY  =     0.01960784313725;
+18098 +      Q_CategoryTEACHER  =     0.84313725490196;
+18099 +      Q_CategoryADVOCATE  =     0.05882352941176;
+18100 +      Q_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18101 +      Q_CategoryHEALTHCARE  =     0.01960784313725;
+18102 +      Q_CategoryFITNESS  =     0.05882352941176;
+18103 +      Q_CategoryOTHER  =                    0;
+18104 +      Q_CategorySALES  =                    0;
+18105 +      Q_CategoryCONSULTANT  =                    0;
+18106 +      Q_CategoryDIGITAL_MEDIA  =                    0;
+18107 +      V_CategoryHR  =                    0;
+18108 +      V_CategoryDESIGNER  =                    0;
+18109 +      V_CategoryINFORMATION_TECHNOLOGY  =     0.02564102564102;
+18110 +      V_CategoryTEACHER  =     0.71794871794871;
+18111 +      V_CategoryADVOCATE  =     0.05128205128205;
+18112 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18113 +      V_CategoryHEALTHCARE  =     0.02564102564102;
+18114 +      V_CategoryFITNESS  =     0.05128205128205;
+18115 +      V_CategoryOTHER  =      0.1025641025641;
+18116 +      V_CategorySALES  =     0.02564102564102;
+18117 +      V_CategoryCONSULTANT  =                    0;
+18118 +      V_CategoryDIGITAL_MEDIA  =                    0;
+18119 +      I_Category  = 'TEACHER' ;
+18120 +      U_Category  = 'TEACHER' ;
+18121 +      END;
+18122 +    ELSE DO;
+18123 +      IF  NOT MISSING(TextCluster11_SVD8 ) AND
+18124 +            0.12070736690043 <= TextCluster11_SVD8  THEN DO;
+18125 +        _NODE_  =                   15;
+18126 +        _LEAF_  =                    7;
+18127 +        P_CategoryHR  =                    0;
+18128 +        P_CategoryDESIGNER  =                    0;
+18129 +        P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18130 +        P_CategoryTEACHER  =                    0;
+18131 +        P_CategoryADVOCATE  =     0.06521739130434;
+18132 +        P_CategoryBUSINESS_DEVELOPMENT  =     0.02173913043478;
+18133 +        P_CategoryHEALTHCARE  =                    0;
+18134 +        P_CategoryFITNESS  =     0.89130434782608;
+18135 +        P_CategoryOTHER  =     0.02173913043478;
+18136 +        P_CategorySALES  =                    0;
+18137 +        P_CategoryCONSULTANT  =                    0;
+18138 +        P_CategoryDIGITAL_MEDIA  =                    0;
+18139 +        Q_CategoryHR  =                    0;
+18140 +        Q_CategoryDESIGNER  =                    0;
+18141 +        Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18142 +        Q_CategoryTEACHER  =                    0;
+18143 +        Q_CategoryADVOCATE  =     0.06521739130434;
+18144 +        Q_CategoryBUSINESS_DEVELOPMENT  =     0.02173913043478;
+18145 +        Q_CategoryHEALTHCARE  =                    0;
+18146 +        Q_CategoryFITNESS  =     0.89130434782608;
+18147 +        Q_CategoryOTHER  =     0.02173913043478;
+18148 +        Q_CategorySALES  =                    0;
+18149 +        Q_CategoryCONSULTANT  =                    0;
+18150 +        Q_CategoryDIGITAL_MEDIA  =                    0;
+18151 +        V_CategoryHR  =                    0;
+18152 +        V_CategoryDESIGNER  =     0.03225806451612;
+18153 +        V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18154 +        V_CategoryTEACHER  =                    0;
+18155 +        V_CategoryADVOCATE  =                    0;
+18156 +        V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18157 +        V_CategoryHEALTHCARE  =     0.03225806451612;
+18158 +        V_CategoryFITNESS  =     0.80645161290322;
+18159 +        V_CategoryOTHER  =     0.03225806451612;
+18160 +        V_CategorySALES  =     0.03225806451612;
+18161 +        V_CategoryCONSULTANT  =     0.03225806451612;
+18162 +        V_CategoryDIGITAL_MEDIA  =     0.03225806451612;
+18163 +        I_Category  = 'FITNESS' ;
+18164 +        U_Category  = 'FITNESS' ;
+18165 +        END;
+18166 +      ELSE DO;
+18167 +        IF  NOT MISSING(TextCluster11_SVD2 ) AND
+18168 +              0.23324615863228 <= TextCluster11_SVD2  THEN DO;
+18169 +          _NODE_  =                   17;
+18170 +          _LEAF_  =                    6;
+18171 +          P_CategoryHR  =                    0;
+18172 +          P_CategoryDESIGNER  =     0.01162790697674;
+18173 +          P_CategoryINFORMATION_TECHNOLOGY  =      0.5813953488372;
+18174 +          P_CategoryTEACHER  =                    0;
+18175 +          P_CategoryADVOCATE  =     0.02325581395348;
+18176 +          P_CategoryBUSINESS_DEVELOPMENT  =     0.01162790697674;
+18177 +          P_CategoryHEALTHCARE  =     0.03488372093023;
+18178 +          P_CategoryFITNESS  =                    0;
+18179 +          P_CategoryOTHER  =     0.04651162790697;
+18180 +          P_CategorySALES  =     0.01162790697674;
+18181 +          P_CategoryCONSULTANT  =     0.23255813953488;
+18182 +          P_CategoryDIGITAL_MEDIA  =     0.04651162790697;
+18183 +          Q_CategoryHR  =                    0;
+18184 +          Q_CategoryDESIGNER  =     0.01162790697674;
+18185 +          Q_CategoryINFORMATION_TECHNOLOGY  =      0.5813953488372;
+18186 +          Q_CategoryTEACHER  =                    0;
+18187 +          Q_CategoryADVOCATE  =     0.02325581395348;
+18188 +          Q_CategoryBUSINESS_DEVELOPMENT  =     0.01162790697674;
+18189 +          Q_CategoryHEALTHCARE  =     0.03488372093023;
+18190 +          Q_CategoryFITNESS  =                    0;
+18191 +          Q_CategoryOTHER  =     0.04651162790697;
+18192 +          Q_CategorySALES  =     0.01162790697674;
+18193 +          Q_CategoryCONSULTANT  =     0.23255813953488;
+18194 +          Q_CategoryDIGITAL_MEDIA  =     0.04651162790697;
+18195 +          V_CategoryHR  =                    0;
+18196 +          V_CategoryDESIGNER  =                    0;
+18197 +          V_CategoryINFORMATION_TECHNOLOGY  =     0.63461538461538;
+18198 +          V_CategoryTEACHER  =                    0;
+18199 +          V_CategoryADVOCATE  =     0.01923076923076;
+18200 +          V_CategoryBUSINESS_DEVELOPMENT  =     0.03846153846153;
+18201 +          V_CategoryHEALTHCARE  =     0.01923076923076;
+18202 +          V_CategoryFITNESS  =                    0;
+18203 +          V_CategoryOTHER  =      0.0576923076923;
+18204 +          V_CategorySALES  =     0.01923076923076;
+18205 +          V_CategoryCONSULTANT  =     0.13461538461538;
+18206 +          V_CategoryDIGITAL_MEDIA  =     0.07692307692307;
+18207 +          I_Category  = 'INFORMATION-TECHNOLOGY' ;
+18208 +          U_Category  = 'INFORMATION-TECHNOLOGY' ;
+18209 +          END;
+18210 +        ELSE DO;
+18211 +          IF  NOT MISSING(TextCluster11_SVD5 ) AND
+18212 +                 0.0876603538126 <= TextCluster11_SVD5  THEN DO;
+18213 +            _NODE_  =                   19;
+18214 +            _LEAF_  =                    5;
+18215 +            P_CategoryHR  =     0.03333333333333;
+18216 +            P_CategoryDESIGNER  =     0.01666666666666;
+18217 +            P_CategoryINFORMATION_TECHNOLOGY  =     0.01666666666666;
+18218 +            P_CategoryTEACHER  =     0.01666666666666;
+18219 +            P_CategoryADVOCATE  =                    0;
+18220 +            P_CategoryBUSINESS_DEVELOPMENT  =     0.11666666666666;
+18221 +            P_CategoryHEALTHCARE  =     0.03333333333333;
+18222 +            P_CategoryFITNESS  =                    0;
+18223 +            P_CategoryOTHER  =     0.08333333333333;
+18224 +            P_CategorySALES  =                    0;
+18225 +            P_CategoryCONSULTANT  =                  0.1;
+18226 +            P_CategoryDIGITAL_MEDIA  =     0.58333333333333;
+18227 +            Q_CategoryHR  =     0.03333333333333;
+18228 +            Q_CategoryDESIGNER  =     0.01666666666666;
+18229 +            Q_CategoryINFORMATION_TECHNOLOGY  =     0.01666666666666;
+18230 +            Q_CategoryTEACHER  =     0.01666666666666;
+18231 +            Q_CategoryADVOCATE  =                    0;
+18232 +            Q_CategoryBUSINESS_DEVELOPMENT  =     0.11666666666666;
+18233 +            Q_CategoryHEALTHCARE  =     0.03333333333333;
+18234 +            Q_CategoryFITNESS  =                    0;
+18235 +            Q_CategoryOTHER  =     0.08333333333333;
+18236 +            Q_CategorySALES  =                    0;
+18237 +            Q_CategoryCONSULTANT  =                  0.1;
+18238 +            Q_CategoryDIGITAL_MEDIA  =     0.58333333333333;
+18239 +            V_CategoryHR  =     0.03333333333333;
+18240 +            V_CategoryDESIGNER  =     0.03333333333333;
+18241 +            V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18242 +            V_CategoryTEACHER  =                    0;
+18243 +            V_CategoryADVOCATE  =                    0;
+18244 +            V_CategoryBUSINESS_DEVELOPMENT  =                  0.1;
+18245 +            V_CategoryHEALTHCARE  =                    0;
+18246 +            V_CategoryFITNESS  =                    0;
+18247 +            V_CategoryOTHER  =                    0;
+18248 +            V_CategorySALES  =     0.06666666666666;
+18249 +            V_CategoryCONSULTANT  =                  0.2;
+18250 +            V_CategoryDIGITAL_MEDIA  =     0.56666666666666;
+18251 +            I_Category  = 'DIGITAL-MEDIA' ;
+18252 +            U_Category  = 'DIGITAL-MEDIA' ;
+18253 +            END;
+18254 +          ELSE DO;
+18255 +            _NODE_  =                   18;
+18256 +            _LEAF_  =                    4;
+18257 +            P_CategoryHR  =     0.01234567901234;
+18258 +            P_CategoryDESIGNER  =      0.0216049382716;
+18259 +            P_CategoryINFORMATION_TECHNOLOGY  =      0.0216049382716;
+18260 +            P_CategoryTEACHER  =     0.01851851851851;
+18261 +            P_CategoryADVOCATE  =     0.14506172839506;
+18262 +            P_CategoryBUSINESS_DEVELOPMENT  =     0.15123456790123;
+18263 +            P_CategoryHEALTHCARE  =     0.15123456790123;
+18264 +            P_CategoryFITNESS  =     0.04012345679012;
+18265 +            P_CategoryOTHER  =     0.16049382716049;
+18266 +            P_CategorySALES  =     0.16975308641975;
+18267 +            P_CategoryCONSULTANT  =     0.09259259259259;
+18268 +            P_CategoryDIGITAL_MEDIA  =     0.01543209876543;
+18269 +            Q_CategoryHR  =     0.01234567901234;
+18270 +            Q_CategoryDESIGNER  =      0.0216049382716;
+18271 +            Q_CategoryINFORMATION_TECHNOLOGY  =      0.0216049382716;
+18272 +            Q_CategoryTEACHER  =     0.01851851851851;
+18273 +            Q_CategoryADVOCATE  =     0.14506172839506;
+18274 +            Q_CategoryBUSINESS_DEVELOPMENT  =     0.15123456790123;
+18275 +            Q_CategoryHEALTHCARE  =     0.15123456790123;
+18276 +            Q_CategoryFITNESS  =     0.04012345679012;
+18277 +            Q_CategoryOTHER  =     0.16049382716049;
+18278 +            Q_CategorySALES  =     0.16975308641975;
+18279 +            Q_CategoryCONSULTANT  =     0.09259259259259;
+18280 +            Q_CategoryDIGITAL_MEDIA  =     0.01543209876543;
+18281 +            V_CategoryHR  =     0.01098901098901;
+18282 +            V_CategoryDESIGNER  =     0.01098901098901;
+18283 +            V_CategoryINFORMATION_TECHNOLOGY  =     0.01098901098901;
+18284 +            V_CategoryTEACHER  =      0.0054945054945;
+18285 +            V_CategoryADVOCATE  =     0.17032967032967;
+18286 +            V_CategoryBUSINESS_DEVELOPMENT  =     0.16483516483516;
+18287 +            V_CategoryHEALTHCARE  =     0.14835164835164;
+18288 +            V_CategoryFITNESS  =     0.03846153846153;
+18289 +            V_CategoryOTHER  =     0.16483516483516;
+18290 +            V_CategorySALES  =     0.14835164835164;
+18291 +            V_CategoryCONSULTANT  =      0.1043956043956;
+18292 +            V_CategoryDIGITAL_MEDIA  =     0.02197802197802;
+18293 +            I_Category  = 'SALES' ;
+18294 +            U_Category  = 'SALES' ;
+18295 +            END;
+18296 +          END;
+18297 +        END;
+18298 +      END;
+18299 +    END;
+18300 +  END;
+18301 +
+18302 +*****  RESIDUALS R_ *************;
+18303 +IF  F_Category  NE 'HR'
+18304 +AND F_Category  NE 'DESIGNER'
+18305 +AND F_Category  NE 'INFORMATION-TECHNOLOGY'
+18306 +AND F_Category  NE 'TEACHER'
+18307 +AND F_Category  NE 'ADVOCATE'
+18308 +AND F_Category  NE 'BUSINESS-DEVELOPMENT'
+18309 +AND F_Category  NE 'HEALTHCARE'
+18310 +AND F_Category  NE 'FITNESS'
+18311 +AND F_Category  NE 'OTHER'
+18312 +AND F_Category  NE 'SALES'
+18313 +AND F_Category  NE 'CONSULTANT'
+18314 +AND F_Category  NE 'DIGITAL-MEDIA'  THEN DO;
+18315 +        R_CategoryHR  = .;
+18316 +        R_CategoryDESIGNER  = .;
+18317 +        R_CategoryINFORMATION_TECHNOLOGY  = .;
+18318 +        R_CategoryTEACHER  = .;
+18319 +        R_CategoryADVOCATE  = .;
+18320 +        R_CategoryBUSINESS_DEVELOPMENT  = .;
+18321 +        R_CategoryHEALTHCARE  = .;
+18322 +        R_CategoryFITNESS  = .;
+18323 +        R_CategoryOTHER  = .;
+18324 +        R_CategorySALES  = .;
+18325 +        R_CategoryCONSULTANT  = .;
+18326 +        R_CategoryDIGITAL_MEDIA  = .;
+18327 + END;
+18328 + ELSE DO;
+18329 +       R_CategoryHR  =  -P_CategoryHR ;
+18330 +       R_CategoryDESIGNER  =  -P_CategoryDESIGNER ;
+18331 +       R_CategoryINFORMATION_TECHNOLOGY  =  -P_CategoryINFORMATION_TECHNOLOGY
+18332 +         ;
+18333 +       R_CategoryTEACHER  =  -P_CategoryTEACHER ;
+18334 +       R_CategoryADVOCATE  =  -P_CategoryADVOCATE ;
+18335 +       R_CategoryBUSINESS_DEVELOPMENT  =  -P_CategoryBUSINESS_DEVELOPMENT ;
+18336 +       R_CategoryHEALTHCARE  =  -P_CategoryHEALTHCARE ;
+18337 +       R_CategoryFITNESS  =  -P_CategoryFITNESS ;
+18338 +       R_CategoryOTHER  =  -P_CategoryOTHER ;
+18339 +       R_CategorySALES  =  -P_CategorySALES ;
+18340 +       R_CategoryCONSULTANT  =  -P_CategoryCONSULTANT ;
+18341 +       R_CategoryDIGITAL_MEDIA  =  -P_CategoryDIGITAL_MEDIA ;
+18342 +       SELECT( F_Category  );
+18343 +          WHEN( 'HR'  ) R_CategoryHR  = R_CategoryHR  +1;
+18344 +          WHEN( 'DESIGNER'  ) R_CategoryDESIGNER  = R_CategoryDESIGNER  +1;
+18345 +          WHEN( 'INFORMATION-TECHNOLOGY'  ) R_CategoryINFORMATION_TECHNOLOGY
+18346 +          = R_CategoryINFORMATION_TECHNOLOGY  +1;
+18347 +          WHEN( 'TEACHER'  ) R_CategoryTEACHER  = R_CategoryTEACHER  +1;
+18348 +          WHEN( 'ADVOCATE'  ) R_CategoryADVOCATE  = R_CategoryADVOCATE  +1;
+18349 +          WHEN( 'BUSINESS-DEVELOPMENT'  ) R_CategoryBUSINESS_DEVELOPMENT  =
+18350 +        R_CategoryBUSINESS_DEVELOPMENT  +1;
+18351 +          WHEN( 'HEALTHCARE'  ) R_CategoryHEALTHCARE  = R_CategoryHEALTHCARE
+18352 +          +1;
+18353 +          WHEN( 'FITNESS'  ) R_CategoryFITNESS  = R_CategoryFITNESS  +1;
+18354 +          WHEN( 'OTHER'  ) R_CategoryOTHER  = R_CategoryOTHER  +1;
+18355 +          WHEN( 'SALES'  ) R_CategorySALES  = R_CategorySALES  +1;
+18356 +          WHEN( 'CONSULTANT'  ) R_CategoryCONSULTANT  = R_CategoryCONSULTANT
+18357 +          +1;
+18358 +          WHEN( 'DIGITAL-MEDIA'  ) R_CategoryDIGITAL_MEDIA  =
+18359 +        R_CategoryDIGITAL_MEDIA  +1;
+18360 +       END;
+18361 + END;
+18362 +
+18363 +****************************************************************;
+18364 +******          END OF DECISION TREE SCORING CODE         ******;
+18365 +****************************************************************;
+18366 +
+18367 +drop _LEAF_;
+NOTE: %INCLUDE (level 1) ending.
+18368  run;
+
+NOTE: DATA STEP view saved on file EMWS3.TREE7_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+18369  quit;
+18370  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+18371  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas";
+18372  *------------------------------------------------------------*;
+18373  * Tree7: Scoring VALIDATE data;
+18374  *------------------------------------------------------------*;
+18375  data EMWS3.Tree7_VALIDATE
+18376  / view=EMWS3.Tree7_VALIDATE
+18377  ;
+18378  set EMWS3.TextCluster11_VALIDATE
+18379  ;
+18380  %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas.
+18381 +****************************************************************;
+18382 +******             DECISION TREE SCORING CODE             ******;
+18383 +****************************************************************;
+18384 +
+18385 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+18386 +LENGTH F_Category  $   22;
+18387 +LENGTH I_Category  $   22;
+18388 +LENGTH U_Category  $   22;
+18389 +LENGTH _WARN_  $    4;
+18390 +
+18391 +******              LABELS FOR NEW VARIABLES              ******;
+18392 +label _NODE_ = 'Node' ;
+18393 +label _LEAF_ = 'Leaf' ;
+18394 +label P_CategoryHR = 'Predicted: Category=HR' ;
+18395 +label P_CategoryDESIGNER = 'Predicted: Category=DESIGNER' ;
+18396 +label P_CategoryINFORMATION_TECHNOLOGY =
+18397 +'Predicted: Category=INFORMATION-TECHNOLOGY' ;
+18398 +label P_CategoryTEACHER = 'Predicted: Category=TEACHER' ;
+18399 +label P_CategoryADVOCATE = 'Predicted: Category=ADVOCATE' ;
+18400 +label P_CategoryBUSINESS_DEVELOPMENT =
+18401 +'Predicted: Category=BUSINESS-DEVELOPMENT' ;
+18402 +label P_CategoryHEALTHCARE = 'Predicted: Category=HEALTHCARE' ;
+18403 +label P_CategoryFITNESS = 'Predicted: Category=FITNESS' ;
+18404 +label P_CategoryOTHER = 'Predicted: Category=OTHER' ;
+18405 +label P_CategorySALES = 'Predicted: Category=SALES' ;
+18406 +label P_CategoryCONSULTANT = 'Predicted: Category=CONSULTANT' ;
+18407 +label P_CategoryDIGITAL_MEDIA = 'Predicted: Category=DIGITAL-MEDIA' ;
+18408 +label Q_CategoryHR = 'Unadjusted P: Category=HR' ;
+18409 +label Q_CategoryDESIGNER = 'Unadjusted P: Category=DESIGNER' ;
+18410 +label Q_CategoryINFORMATION_TECHNOLOGY =
+18411 +'Unadjusted P: Category=INFORMATION-TECHNOLOGY' ;
+18412 +label Q_CategoryTEACHER = 'Unadjusted P: Category=TEACHER' ;
+18413 +label Q_CategoryADVOCATE = 'Unadjusted P: Category=ADVOCATE' ;
+18414 +label Q_CategoryBUSINESS_DEVELOPMENT =
+18415 +'Unadjusted P: Category=BUSINESS-DEVELOPMENT' ;
+18416 +label Q_CategoryHEALTHCARE = 'Unadjusted P: Category=HEALTHCARE' ;
+18417 +label Q_CategoryFITNESS = 'Unadjusted P: Category=FITNESS' ;
+18418 +label Q_CategoryOTHER = 'Unadjusted P: Category=OTHER' ;
+18419 +label Q_CategorySALES = 'Unadjusted P: Category=SALES' ;
+18420 +label Q_CategoryCONSULTANT = 'Unadjusted P: Category=CONSULTANT' ;
+18421 +label Q_CategoryDIGITAL_MEDIA = 'Unadjusted P: Category=DIGITAL-MEDIA' ;
+18422 +label V_CategoryHR = 'Validated: Category=HR' ;
+18423 +label V_CategoryDESIGNER = 'Validated: Category=DESIGNER' ;
+18424 +label V_CategoryINFORMATION_TECHNOLOGY =
+18425 +'Validated: Category=INFORMATION-TECHNOLOGY' ;
+18426 +label V_CategoryTEACHER = 'Validated: Category=TEACHER' ;
+18427 +label V_CategoryADVOCATE = 'Validated: Category=ADVOCATE' ;
+18428 +label V_CategoryBUSINESS_DEVELOPMENT =
+18429 +'Validated: Category=BUSINESS-DEVELOPMENT' ;
+18430 +label V_CategoryHEALTHCARE = 'Validated: Category=HEALTHCARE' ;
+18431 +label V_CategoryFITNESS = 'Validated: Category=FITNESS' ;
+18432 +label V_CategoryOTHER = 'Validated: Category=OTHER' ;
+18433 +label V_CategorySALES = 'Validated: Category=SALES' ;
+18434 +label V_CategoryCONSULTANT = 'Validated: Category=CONSULTANT' ;
+18435 +label V_CategoryDIGITAL_MEDIA = 'Validated: Category=DIGITAL-MEDIA' ;
+18436 +label R_CategoryHR = 'Residual: Category=HR' ;
+18437 +label R_CategoryDESIGNER = 'Residual: Category=DESIGNER' ;
+18438 +label R_CategoryINFORMATION_TECHNOLOGY =
+18439 +'Residual: Category=INFORMATION-TECHNOLOGY' ;
+18440 +label R_CategoryTEACHER = 'Residual: Category=TEACHER' ;
+18441 +label R_CategoryADVOCATE = 'Residual: Category=ADVOCATE' ;
+18442 +label R_CategoryBUSINESS_DEVELOPMENT =
+18443 +'Residual: Category=BUSINESS-DEVELOPMENT' ;
+18444 +label R_CategoryHEALTHCARE = 'Residual: Category=HEALTHCARE' ;
+18445 +label R_CategoryFITNESS = 'Residual: Category=FITNESS' ;
+18446 +label R_CategoryOTHER = 'Residual: Category=OTHER' ;
+18447 +label R_CategorySALES = 'Residual: Category=SALES' ;
+18448 +label R_CategoryCONSULTANT = 'Residual: Category=CONSULTANT' ;
+18449 +label R_CategoryDIGITAL_MEDIA = 'Residual: Category=DIGITAL-MEDIA' ;
+18450 +label F_Category = 'From: Category' ;
+18451 +label I_Category = 'Into: Category' ;
+18452 +label U_Category = 'Unnormalized Into: Category' ;
+18453 +label _WARN_ = 'Warnings' ;
+18454 +
+18455 +
+18456 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+18457 +LENGTH _ARBFMT_22 $     22; DROP _ARBFMT_22;
+18458 +_ARBFMT_22 = ' '; /* Initialize to avoid warning. */
+18459 +
+18460 +
+18461 +_ARBFMT_22 = PUT( Category , $22.);
+18462 + %DMNORMCP( _ARBFMT_22, F_Category );
+18463 +
+18464 +******             ASSIGN OBSERVATION TO NODE             ******;
+18465 +IF  NOT MISSING(TextCluster11_SVD3 ) AND
+18466 +      0.28196358819982 <= TextCluster11_SVD3  THEN DO;
+18467 +  _NODE_  =                    3;
+18468 +  _LEAF_  =                    8;
+18469 +  P_CategoryHR  =     0.85964912280701;
+18470 +  P_CategoryDESIGNER  =                    0;
+18471 +  P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18472 +  P_CategoryTEACHER  =                    0;
+18473 +  P_CategoryADVOCATE  =     0.03508771929824;
+18474 +  P_CategoryBUSINESS_DEVELOPMENT  =     0.01754385964912;
+18475 +  P_CategoryHEALTHCARE  =     0.03508771929824;
+18476 +  P_CategoryFITNESS  =     0.01754385964912;
+18477 +  P_CategoryOTHER  =     0.01754385964912;
+18478 +  P_CategorySALES  =                    0;
+18479 +  P_CategoryCONSULTANT  =     0.01754385964912;
+18480 +  P_CategoryDIGITAL_MEDIA  =                    0;
+18481 +  Q_CategoryHR  =     0.85964912280701;
+18482 +  Q_CategoryDESIGNER  =                    0;
+18483 +  Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18484 +  Q_CategoryTEACHER  =                    0;
+18485 +  Q_CategoryADVOCATE  =     0.03508771929824;
+18486 +  Q_CategoryBUSINESS_DEVELOPMENT  =     0.01754385964912;
+18487 +  Q_CategoryHEALTHCARE  =     0.03508771929824;
+18488 +  Q_CategoryFITNESS  =     0.01754385964912;
+18489 +  Q_CategoryOTHER  =     0.01754385964912;
+18490 +  Q_CategorySALES  =                    0;
+18491 +  Q_CategoryCONSULTANT  =     0.01754385964912;
+18492 +  Q_CategoryDIGITAL_MEDIA  =                    0;
+18493 +  V_CategoryHR  =     0.78378378378378;
+18494 +  V_CategoryDESIGNER  =                    0;
+18495 +  V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18496 +  V_CategoryTEACHER  =                    0;
+18497 +  V_CategoryADVOCATE  =                    0;
+18498 +  V_CategoryBUSINESS_DEVELOPMENT  =     0.02702702702702;
+18499 +  V_CategoryHEALTHCARE  =     0.08108108108108;
+18500 +  V_CategoryFITNESS  =     0.02702702702702;
+18501 +  V_CategoryOTHER  =                    0;
+18502 +  V_CategorySALES  =                    0;
+18503 +  V_CategoryCONSULTANT  =     0.05405405405405;
+18504 +  V_CategoryDIGITAL_MEDIA  =     0.02702702702702;
+18505 +  I_Category  = 'HR' ;
+18506 +  U_Category  = 'HR' ;
+18507 +  END;
+18508 +ELSE DO;
+18509 +  IF  NOT MISSING(TextCluster11_SVD6 ) AND
+18510 +    TextCluster11_SVD6  <    -0.24286093887231 THEN DO;
+18511 +    IF  NOT MISSING(TextCluster11_SVD9 ) AND
+18512 +          0.13101413665189 <= TextCluster11_SVD9  THEN DO;
+18513 +      _NODE_  =                    9;
+18514 +      _LEAF_  =                    2;
+18515 +      P_CategoryHR  =                    0;
+18516 +      P_CategoryDESIGNER  =                  0.4;
+18517 +      P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18518 +      P_CategoryTEACHER  =                    0;
+18519 +      P_CategoryADVOCATE  =                    0;
+18520 +      P_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18521 +      P_CategoryHEALTHCARE  =                    0;
+18522 +      P_CategoryFITNESS  =                    0;
+18523 +      P_CategoryOTHER  =                    0;
+18524 +      P_CategorySALES  =                    0;
+18525 +      P_CategoryCONSULTANT  =                    0;
+18526 +      P_CategoryDIGITAL_MEDIA  =                  0.6;
+18527 +      Q_CategoryHR  =                    0;
+18528 +      Q_CategoryDESIGNER  =                  0.4;
+18529 +      Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18530 +      Q_CategoryTEACHER  =                    0;
+18531 +      Q_CategoryADVOCATE  =                    0;
+18532 +      Q_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18533 +      Q_CategoryHEALTHCARE  =                    0;
+18534 +      Q_CategoryFITNESS  =                    0;
+18535 +      Q_CategoryOTHER  =                    0;
+18536 +      Q_CategorySALES  =                    0;
+18537 +      Q_CategoryCONSULTANT  =                    0;
+18538 +      Q_CategoryDIGITAL_MEDIA  =                  0.6;
+18539 +      V_CategoryHR  =                    0;
+18540 +      V_CategoryDESIGNER  =                 0.25;
+18541 +      V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18542 +      V_CategoryTEACHER  =                    0;
+18543 +      V_CategoryADVOCATE  =                 0.25;
+18544 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18545 +      V_CategoryHEALTHCARE  =                    0;
+18546 +      V_CategoryFITNESS  =                    0;
+18547 +      V_CategoryOTHER  =                    0;
+18548 +      V_CategorySALES  =                    0;
+18549 +      V_CategoryCONSULTANT  =                    0;
+18550 +      V_CategoryDIGITAL_MEDIA  =                  0.5;
+18551 +      I_Category  = 'DIGITAL-MEDIA' ;
+18552 +      U_Category  = 'DIGITAL-MEDIA' ;
+18553 +      END;
+18554 +    ELSE DO;
+18555 +      _NODE_  =                    8;
+18556 +      _LEAF_  =                    1;
+18557 +      P_CategoryHR  =                    0;
+18558 +      P_CategoryDESIGNER  =     0.93333333333333;
+18559 +      P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18560 +      P_CategoryTEACHER  =                    0;
+18561 +      P_CategoryADVOCATE  =                    0;
+18562 +      P_CategoryBUSINESS_DEVELOPMENT  =     0.02222222222222;
+18563 +      P_CategoryHEALTHCARE  =                    0;
+18564 +      P_CategoryFITNESS  =                    0;
+18565 +      P_CategoryOTHER  =                    0;
+18566 +      P_CategorySALES  =     0.04444444444444;
+18567 +      P_CategoryCONSULTANT  =                    0;
+18568 +      P_CategoryDIGITAL_MEDIA  =                    0;
+18569 +      Q_CategoryHR  =                    0;
+18570 +      Q_CategoryDESIGNER  =     0.93333333333333;
+18571 +      Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18572 +      Q_CategoryTEACHER  =                    0;
+18573 +      Q_CategoryADVOCATE  =                    0;
+18574 +      Q_CategoryBUSINESS_DEVELOPMENT  =     0.02222222222222;
+18575 +      Q_CategoryHEALTHCARE  =                    0;
+18576 +      Q_CategoryFITNESS  =                    0;
+18577 +      Q_CategoryOTHER  =                    0;
+18578 +      Q_CategorySALES  =     0.04444444444444;
+18579 +      Q_CategoryCONSULTANT  =                    0;
+18580 +      Q_CategoryDIGITAL_MEDIA  =                    0;
+18581 +      V_CategoryHR  =                    0;
+18582 +      V_CategoryDESIGNER  =     0.86666666666666;
+18583 +      V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18584 +      V_CategoryTEACHER  =     0.06666666666666;
+18585 +      V_CategoryADVOCATE  =                    0;
+18586 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18587 +      V_CategoryHEALTHCARE  =                    0;
+18588 +      V_CategoryFITNESS  =                    0;
+18589 +      V_CategoryOTHER  =                    0;
+18590 +      V_CategorySALES  =     0.06666666666666;
+18591 +      V_CategoryCONSULTANT  =                    0;
+18592 +      V_CategoryDIGITAL_MEDIA  =                    0;
+18593 +      I_Category  = 'DESIGNER' ;
+18594 +      U_Category  = 'DESIGNER' ;
+18595 +      END;
+18596 +    END;
+18597 +  ELSE DO;
+18598 +    IF  NOT MISSING(TextCluster11_SVD3 ) AND
+18599 +      TextCluster11_SVD3  <    -0.42848187206424 THEN DO;
+18600 +      _NODE_  =                   10;
+18601 +      _LEAF_  =                    3;
+18602 +      P_CategoryHR  =                    0;
+18603 +      P_CategoryDESIGNER  =                    0;
+18604 +      P_CategoryINFORMATION_TECHNOLOGY  =     0.01960784313725;
+18605 +      P_CategoryTEACHER  =     0.84313725490196;
+18606 +      P_CategoryADVOCATE  =     0.05882352941176;
+18607 +      P_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18608 +      P_CategoryHEALTHCARE  =     0.01960784313725;
+18609 +      P_CategoryFITNESS  =     0.05882352941176;
+18610 +      P_CategoryOTHER  =                    0;
+18611 +      P_CategorySALES  =                    0;
+18612 +      P_CategoryCONSULTANT  =                    0;
+18613 +      P_CategoryDIGITAL_MEDIA  =                    0;
+18614 +      Q_CategoryHR  =                    0;
+18615 +      Q_CategoryDESIGNER  =                    0;
+18616 +      Q_CategoryINFORMATION_TECHNOLOGY  =     0.01960784313725;
+18617 +      Q_CategoryTEACHER  =     0.84313725490196;
+18618 +      Q_CategoryADVOCATE  =     0.05882352941176;
+18619 +      Q_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18620 +      Q_CategoryHEALTHCARE  =     0.01960784313725;
+18621 +      Q_CategoryFITNESS  =     0.05882352941176;
+18622 +      Q_CategoryOTHER  =                    0;
+18623 +      Q_CategorySALES  =                    0;
+18624 +      Q_CategoryCONSULTANT  =                    0;
+18625 +      Q_CategoryDIGITAL_MEDIA  =                    0;
+18626 +      V_CategoryHR  =                    0;
+18627 +      V_CategoryDESIGNER  =                    0;
+18628 +      V_CategoryINFORMATION_TECHNOLOGY  =     0.02564102564102;
+18629 +      V_CategoryTEACHER  =     0.71794871794871;
+18630 +      V_CategoryADVOCATE  =     0.05128205128205;
+18631 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18632 +      V_CategoryHEALTHCARE  =     0.02564102564102;
+18633 +      V_CategoryFITNESS  =     0.05128205128205;
+18634 +      V_CategoryOTHER  =      0.1025641025641;
+18635 +      V_CategorySALES  =     0.02564102564102;
+18636 +      V_CategoryCONSULTANT  =                    0;
+18637 +      V_CategoryDIGITAL_MEDIA  =                    0;
+18638 +      I_Category  = 'TEACHER' ;
+18639 +      U_Category  = 'TEACHER' ;
+18640 +      END;
+18641 +    ELSE DO;
+18642 +      IF  NOT MISSING(TextCluster11_SVD8 ) AND
+18643 +            0.12070736690043 <= TextCluster11_SVD8  THEN DO;
+18644 +        _NODE_  =                   15;
+18645 +        _LEAF_  =                    7;
+18646 +        P_CategoryHR  =                    0;
+18647 +        P_CategoryDESIGNER  =                    0;
+18648 +        P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18649 +        P_CategoryTEACHER  =                    0;
+18650 +        P_CategoryADVOCATE  =     0.06521739130434;
+18651 +        P_CategoryBUSINESS_DEVELOPMENT  =     0.02173913043478;
+18652 +        P_CategoryHEALTHCARE  =                    0;
+18653 +        P_CategoryFITNESS  =     0.89130434782608;
+18654 +        P_CategoryOTHER  =     0.02173913043478;
+18655 +        P_CategorySALES  =                    0;
+18656 +        P_CategoryCONSULTANT  =                    0;
+18657 +        P_CategoryDIGITAL_MEDIA  =                    0;
+18658 +        Q_CategoryHR  =                    0;
+18659 +        Q_CategoryDESIGNER  =                    0;
+18660 +        Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18661 +        Q_CategoryTEACHER  =                    0;
+18662 +        Q_CategoryADVOCATE  =     0.06521739130434;
+18663 +        Q_CategoryBUSINESS_DEVELOPMENT  =     0.02173913043478;
+18664 +        Q_CategoryHEALTHCARE  =                    0;
+18665 +        Q_CategoryFITNESS  =     0.89130434782608;
+18666 +        Q_CategoryOTHER  =     0.02173913043478;
+18667 +        Q_CategorySALES  =                    0;
+18668 +        Q_CategoryCONSULTANT  =                    0;
+18669 +        Q_CategoryDIGITAL_MEDIA  =                    0;
+18670 +        V_CategoryHR  =                    0;
+18671 +        V_CategoryDESIGNER  =     0.03225806451612;
+18672 +        V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18673 +        V_CategoryTEACHER  =                    0;
+18674 +        V_CategoryADVOCATE  =                    0;
+18675 +        V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+18676 +        V_CategoryHEALTHCARE  =     0.03225806451612;
+18677 +        V_CategoryFITNESS  =     0.80645161290322;
+18678 +        V_CategoryOTHER  =     0.03225806451612;
+18679 +        V_CategorySALES  =     0.03225806451612;
+18680 +        V_CategoryCONSULTANT  =     0.03225806451612;
+18681 +        V_CategoryDIGITAL_MEDIA  =     0.03225806451612;
+18682 +        I_Category  = 'FITNESS' ;
+18683 +        U_Category  = 'FITNESS' ;
+18684 +        END;
+18685 +      ELSE DO;
+18686 +        IF  NOT MISSING(TextCluster11_SVD2 ) AND
+18687 +              0.23324615863228 <= TextCluster11_SVD2  THEN DO;
+18688 +          _NODE_  =                   17;
+18689 +          _LEAF_  =                    6;
+18690 +          P_CategoryHR  =                    0;
+18691 +          P_CategoryDESIGNER  =     0.01162790697674;
+18692 +          P_CategoryINFORMATION_TECHNOLOGY  =      0.5813953488372;
+18693 +          P_CategoryTEACHER  =                    0;
+18694 +          P_CategoryADVOCATE  =     0.02325581395348;
+18695 +          P_CategoryBUSINESS_DEVELOPMENT  =     0.01162790697674;
+18696 +          P_CategoryHEALTHCARE  =     0.03488372093023;
+18697 +          P_CategoryFITNESS  =                    0;
+18698 +          P_CategoryOTHER  =     0.04651162790697;
+18699 +          P_CategorySALES  =     0.01162790697674;
+18700 +          P_CategoryCONSULTANT  =     0.23255813953488;
+18701 +          P_CategoryDIGITAL_MEDIA  =     0.04651162790697;
+18702 +          Q_CategoryHR  =                    0;
+18703 +          Q_CategoryDESIGNER  =     0.01162790697674;
+18704 +          Q_CategoryINFORMATION_TECHNOLOGY  =      0.5813953488372;
+18705 +          Q_CategoryTEACHER  =                    0;
+18706 +          Q_CategoryADVOCATE  =     0.02325581395348;
+18707 +          Q_CategoryBUSINESS_DEVELOPMENT  =     0.01162790697674;
+18708 +          Q_CategoryHEALTHCARE  =     0.03488372093023;
+18709 +          Q_CategoryFITNESS  =                    0;
+18710 +          Q_CategoryOTHER  =     0.04651162790697;
+18711 +          Q_CategorySALES  =     0.01162790697674;
+18712 +          Q_CategoryCONSULTANT  =     0.23255813953488;
+18713 +          Q_CategoryDIGITAL_MEDIA  =     0.04651162790697;
+18714 +          V_CategoryHR  =                    0;
+18715 +          V_CategoryDESIGNER  =                    0;
+18716 +          V_CategoryINFORMATION_TECHNOLOGY  =     0.63461538461538;
+18717 +          V_CategoryTEACHER  =                    0;
+18718 +          V_CategoryADVOCATE  =     0.01923076923076;
+18719 +          V_CategoryBUSINESS_DEVELOPMENT  =     0.03846153846153;
+18720 +          V_CategoryHEALTHCARE  =     0.01923076923076;
+18721 +          V_CategoryFITNESS  =                    0;
+18722 +          V_CategoryOTHER  =      0.0576923076923;
+18723 +          V_CategorySALES  =     0.01923076923076;
+18724 +          V_CategoryCONSULTANT  =     0.13461538461538;
+18725 +          V_CategoryDIGITAL_MEDIA  =     0.07692307692307;
+18726 +          I_Category  = 'INFORMATION-TECHNOLOGY' ;
+18727 +          U_Category  = 'INFORMATION-TECHNOLOGY' ;
+18728 +          END;
+18729 +        ELSE DO;
+18730 +          IF  NOT MISSING(TextCluster11_SVD5 ) AND
+18731 +                 0.0876603538126 <= TextCluster11_SVD5  THEN DO;
+18732 +            _NODE_  =                   19;
+18733 +            _LEAF_  =                    5;
+18734 +            P_CategoryHR  =     0.03333333333333;
+18735 +            P_CategoryDESIGNER  =     0.01666666666666;
+18736 +            P_CategoryINFORMATION_TECHNOLOGY  =     0.01666666666666;
+18737 +            P_CategoryTEACHER  =     0.01666666666666;
+18738 +            P_CategoryADVOCATE  =                    0;
+18739 +            P_CategoryBUSINESS_DEVELOPMENT  =     0.11666666666666;
+18740 +            P_CategoryHEALTHCARE  =     0.03333333333333;
+18741 +            P_CategoryFITNESS  =                    0;
+18742 +            P_CategoryOTHER  =     0.08333333333333;
+18743 +            P_CategorySALES  =                    0;
+18744 +            P_CategoryCONSULTANT  =                  0.1;
+18745 +            P_CategoryDIGITAL_MEDIA  =     0.58333333333333;
+18746 +            Q_CategoryHR  =     0.03333333333333;
+18747 +            Q_CategoryDESIGNER  =     0.01666666666666;
+18748 +            Q_CategoryINFORMATION_TECHNOLOGY  =     0.01666666666666;
+18749 +            Q_CategoryTEACHER  =     0.01666666666666;
+18750 +            Q_CategoryADVOCATE  =                    0;
+18751 +            Q_CategoryBUSINESS_DEVELOPMENT  =     0.11666666666666;
+18752 +            Q_CategoryHEALTHCARE  =     0.03333333333333;
+18753 +            Q_CategoryFITNESS  =                    0;
+18754 +            Q_CategoryOTHER  =     0.08333333333333;
+18755 +            Q_CategorySALES  =                    0;
+18756 +            Q_CategoryCONSULTANT  =                  0.1;
+18757 +            Q_CategoryDIGITAL_MEDIA  =     0.58333333333333;
+18758 +            V_CategoryHR  =     0.03333333333333;
+18759 +            V_CategoryDESIGNER  =     0.03333333333333;
+18760 +            V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18761 +            V_CategoryTEACHER  =                    0;
+18762 +            V_CategoryADVOCATE  =                    0;
+18763 +            V_CategoryBUSINESS_DEVELOPMENT  =                  0.1;
+18764 +            V_CategoryHEALTHCARE  =                    0;
+18765 +            V_CategoryFITNESS  =                    0;
+18766 +            V_CategoryOTHER  =                    0;
+18767 +            V_CategorySALES  =     0.06666666666666;
+18768 +            V_CategoryCONSULTANT  =                  0.2;
+18769 +            V_CategoryDIGITAL_MEDIA  =     0.56666666666666;
+18770 +            I_Category  = 'DIGITAL-MEDIA' ;
+18771 +            U_Category  = 'DIGITAL-MEDIA' ;
+18772 +            END;
+18773 +          ELSE DO;
+18774 +            _NODE_  =                   18;
+18775 +            _LEAF_  =                    4;
+18776 +            P_CategoryHR  =     0.01234567901234;
+18777 +            P_CategoryDESIGNER  =      0.0216049382716;
+18778 +            P_CategoryINFORMATION_TECHNOLOGY  =      0.0216049382716;
+18779 +            P_CategoryTEACHER  =     0.01851851851851;
+18780 +            P_CategoryADVOCATE  =     0.14506172839506;
+18781 +            P_CategoryBUSINESS_DEVELOPMENT  =     0.15123456790123;
+18782 +            P_CategoryHEALTHCARE  =     0.15123456790123;
+18783 +            P_CategoryFITNESS  =     0.04012345679012;
+18784 +            P_CategoryOTHER  =     0.16049382716049;
+18785 +            P_CategorySALES  =     0.16975308641975;
+18786 +            P_CategoryCONSULTANT  =     0.09259259259259;
+18787 +            P_CategoryDIGITAL_MEDIA  =     0.01543209876543;
+18788 +            Q_CategoryHR  =     0.01234567901234;
+18789 +            Q_CategoryDESIGNER  =      0.0216049382716;
+18790 +            Q_CategoryINFORMATION_TECHNOLOGY  =      0.0216049382716;
+18791 +            Q_CategoryTEACHER  =     0.01851851851851;
+18792 +            Q_CategoryADVOCATE  =     0.14506172839506;
+18793 +            Q_CategoryBUSINESS_DEVELOPMENT  =     0.15123456790123;
+18794 +            Q_CategoryHEALTHCARE  =     0.15123456790123;
+18795 +            Q_CategoryFITNESS  =     0.04012345679012;
+18796 +            Q_CategoryOTHER  =     0.16049382716049;
+18797 +            Q_CategorySALES  =     0.16975308641975;
+18798 +            Q_CategoryCONSULTANT  =     0.09259259259259;
+18799 +            Q_CategoryDIGITAL_MEDIA  =     0.01543209876543;
+18800 +            V_CategoryHR  =     0.01098901098901;
+18801 +            V_CategoryDESIGNER  =     0.01098901098901;
+18802 +            V_CategoryINFORMATION_TECHNOLOGY  =     0.01098901098901;
+18803 +            V_CategoryTEACHER  =      0.0054945054945;
+18804 +            V_CategoryADVOCATE  =     0.17032967032967;
+18805 +            V_CategoryBUSINESS_DEVELOPMENT  =     0.16483516483516;
+18806 +            V_CategoryHEALTHCARE  =     0.14835164835164;
+18807 +            V_CategoryFITNESS  =     0.03846153846153;
+18808 +            V_CategoryOTHER  =     0.16483516483516;
+18809 +            V_CategorySALES  =     0.14835164835164;
+18810 +            V_CategoryCONSULTANT  =      0.1043956043956;
+18811 +            V_CategoryDIGITAL_MEDIA  =     0.02197802197802;
+18812 +            I_Category  = 'SALES' ;
+18813 +            U_Category  = 'SALES' ;
+18814 +            END;
+18815 +          END;
+18816 +        END;
+18817 +      END;
+18818 +    END;
+18819 +  END;
+18820 +
+18821 +*****  RESIDUALS R_ *************;
+18822 +IF  F_Category  NE 'HR'
+18823 +AND F_Category  NE 'DESIGNER'
+18824 +AND F_Category  NE 'INFORMATION-TECHNOLOGY'
+18825 +AND F_Category  NE 'TEACHER'
+18826 +AND F_Category  NE 'ADVOCATE'
+18827 +AND F_Category  NE 'BUSINESS-DEVELOPMENT'
+18828 +AND F_Category  NE 'HEALTHCARE'
+18829 +AND F_Category  NE 'FITNESS'
+18830 +AND F_Category  NE 'OTHER'
+18831 +AND F_Category  NE 'SALES'
+18832 +AND F_Category  NE 'CONSULTANT'
+18833 +AND F_Category  NE 'DIGITAL-MEDIA'  THEN DO;
+18834 +        R_CategoryHR  = .;
+18835 +        R_CategoryDESIGNER  = .;
+18836 +        R_CategoryINFORMATION_TECHNOLOGY  = .;
+18837 +        R_CategoryTEACHER  = .;
+18838 +        R_CategoryADVOCATE  = .;
+18839 +        R_CategoryBUSINESS_DEVELOPMENT  = .;
+18840 +        R_CategoryHEALTHCARE  = .;
+18841 +        R_CategoryFITNESS  = .;
+18842 +        R_CategoryOTHER  = .;
+18843 +        R_CategorySALES  = .;
+18844 +        R_CategoryCONSULTANT  = .;
+18845 +        R_CategoryDIGITAL_MEDIA  = .;
+18846 + END;
+18847 + ELSE DO;
+18848 +       R_CategoryHR  =  -P_CategoryHR ;
+18849 +       R_CategoryDESIGNER  =  -P_CategoryDESIGNER ;
+18850 +       R_CategoryINFORMATION_TECHNOLOGY  =  -P_CategoryINFORMATION_TECHNOLOGY
+18851 +         ;
+18852 +       R_CategoryTEACHER  =  -P_CategoryTEACHER ;
+18853 +       R_CategoryADVOCATE  =  -P_CategoryADVOCATE ;
+18854 +       R_CategoryBUSINESS_DEVELOPMENT  =  -P_CategoryBUSINESS_DEVELOPMENT ;
+18855 +       R_CategoryHEALTHCARE  =  -P_CategoryHEALTHCARE ;
+18856 +       R_CategoryFITNESS  =  -P_CategoryFITNESS ;
+18857 +       R_CategoryOTHER  =  -P_CategoryOTHER ;
+18858 +       R_CategorySALES  =  -P_CategorySALES ;
+18859 +       R_CategoryCONSULTANT  =  -P_CategoryCONSULTANT ;
+18860 +       R_CategoryDIGITAL_MEDIA  =  -P_CategoryDIGITAL_MEDIA ;
+18861 +       SELECT( F_Category  );
+18862 +          WHEN( 'HR'  ) R_CategoryHR  = R_CategoryHR  +1;
+18863 +          WHEN( 'DESIGNER'  ) R_CategoryDESIGNER  = R_CategoryDESIGNER  +1;
+18864 +          WHEN( 'INFORMATION-TECHNOLOGY'  ) R_CategoryINFORMATION_TECHNOLOGY
+18865 +          = R_CategoryINFORMATION_TECHNOLOGY  +1;
+18866 +          WHEN( 'TEACHER'  ) R_CategoryTEACHER  = R_CategoryTEACHER  +1;
+18867 +          WHEN( 'ADVOCATE'  ) R_CategoryADVOCATE  = R_CategoryADVOCATE  +1;
+18868 +          WHEN( 'BUSINESS-DEVELOPMENT'  ) R_CategoryBUSINESS_DEVELOPMENT  =
+18869 +        R_CategoryBUSINESS_DEVELOPMENT  +1;
+18870 +          WHEN( 'HEALTHCARE'  ) R_CategoryHEALTHCARE  = R_CategoryHEALTHCARE
+18871 +          +1;
+18872 +          WHEN( 'FITNESS'  ) R_CategoryFITNESS  = R_CategoryFITNESS  +1;
+18873 +          WHEN( 'OTHER'  ) R_CategoryOTHER  = R_CategoryOTHER  +1;
+18874 +          WHEN( 'SALES'  ) R_CategorySALES  = R_CategorySALES  +1;
+18875 +          WHEN( 'CONSULTANT'  ) R_CategoryCONSULTANT  = R_CategoryCONSULTANT
+18876 +          +1;
+18877 +          WHEN( 'DIGITAL-MEDIA'  ) R_CategoryDIGITAL_MEDIA  =
+18878 +        R_CategoryDIGITAL_MEDIA  +1;
+18879 +       END;
+18880 + END;
+18881 +
+18882 +****************************************************************;
+18883 +******          END OF DECISION TREE SCORING CODE         ******;
+18884 +****************************************************************;
+18885 +
+18886 +drop _LEAF_;
+NOTE: %INCLUDE (level 1) ending.
+18887  run;
+
+NOTE: DATA STEP view saved on file EMWS3.TREE7_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+18888  quit;
+18889  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+18890  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas";
+18891  *------------------------------------------------------------*;
+18892  * Tree7: Scoring TEST data;
+18893  *------------------------------------------------------------*;
+18894  data EMWS3.Tree7_TEST
+18895  / view=EMWS3.Tree7_TEST
+18896  ;
+18897  set EMWS3.TextCluster11_TEST
+18898  ;
+18899  %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Tree7\EMFLOWSCORE.sas.
+18900 +****************************************************************;
+18901 +******             DECISION TREE SCORING CODE             ******;
+18902 +****************************************************************;
+18903 +
+18904 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+18905 +LENGTH F_Category  $   22;
+18906 +LENGTH I_Category  $   22;
+18907 +LENGTH U_Category  $   22;
+18908 +LENGTH _WARN_  $    4;
+18909 +
+18910 +******              LABELS FOR NEW VARIABLES              ******;
+18911 +label _NODE_ = 'Node' ;
+18912 +label _LEAF_ = 'Leaf' ;
+18913 +label P_CategoryHR = 'Predicted: Category=HR' ;
+18914 +label P_CategoryDESIGNER = 'Predicted: Category=DESIGNER' ;
+18915 +label P_CategoryINFORMATION_TECHNOLOGY =
+18916 +'Predicted: Category=INFORMATION-TECHNOLOGY' ;
+18917 +label P_CategoryTEACHER = 'Predicted: Category=TEACHER' ;
+18918 +label P_CategoryADVOCATE = 'Predicted: Category=ADVOCATE' ;
+18919 +label P_CategoryBUSINESS_DEVELOPMENT =
+18920 +'Predicted: Category=BUSINESS-DEVELOPMENT' ;
+18921 +label P_CategoryHEALTHCARE = 'Predicted: Category=HEALTHCARE' ;
+18922 +label P_CategoryFITNESS = 'Predicted: Category=FITNESS' ;
+18923 +label P_CategoryOTHER = 'Predicted: Category=OTHER' ;
+18924 +label P_CategorySALES = 'Predicted: Category=SALES' ;
+18925 +label P_CategoryCONSULTANT = 'Predicted: Category=CONSULTANT' ;
+18926 +label P_CategoryDIGITAL_MEDIA = 'Predicted: Category=DIGITAL-MEDIA' ;
+18927 +label Q_CategoryHR = 'Unadjusted P: Category=HR' ;
+18928 +label Q_CategoryDESIGNER = 'Unadjusted P: Category=DESIGNER' ;
+18929 +label Q_CategoryINFORMATION_TECHNOLOGY =
+18930 +'Unadjusted P: Category=INFORMATION-TECHNOLOGY' ;
+18931 +label Q_CategoryTEACHER = 'Unadjusted P: Category=TEACHER' ;
+18932 +label Q_CategoryADVOCATE = 'Unadjusted P: Category=ADVOCATE' ;
+18933 +label Q_CategoryBUSINESS_DEVELOPMENT =
+18934 +'Unadjusted P: Category=BUSINESS-DEVELOPMENT' ;
+18935 +label Q_CategoryHEALTHCARE = 'Unadjusted P: Category=HEALTHCARE' ;
+18936 +label Q_CategoryFITNESS = 'Unadjusted P: Category=FITNESS' ;
+18937 +label Q_CategoryOTHER = 'Unadjusted P: Category=OTHER' ;
+18938 +label Q_CategorySALES = 'Unadjusted P: Category=SALES' ;
+18939 +label Q_CategoryCONSULTANT = 'Unadjusted P: Category=CONSULTANT' ;
+18940 +label Q_CategoryDIGITAL_MEDIA = 'Unadjusted P: Category=DIGITAL-MEDIA' ;
+18941 +label V_CategoryHR = 'Validated: Category=HR' ;
+18942 +label V_CategoryDESIGNER = 'Validated: Category=DESIGNER' ;
+18943 +label V_CategoryINFORMATION_TECHNOLOGY =
+18944 +'Validated: Category=INFORMATION-TECHNOLOGY' ;
+18945 +label V_CategoryTEACHER = 'Validated: Category=TEACHER' ;
+18946 +label V_CategoryADVOCATE = 'Validated: Category=ADVOCATE' ;
+18947 +label V_CategoryBUSINESS_DEVELOPMENT =
+18948 +'Validated: Category=BUSINESS-DEVELOPMENT' ;
+18949 +label V_CategoryHEALTHCARE = 'Validated: Category=HEALTHCARE' ;
+18950 +label V_CategoryFITNESS = 'Validated: Category=FITNESS' ;
+18951 +label V_CategoryOTHER = 'Validated: Category=OTHER' ;
+18952 +label V_CategorySALES = 'Validated: Category=SALES' ;
+18953 +label V_CategoryCONSULTANT = 'Validated: Category=CONSULTANT' ;
+18954 +label V_CategoryDIGITAL_MEDIA = 'Validated: Category=DIGITAL-MEDIA' ;
+18955 +label R_CategoryHR = 'Residual: Category=HR' ;
+18956 +label R_CategoryDESIGNER = 'Residual: Category=DESIGNER' ;
+18957 +label R_CategoryINFORMATION_TECHNOLOGY =
+18958 +'Residual: Category=INFORMATION-TECHNOLOGY' ;
+18959 +label R_CategoryTEACHER = 'Residual: Category=TEACHER' ;
+18960 +label R_CategoryADVOCATE = 'Residual: Category=ADVOCATE' ;
+18961 +label R_CategoryBUSINESS_DEVELOPMENT =
+18962 +'Residual: Category=BUSINESS-DEVELOPMENT' ;
+18963 +label R_CategoryHEALTHCARE = 'Residual: Category=HEALTHCARE' ;
+18964 +label R_CategoryFITNESS = 'Residual: Category=FITNESS' ;
+18965 +label R_CategoryOTHER = 'Residual: Category=OTHER' ;
+18966 +label R_CategorySALES = 'Residual: Category=SALES' ;
+18967 +label R_CategoryCONSULTANT = 'Residual: Category=CONSULTANT' ;
+18968 +label R_CategoryDIGITAL_MEDIA = 'Residual: Category=DIGITAL-MEDIA' ;
+18969 +label F_Category = 'From: Category' ;
+18970 +label I_Category = 'Into: Category' ;
+18971 +label U_Category = 'Unnormalized Into: Category' ;
+18972 +label _WARN_ = 'Warnings' ;
+18973 +
+18974 +
+18975 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+18976 +LENGTH _ARBFMT_22 $     22; DROP _ARBFMT_22;
+18977 +_ARBFMT_22 = ' '; /* Initialize to avoid warning. */
+18978 +
+18979 +
+18980 +_ARBFMT_22 = PUT( Category , $22.);
+18981 + %DMNORMCP( _ARBFMT_22, F_Category );
+18982 +
+18983 +******             ASSIGN OBSERVATION TO NODE             ******;
+18984 +IF  NOT MISSING(TextCluster11_SVD3 ) AND
+18985 +      0.28196358819982 <= TextCluster11_SVD3  THEN DO;
+18986 +  _NODE_  =                    3;
+18987 +  _LEAF_  =                    8;
+18988 +  P_CategoryHR  =     0.85964912280701;
+18989 +  P_CategoryDESIGNER  =                    0;
+18990 +  P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+18991 +  P_CategoryTEACHER  =                    0;
+18992 +  P_CategoryADVOCATE  =     0.03508771929824;
+18993 +  P_CategoryBUSINESS_DEVELOPMENT  =     0.01754385964912;
+18994 +  P_CategoryHEALTHCARE  =     0.03508771929824;
+18995 +  P_CategoryFITNESS  =     0.01754385964912;
+18996 +  P_CategoryOTHER  =     0.01754385964912;
+18997 +  P_CategorySALES  =                    0;
+18998 +  P_CategoryCONSULTANT  =     0.01754385964912;
+18999 +  P_CategoryDIGITAL_MEDIA  =                    0;
+19000 +  Q_CategoryHR  =     0.85964912280701;
+19001 +  Q_CategoryDESIGNER  =                    0;
+19002 +  Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19003 +  Q_CategoryTEACHER  =                    0;
+19004 +  Q_CategoryADVOCATE  =     0.03508771929824;
+19005 +  Q_CategoryBUSINESS_DEVELOPMENT  =     0.01754385964912;
+19006 +  Q_CategoryHEALTHCARE  =     0.03508771929824;
+19007 +  Q_CategoryFITNESS  =     0.01754385964912;
+19008 +  Q_CategoryOTHER  =     0.01754385964912;
+19009 +  Q_CategorySALES  =                    0;
+19010 +  Q_CategoryCONSULTANT  =     0.01754385964912;
+19011 +  Q_CategoryDIGITAL_MEDIA  =                    0;
+19012 +  V_CategoryHR  =     0.78378378378378;
+19013 +  V_CategoryDESIGNER  =                    0;
+19014 +  V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19015 +  V_CategoryTEACHER  =                    0;
+19016 +  V_CategoryADVOCATE  =                    0;
+19017 +  V_CategoryBUSINESS_DEVELOPMENT  =     0.02702702702702;
+19018 +  V_CategoryHEALTHCARE  =     0.08108108108108;
+19019 +  V_CategoryFITNESS  =     0.02702702702702;
+19020 +  V_CategoryOTHER  =                    0;
+19021 +  V_CategorySALES  =                    0;
+19022 +  V_CategoryCONSULTANT  =     0.05405405405405;
+19023 +  V_CategoryDIGITAL_MEDIA  =     0.02702702702702;
+19024 +  I_Category  = 'HR' ;
+19025 +  U_Category  = 'HR' ;
+19026 +  END;
+19027 +ELSE DO;
+19028 +  IF  NOT MISSING(TextCluster11_SVD6 ) AND
+19029 +    TextCluster11_SVD6  <    -0.24286093887231 THEN DO;
+19030 +    IF  NOT MISSING(TextCluster11_SVD9 ) AND
+19031 +          0.13101413665189 <= TextCluster11_SVD9  THEN DO;
+19032 +      _NODE_  =                    9;
+19033 +      _LEAF_  =                    2;
+19034 +      P_CategoryHR  =                    0;
+19035 +      P_CategoryDESIGNER  =                  0.4;
+19036 +      P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19037 +      P_CategoryTEACHER  =                    0;
+19038 +      P_CategoryADVOCATE  =                    0;
+19039 +      P_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19040 +      P_CategoryHEALTHCARE  =                    0;
+19041 +      P_CategoryFITNESS  =                    0;
+19042 +      P_CategoryOTHER  =                    0;
+19043 +      P_CategorySALES  =                    0;
+19044 +      P_CategoryCONSULTANT  =                    0;
+19045 +      P_CategoryDIGITAL_MEDIA  =                  0.6;
+19046 +      Q_CategoryHR  =                    0;
+19047 +      Q_CategoryDESIGNER  =                  0.4;
+19048 +      Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19049 +      Q_CategoryTEACHER  =                    0;
+19050 +      Q_CategoryADVOCATE  =                    0;
+19051 +      Q_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19052 +      Q_CategoryHEALTHCARE  =                    0;
+19053 +      Q_CategoryFITNESS  =                    0;
+19054 +      Q_CategoryOTHER  =                    0;
+19055 +      Q_CategorySALES  =                    0;
+19056 +      Q_CategoryCONSULTANT  =                    0;
+19057 +      Q_CategoryDIGITAL_MEDIA  =                  0.6;
+19058 +      V_CategoryHR  =                    0;
+19059 +      V_CategoryDESIGNER  =                 0.25;
+19060 +      V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19061 +      V_CategoryTEACHER  =                    0;
+19062 +      V_CategoryADVOCATE  =                 0.25;
+19063 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19064 +      V_CategoryHEALTHCARE  =                    0;
+19065 +      V_CategoryFITNESS  =                    0;
+19066 +      V_CategoryOTHER  =                    0;
+19067 +      V_CategorySALES  =                    0;
+19068 +      V_CategoryCONSULTANT  =                    0;
+19069 +      V_CategoryDIGITAL_MEDIA  =                  0.5;
+19070 +      I_Category  = 'DIGITAL-MEDIA' ;
+19071 +      U_Category  = 'DIGITAL-MEDIA' ;
+19072 +      END;
+19073 +    ELSE DO;
+19074 +      _NODE_  =                    8;
+19075 +      _LEAF_  =                    1;
+19076 +      P_CategoryHR  =                    0;
+19077 +      P_CategoryDESIGNER  =     0.93333333333333;
+19078 +      P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19079 +      P_CategoryTEACHER  =                    0;
+19080 +      P_CategoryADVOCATE  =                    0;
+19081 +      P_CategoryBUSINESS_DEVELOPMENT  =     0.02222222222222;
+19082 +      P_CategoryHEALTHCARE  =                    0;
+19083 +      P_CategoryFITNESS  =                    0;
+19084 +      P_CategoryOTHER  =                    0;
+19085 +      P_CategorySALES  =     0.04444444444444;
+19086 +      P_CategoryCONSULTANT  =                    0;
+19087 +      P_CategoryDIGITAL_MEDIA  =                    0;
+19088 +      Q_CategoryHR  =                    0;
+19089 +      Q_CategoryDESIGNER  =     0.93333333333333;
+19090 +      Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19091 +      Q_CategoryTEACHER  =                    0;
+19092 +      Q_CategoryADVOCATE  =                    0;
+19093 +      Q_CategoryBUSINESS_DEVELOPMENT  =     0.02222222222222;
+19094 +      Q_CategoryHEALTHCARE  =                    0;
+19095 +      Q_CategoryFITNESS  =                    0;
+19096 +      Q_CategoryOTHER  =                    0;
+19097 +      Q_CategorySALES  =     0.04444444444444;
+19098 +      Q_CategoryCONSULTANT  =                    0;
+19099 +      Q_CategoryDIGITAL_MEDIA  =                    0;
+19100 +      V_CategoryHR  =                    0;
+19101 +      V_CategoryDESIGNER  =     0.86666666666666;
+19102 +      V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19103 +      V_CategoryTEACHER  =     0.06666666666666;
+19104 +      V_CategoryADVOCATE  =                    0;
+19105 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19106 +      V_CategoryHEALTHCARE  =                    0;
+19107 +      V_CategoryFITNESS  =                    0;
+19108 +      V_CategoryOTHER  =                    0;
+19109 +      V_CategorySALES  =     0.06666666666666;
+19110 +      V_CategoryCONSULTANT  =                    0;
+19111 +      V_CategoryDIGITAL_MEDIA  =                    0;
+19112 +      I_Category  = 'DESIGNER' ;
+19113 +      U_Category  = 'DESIGNER' ;
+19114 +      END;
+19115 +    END;
+19116 +  ELSE DO;
+19117 +    IF  NOT MISSING(TextCluster11_SVD3 ) AND
+19118 +      TextCluster11_SVD3  <    -0.42848187206424 THEN DO;
+19119 +      _NODE_  =                   10;
+19120 +      _LEAF_  =                    3;
+19121 +      P_CategoryHR  =                    0;
+19122 +      P_CategoryDESIGNER  =                    0;
+19123 +      P_CategoryINFORMATION_TECHNOLOGY  =     0.01960784313725;
+19124 +      P_CategoryTEACHER  =     0.84313725490196;
+19125 +      P_CategoryADVOCATE  =     0.05882352941176;
+19126 +      P_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19127 +      P_CategoryHEALTHCARE  =     0.01960784313725;
+19128 +      P_CategoryFITNESS  =     0.05882352941176;
+19129 +      P_CategoryOTHER  =                    0;
+19130 +      P_CategorySALES  =                    0;
+19131 +      P_CategoryCONSULTANT  =                    0;
+19132 +      P_CategoryDIGITAL_MEDIA  =                    0;
+19133 +      Q_CategoryHR  =                    0;
+19134 +      Q_CategoryDESIGNER  =                    0;
+19135 +      Q_CategoryINFORMATION_TECHNOLOGY  =     0.01960784313725;
+19136 +      Q_CategoryTEACHER  =     0.84313725490196;
+19137 +      Q_CategoryADVOCATE  =     0.05882352941176;
+19138 +      Q_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19139 +      Q_CategoryHEALTHCARE  =     0.01960784313725;
+19140 +      Q_CategoryFITNESS  =     0.05882352941176;
+19141 +      Q_CategoryOTHER  =                    0;
+19142 +      Q_CategorySALES  =                    0;
+19143 +      Q_CategoryCONSULTANT  =                    0;
+19144 +      Q_CategoryDIGITAL_MEDIA  =                    0;
+19145 +      V_CategoryHR  =                    0;
+19146 +      V_CategoryDESIGNER  =                    0;
+19147 +      V_CategoryINFORMATION_TECHNOLOGY  =     0.02564102564102;
+19148 +      V_CategoryTEACHER  =     0.71794871794871;
+19149 +      V_CategoryADVOCATE  =     0.05128205128205;
+19150 +      V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19151 +      V_CategoryHEALTHCARE  =     0.02564102564102;
+19152 +      V_CategoryFITNESS  =     0.05128205128205;
+19153 +      V_CategoryOTHER  =      0.1025641025641;
+19154 +      V_CategorySALES  =     0.02564102564102;
+19155 +      V_CategoryCONSULTANT  =                    0;
+19156 +      V_CategoryDIGITAL_MEDIA  =                    0;
+19157 +      I_Category  = 'TEACHER' ;
+19158 +      U_Category  = 'TEACHER' ;
+19159 +      END;
+19160 +    ELSE DO;
+19161 +      IF  NOT MISSING(TextCluster11_SVD8 ) AND
+19162 +            0.12070736690043 <= TextCluster11_SVD8  THEN DO;
+19163 +        _NODE_  =                   15;
+19164 +        _LEAF_  =                    7;
+19165 +        P_CategoryHR  =                    0;
+19166 +        P_CategoryDESIGNER  =                    0;
+19167 +        P_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19168 +        P_CategoryTEACHER  =                    0;
+19169 +        P_CategoryADVOCATE  =     0.06521739130434;
+19170 +        P_CategoryBUSINESS_DEVELOPMENT  =     0.02173913043478;
+19171 +        P_CategoryHEALTHCARE  =                    0;
+19172 +        P_CategoryFITNESS  =     0.89130434782608;
+19173 +        P_CategoryOTHER  =     0.02173913043478;
+19174 +        P_CategorySALES  =                    0;
+19175 +        P_CategoryCONSULTANT  =                    0;
+19176 +        P_CategoryDIGITAL_MEDIA  =                    0;
+19177 +        Q_CategoryHR  =                    0;
+19178 +        Q_CategoryDESIGNER  =                    0;
+19179 +        Q_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19180 +        Q_CategoryTEACHER  =                    0;
+19181 +        Q_CategoryADVOCATE  =     0.06521739130434;
+19182 +        Q_CategoryBUSINESS_DEVELOPMENT  =     0.02173913043478;
+19183 +        Q_CategoryHEALTHCARE  =                    0;
+19184 +        Q_CategoryFITNESS  =     0.89130434782608;
+19185 +        Q_CategoryOTHER  =     0.02173913043478;
+19186 +        Q_CategorySALES  =                    0;
+19187 +        Q_CategoryCONSULTANT  =                    0;
+19188 +        Q_CategoryDIGITAL_MEDIA  =                    0;
+19189 +        V_CategoryHR  =                    0;
+19190 +        V_CategoryDESIGNER  =     0.03225806451612;
+19191 +        V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19192 +        V_CategoryTEACHER  =                    0;
+19193 +        V_CategoryADVOCATE  =                    0;
+19194 +        V_CategoryBUSINESS_DEVELOPMENT  =                    0;
+19195 +        V_CategoryHEALTHCARE  =     0.03225806451612;
+19196 +        V_CategoryFITNESS  =     0.80645161290322;
+19197 +        V_CategoryOTHER  =     0.03225806451612;
+19198 +        V_CategorySALES  =     0.03225806451612;
+19199 +        V_CategoryCONSULTANT  =     0.03225806451612;
+19200 +        V_CategoryDIGITAL_MEDIA  =     0.03225806451612;
+19201 +        I_Category  = 'FITNESS' ;
+19202 +        U_Category  = 'FITNESS' ;
+19203 +        END;
+19204 +      ELSE DO;
+19205 +        IF  NOT MISSING(TextCluster11_SVD2 ) AND
+19206 +              0.23324615863228 <= TextCluster11_SVD2  THEN DO;
+19207 +          _NODE_  =                   17;
+19208 +          _LEAF_  =                    6;
+19209 +          P_CategoryHR  =                    0;
+19210 +          P_CategoryDESIGNER  =     0.01162790697674;
+19211 +          P_CategoryINFORMATION_TECHNOLOGY  =      0.5813953488372;
+19212 +          P_CategoryTEACHER  =                    0;
+19213 +          P_CategoryADVOCATE  =     0.02325581395348;
+19214 +          P_CategoryBUSINESS_DEVELOPMENT  =     0.01162790697674;
+19215 +          P_CategoryHEALTHCARE  =     0.03488372093023;
+19216 +          P_CategoryFITNESS  =                    0;
+19217 +          P_CategoryOTHER  =     0.04651162790697;
+19218 +          P_CategorySALES  =     0.01162790697674;
+19219 +          P_CategoryCONSULTANT  =     0.23255813953488;
+19220 +          P_CategoryDIGITAL_MEDIA  =     0.04651162790697;
+19221 +          Q_CategoryHR  =                    0;
+19222 +          Q_CategoryDESIGNER  =     0.01162790697674;
+19223 +          Q_CategoryINFORMATION_TECHNOLOGY  =      0.5813953488372;
+19224 +          Q_CategoryTEACHER  =                    0;
+19225 +          Q_CategoryADVOCATE  =     0.02325581395348;
+19226 +          Q_CategoryBUSINESS_DEVELOPMENT  =     0.01162790697674;
+19227 +          Q_CategoryHEALTHCARE  =     0.03488372093023;
+19228 +          Q_CategoryFITNESS  =                    0;
+19229 +          Q_CategoryOTHER  =     0.04651162790697;
+19230 +          Q_CategorySALES  =     0.01162790697674;
+19231 +          Q_CategoryCONSULTANT  =     0.23255813953488;
+19232 +          Q_CategoryDIGITAL_MEDIA  =     0.04651162790697;
+19233 +          V_CategoryHR  =                    0;
+19234 +          V_CategoryDESIGNER  =                    0;
+19235 +          V_CategoryINFORMATION_TECHNOLOGY  =     0.63461538461538;
+19236 +          V_CategoryTEACHER  =                    0;
+19237 +          V_CategoryADVOCATE  =     0.01923076923076;
+19238 +          V_CategoryBUSINESS_DEVELOPMENT  =     0.03846153846153;
+19239 +          V_CategoryHEALTHCARE  =     0.01923076923076;
+19240 +          V_CategoryFITNESS  =                    0;
+19241 +          V_CategoryOTHER  =      0.0576923076923;
+19242 +          V_CategorySALES  =     0.01923076923076;
+19243 +          V_CategoryCONSULTANT  =     0.13461538461538;
+19244 +          V_CategoryDIGITAL_MEDIA  =     0.07692307692307;
+19245 +          I_Category  = 'INFORMATION-TECHNOLOGY' ;
+19246 +          U_Category  = 'INFORMATION-TECHNOLOGY' ;
+19247 +          END;
+19248 +        ELSE DO;
+19249 +          IF  NOT MISSING(TextCluster11_SVD5 ) AND
+19250 +                 0.0876603538126 <= TextCluster11_SVD5  THEN DO;
+19251 +            _NODE_  =                   19;
+19252 +            _LEAF_  =                    5;
+19253 +            P_CategoryHR  =     0.03333333333333;
+19254 +            P_CategoryDESIGNER  =     0.01666666666666;
+19255 +            P_CategoryINFORMATION_TECHNOLOGY  =     0.01666666666666;
+19256 +            P_CategoryTEACHER  =     0.01666666666666;
+19257 +            P_CategoryADVOCATE  =                    0;
+19258 +            P_CategoryBUSINESS_DEVELOPMENT  =     0.11666666666666;
+19259 +            P_CategoryHEALTHCARE  =     0.03333333333333;
+19260 +            P_CategoryFITNESS  =                    0;
+19261 +            P_CategoryOTHER  =     0.08333333333333;
+19262 +            P_CategorySALES  =                    0;
+19263 +            P_CategoryCONSULTANT  =                  0.1;
+19264 +            P_CategoryDIGITAL_MEDIA  =     0.58333333333333;
+19265 +            Q_CategoryHR  =     0.03333333333333;
+19266 +            Q_CategoryDESIGNER  =     0.01666666666666;
+19267 +            Q_CategoryINFORMATION_TECHNOLOGY  =     0.01666666666666;
+19268 +            Q_CategoryTEACHER  =     0.01666666666666;
+19269 +            Q_CategoryADVOCATE  =                    0;
+19270 +            Q_CategoryBUSINESS_DEVELOPMENT  =     0.11666666666666;
+19271 +            Q_CategoryHEALTHCARE  =     0.03333333333333;
+19272 +            Q_CategoryFITNESS  =                    0;
+19273 +            Q_CategoryOTHER  =     0.08333333333333;
+19274 +            Q_CategorySALES  =                    0;
+19275 +            Q_CategoryCONSULTANT  =                  0.1;
+19276 +            Q_CategoryDIGITAL_MEDIA  =     0.58333333333333;
+19277 +            V_CategoryHR  =     0.03333333333333;
+19278 +            V_CategoryDESIGNER  =     0.03333333333333;
+19279 +            V_CategoryINFORMATION_TECHNOLOGY  =                    0;
+19280 +            V_CategoryTEACHER  =                    0;
+19281 +            V_CategoryADVOCATE  =                    0;
+19282 +            V_CategoryBUSINESS_DEVELOPMENT  =                  0.1;
+19283 +            V_CategoryHEALTHCARE  =                    0;
+19284 +            V_CategoryFITNESS  =                    0;
+19285 +            V_CategoryOTHER  =                    0;
+19286 +            V_CategorySALES  =     0.06666666666666;
+19287 +            V_CategoryCONSULTANT  =                  0.2;
+19288 +            V_CategoryDIGITAL_MEDIA  =     0.56666666666666;
+19289 +            I_Category  = 'DIGITAL-MEDIA' ;
+19290 +            U_Category  = 'DIGITAL-MEDIA' ;
+19291 +            END;
+19292 +          ELSE DO;
+19293 +            _NODE_  =                   18;
+19294 +            _LEAF_  =                    4;
+19295 +            P_CategoryHR  =     0.01234567901234;
+19296 +            P_CategoryDESIGNER  =      0.0216049382716;
+19297 +            P_CategoryINFORMATION_TECHNOLOGY  =      0.0216049382716;
+19298 +            P_CategoryTEACHER  =     0.01851851851851;
+19299 +            P_CategoryADVOCATE  =     0.14506172839506;
+19300 +            P_CategoryBUSINESS_DEVELOPMENT  =     0.15123456790123;
+19301 +            P_CategoryHEALTHCARE  =     0.15123456790123;
+19302 +            P_CategoryFITNESS  =     0.04012345679012;
+19303 +            P_CategoryOTHER  =     0.16049382716049;
+19304 +            P_CategorySALES  =     0.16975308641975;
+19305 +            P_CategoryCONSULTANT  =     0.09259259259259;
+19306 +            P_CategoryDIGITAL_MEDIA  =     0.01543209876543;
+19307 +            Q_CategoryHR  =     0.01234567901234;
+19308 +            Q_CategoryDESIGNER  =      0.0216049382716;
+19309 +            Q_CategoryINFORMATION_TECHNOLOGY  =      0.0216049382716;
+19310 +            Q_CategoryTEACHER  =     0.01851851851851;
+19311 +            Q_CategoryADVOCATE  =     0.14506172839506;
+19312 +            Q_CategoryBUSINESS_DEVELOPMENT  =     0.15123456790123;
+19313 +            Q_CategoryHEALTHCARE  =     0.15123456790123;
+19314 +            Q_CategoryFITNESS  =     0.04012345679012;
+19315 +            Q_CategoryOTHER  =     0.16049382716049;
+19316 +            Q_CategorySALES  =     0.16975308641975;
+19317 +            Q_CategoryCONSULTANT  =     0.09259259259259;
+19318 +            Q_CategoryDIGITAL_MEDIA  =     0.01543209876543;
+19319 +            V_CategoryHR  =     0.01098901098901;
+19320 +            V_CategoryDESIGNER  =     0.01098901098901;
+19321 +            V_CategoryINFORMATION_TECHNOLOGY  =     0.01098901098901;
+19322 +            V_CategoryTEACHER  =      0.0054945054945;
+19323 +            V_CategoryADVOCATE  =     0.17032967032967;
+19324 +            V_CategoryBUSINESS_DEVELOPMENT  =     0.16483516483516;
+19325 +            V_CategoryHEALTHCARE  =     0.14835164835164;
+19326 +            V_CategoryFITNESS  =     0.03846153846153;
+19327 +            V_CategoryOTHER  =     0.16483516483516;
+19328 +            V_CategorySALES  =     0.14835164835164;
+19329 +            V_CategoryCONSULTANT  =      0.1043956043956;
+19330 +            V_CategoryDIGITAL_MEDIA  =     0.02197802197802;
+19331 +            I_Category  = 'SALES' ;
+19332 +            U_Category  = 'SALES' ;
+19333 +            END;
+19334 +          END;
+19335 +        END;
+19336 +      END;
+19337 +    END;
+19338 +  END;
+19339 +
+19340 +*****  RESIDUALS R_ *************;
+19341 +IF  F_Category  NE 'HR'
+19342 +AND F_Category  NE 'DESIGNER'
+19343 +AND F_Category  NE 'INFORMATION-TECHNOLOGY'
+19344 +AND F_Category  NE 'TEACHER'
+19345 +AND F_Category  NE 'ADVOCATE'
+19346 +AND F_Category  NE 'BUSINESS-DEVELOPMENT'
+19347 +AND F_Category  NE 'HEALTHCARE'
+19348 +AND F_Category  NE 'FITNESS'
+19349 +AND F_Category  NE 'OTHER'
+19350 +AND F_Category  NE 'SALES'
+19351 +AND F_Category  NE 'CONSULTANT'
+19352 +AND F_Category  NE 'DIGITAL-MEDIA'  THEN DO;
+19353 +        R_CategoryHR  = .;
+19354 +        R_CategoryDESIGNER  = .;
+19355 +        R_CategoryINFORMATION_TECHNOLOGY  = .;
+19356 +        R_CategoryTEACHER  = .;
+19357 +        R_CategoryADVOCATE  = .;
+19358 +        R_CategoryBUSINESS_DEVELOPMENT  = .;
+19359 +        R_CategoryHEALTHCARE  = .;
+19360 +        R_CategoryFITNESS  = .;
+19361 +        R_CategoryOTHER  = .;
+19362 +        R_CategorySALES  = .;
+19363 +        R_CategoryCONSULTANT  = .;
+19364 +        R_CategoryDIGITAL_MEDIA  = .;
+19365 + END;
+19366 + ELSE DO;
+19367 +       R_CategoryHR  =  -P_CategoryHR ;
+19368 +       R_CategoryDESIGNER  =  -P_CategoryDESIGNER ;
+19369 +       R_CategoryINFORMATION_TECHNOLOGY  =  -P_CategoryINFORMATION_TECHNOLOGY
+19370 +         ;
+19371 +       R_CategoryTEACHER  =  -P_CategoryTEACHER ;
+19372 +       R_CategoryADVOCATE  =  -P_CategoryADVOCATE ;
+19373 +       R_CategoryBUSINESS_DEVELOPMENT  =  -P_CategoryBUSINESS_DEVELOPMENT ;
+19374 +       R_CategoryHEALTHCARE  =  -P_CategoryHEALTHCARE ;
+19375 +       R_CategoryFITNESS  =  -P_CategoryFITNESS ;
+19376 +       R_CategoryOTHER  =  -P_CategoryOTHER ;
+19377 +       R_CategorySALES  =  -P_CategorySALES ;
+19378 +       R_CategoryCONSULTANT  =  -P_CategoryCONSULTANT ;
+19379 +       R_CategoryDIGITAL_MEDIA  =  -P_CategoryDIGITAL_MEDIA ;
+19380 +       SELECT( F_Category  );
+19381 +          WHEN( 'HR'  ) R_CategoryHR  = R_CategoryHR  +1;
+19382 +          WHEN( 'DESIGNER'  ) R_CategoryDESIGNER  = R_CategoryDESIGNER  +1;
+19383 +          WHEN( 'INFORMATION-TECHNOLOGY'  ) R_CategoryINFORMATION_TECHNOLOGY
+19384 +          = R_CategoryINFORMATION_TECHNOLOGY  +1;
+19385 +          WHEN( 'TEACHER'  ) R_CategoryTEACHER  = R_CategoryTEACHER  +1;
+19386 +          WHEN( 'ADVOCATE'  ) R_CategoryADVOCATE  = R_CategoryADVOCATE  +1;
+19387 +          WHEN( 'BUSINESS-DEVELOPMENT'  ) R_CategoryBUSINESS_DEVELOPMENT  =
+19388 +        R_CategoryBUSINESS_DEVELOPMENT  +1;
+19389 +          WHEN( 'HEALTHCARE'  ) R_CategoryHEALTHCARE  = R_CategoryHEALTHCARE
+19390 +          +1;
+19391 +          WHEN( 'FITNESS'  ) R_CategoryFITNESS  = R_CategoryFITNESS  +1;
+19392 +          WHEN( 'OTHER'  ) R_CategoryOTHER  = R_CategoryOTHER  +1;
+19393 +          WHEN( 'SALES'  ) R_CategorySALES  = R_CategorySALES  +1;
+19394 +          WHEN( 'CONSULTANT'  ) R_CategoryCONSULTANT  = R_CategoryCONSULTANT
+19395 +          +1;
+19396 +          WHEN( 'DIGITAL-MEDIA'  ) R_CategoryDIGITAL_MEDIA  =
+19397 +        R_CategoryDIGITAL_MEDIA  +1;
+19398 +       END;
+19399 + END;
+19400 +
+19401 +****************************************************************;
+19402 +******          END OF DECISION TREE SCORING CODE         ******;
+19403 +****************************************************************;
+19404 +
+19405 +drop _LEAF_;
+NOTE: %INCLUDE (level 1) ending.
+19406  run;
+
+NOTE: DATA STEP view saved on file EMWS3.TREE7_TEST.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+19407  quit;
+19408  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+NOTE: View EMWS3.TREE7_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+19410  proc sort data=WORK.EM_USER_REPORT;
+19411  by ID VIEW;
+19412  run;
+
+NOTE: There were 132 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+19413  *------------------------------------------------------------*;
+19414  * Tree7: Computing metadata for TRAIN data;
+19415  *------------------------------------------------------------*;
+
+NOTE: View EMWS3.TREE7_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+20045  data WORK.MODELTEMP_INFO;
+20046  set EMWS3.Tree7_EMINFO;
+20047  where DATA='Tree7' and KEY ^in('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+20048  run;
+
+NOTE: There were 0 observations read from the data set EMWS3.TREE7_EMINFO.
+      WHERE (DATA='Tree7') and KEY not in ('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+NOTE: The data set WORK.MODELTEMP_INFO has 0 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+20049  data EMWS3.Tree7_EMINFO;
+20050  length TARGET KEY $32 DATA $43;
+20051  input TARGET KEY DATA $;
+20052  cards;
+
+NOTE: The data set EMWS3.TREE7_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+20056  run;
+20057  data EMWS3.Tree7_EMINFO;
+20058  set EMWS3.Tree7_EMINFO WORK.MODELTEMP_INFO;
+20059  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.TREE7_EMINFO.
+NOTE: There were 0 observations read from the data set WORK.MODELTEMP_INFO.
+NOTE: The data set EMWS3.TREE7_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+20060  proc sort data = EMWS3.Tree7_EMINFO NOTHREADS;
+20061  by TARGET KEY;
+20062  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.TREE7_EMINFO.
+NOTE: The data set EMWS3.TREE7_EMINFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+20063  proc sort data = EMWS3.TextCluster11_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+20064  by TARGET KEY;
+20065  run;
+
+NOTE: There were 6 observations read from the data set EMWS3.TEXTCLUSTER11_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 6 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+20066  proc sort data = EMWS3.Tree7_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+20067  by TARGET KEY;
+20068  run;
+
+NOTE: Input data set is already sorted; it has been copied to the output data set.
+NOTE: There were 3 observations read from the data set EMWS3.TREE7_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+20069  data EMWS3.Tree7_EMINFO;
+20070  merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+20071  by TARGET KEY;
+20072  run;
+
+NOTE: There were 6 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 3 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS3.TREE7_EMINFO has 9 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+20073  proc datasets lib=work nolist;
+20074  delete TEMP_INFO SORTEDEMINFO;
+20075  run;
+
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+20076  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: View EMWS3.TREE7_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+NOTE: View EMWS3.TREE7_VALIDATE.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+NOTE: View EMWS3.TREE7_TEST.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      

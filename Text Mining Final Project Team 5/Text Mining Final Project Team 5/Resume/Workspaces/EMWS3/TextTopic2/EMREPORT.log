@@ -1,0 +1,427 @@
+*------------------------------------------------------------*
+* Report Log
+Date:                November 26, 2023
+Time:                18:18:56
+*------------------------------------------------------------*
+19383  %let EMEXCEPTIONSTRING=;
+19384  *------------------------------------------------------------*;
+19385  * REPORT: TextTopic2;
+19386  *------------------------------------------------------------*;
+19387  %let EM_ACTION = REPORT;
+19388  %let syscc = 0;
+19389  %macro main;
+19390      %if %upcase(&EM_ACTION) = CREATE %then %do;
+19391          filename temp catalog 'sashelp.emtxtext.topic_create.source';
+19392          %include temp;
+19393          %create;
+19394      %end;
+19395      %if %upcase(&EM_ACTION) = TRAIN %then %do;
+19396          filename temp catalog 'sashelp.emtxtext.topic_train.source';
+19397          %include temp;
+19398          %train;
+19399      %end;
+19400     %if %upcase(&EM_ACTION) = SCORE %then %do;
+19401          filename temp catalog 'sashelp.emtxtext.topic_score.source';
+19402          %include temp;
+19403          %score;
+19404      %end;
+19405      %if %upcase(&EM_ACTION) = REPORT %then %do;
+19406          filename temp catalog 'sashelp.emtxtext.topic_report.source';
+19407          %include temp;
+19408          %report;
+19409      %end;
+19410  %mend main;
+19411  
+19412  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TOPIC_REPORT.SOURCE.
+19413 +/* ****************************************************************
+19414 + * Copyright (C) 2009 by SAS Institute Inc., Cary, NC 27513
+19415 + *
+19416 + * Name:             topic_report.sas
+19417 + * Support:          cox  James A. Cox
+19418 + * Product:          SAS/GRAPH
+19419 + * Language:         Sas
+19420 + * Script:
+19421 + *
+19422 + * Usage:
+19423 + *
+19424 + * Purpose:
+19425 + *
+19426 + * History:
+19427 + * 03Jun09 Initial Coding [cox]
+19428 + *
+19429 + * Notes:
+19430 + *
+19431 + * Last Modified By:
+19432 + * Last Modified On: Thu Oct 10 15:14:23 2013
+19433 + *
+19434 + * End
+19435 + * ************************************************************** */
+19436 +%macro report();
+19438 +   /* drop _cat from display table; */
+19439 +   %em_getname(key=repTopics, type=data);
+19440 +   %EM_GETNAME(KEY=GRAPH_TABLE, TYPE=DATA);
+19442 +   /* Generate reports for terms with term weights */
+19443 +   %em_checkmacro(name=tmm_num_display_terms,      global=Y, value=20000);
+19445 +   %EM_GETNAME(KEY=GRAPH_TABLE, TYPE=DATA);
+19446 +   %EM_GETNAME(KEY=TOPICS, TYPE=DATA);
+19447 +   %EM_GETNAME(KEY=SVDU, TYPE=DATA);
+19448 +   %em_getname(key=termtopics,       type=data);
+19449 +   %EM_GETNAME(KEY=weightedterms, TYPE=DATA);
+19450 +  /* Get number of topics */
+19451 +   proc sql noprint; select count(*) into :_n_topics from &em_user_topics; quit;
+19452 +      %let _n_topics=%kleft(&_n_topics);
+19453 +   proc sort data=&em_user_termtopics; by _termid _topicid;
+19454 +   data &em_user_svdu(drop=_i _topicid _weight);
+19455 +     retain topic1-topic&_n_topics;
+19456 +     array _topics{*} topic1-topic&_n_topics;
+19457 +     set &em_user_termtopics; by _termid;
+19458 +      if first._termid then do;
+19459 +         do _i=1 to &_n_topics; _topics{_i}=0; end;
+19460 +         end;
+19461 +      _topics{_topicid}=_weight;
+19462 +      if last._termid then output;
+19463 +      run;
+19464 +   filename temp catalog "sashelp.emtxtext.apply_labels.source";
+19465 +   %include temp;
+19466 +   %apply_labels(&EM_USER_SVDU,&EM_USER_TOPICS,prefix=topic);
+19468 +  /* include graphing macros */
+19469 +   FILENAME TEMP CATALOG 'SASHELP.EMTXTEXT.TM_GRAPHS.SOURCE';
+19470 +   %INCLUDE TEMP;
+19471 +   /* get the top level terms */
+19472 +   %GRAPH_TOP_TERMS(KEY=GRAPH_TABLE, MAXTERMS=20000, KEEPKEY=Y,
+19473 +                 termds=&em_user_weightedterms);
+19474 +   /* merge terms table with col values */
+19475 +    proc sql noprint;
+19476 +        create table &em_user_graph_table(drop=key _id_) as
+19477 +            select a.*, b.* from &em_user_graph_table(drop=_ispar parent_id) a
+19478 +            left join &em_user_svdu b on a.key=b._termid order by numdocs desc,
+19479 +           term, rolestring;
+19480 +    quit;
+19482 +    /* can have 2+ SVD values to create matrix with */
+19483 +    %let Yvars=Y1=topic1, Y2=topic2;
+19484 +    %do i=3 %to %sysfunc(MIN(&_n_topics, 5));
+19485 +        %let Yvars=&Yvars , Y&i=topic&i;
+19486 +    %end;
+19488 +    %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_topicterms_title, NOQUOTE));
+19489 +    %EM_REPORT(KEY=GRAPH_TABLE, VIEWTYPE=MATRIXPLOT, DESCRIPTION= %nrbquote(&desc), AUTODISPLAY=Y,
+19490 +        &Yvars. , COLOR=RANK, TIP=TERM);
+19492 +   %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_topics_title, NOQUOTE));
+19493 +   %em_report(key=reptopics, viewtype=DATA,
+19494 +              description=%nrbquote(&desc), autodisplay=Y);
+19496 +   %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_termsbytopic_title, NOQUOTE));
+19497 +   %em_report(key=reptopics, viewtype=BAR, x=_topicid, freq=_numterms, tiptext=_name,
+19498 +              group=_displayCat, sortorder=desc, description=%nrbquote(&desc),
+19499 +              autodisplay=Y);
+19501 +   %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_docsbytopic_title, NOQUOTE));
+19502 +   %em_report(key=reptopics, viewtype=BAR, x=_topicid, freq=_numdocs, tiptext=_name,
+19503 +              group=_displayCat,  sortorder=desc, description=%nrbquote(&desc),
+19504 +              autodisplay=Y);
+19506 +   %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_prescore_title, NOQUOTE));
+19507 +   %EM_REPORT(KEY=PRESCORECODE, VIEWTYPE=SOURCE, DESCRIPTION=%nrbquote(&desc),
+19508 +              BLOCK=Scoring, AUTODISPLAY=N);
+19510 +%mend report;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 831 observations read from the data set EMWS3.TEXTTOPIC2_TERMTOPICS.
+NOTE: The data set EMWS3.TEXTTOPIC2_TERMTOPICS has 831 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 831 observations read from the data set EMWS3.TEXTTOPIC2_TERMTOPICS.
+NOTE: The data set EMWS3.TEXTTOPIC2_SVDU has 277 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.APPLY_LABELS.SOURCE.
+19511 +/* ****************************************************************
+19512 + * Copyright (C) 2013 by SAS Institute Inc., Cary, NC 27513
+19513 + *
+19514 + * Name:             apply_labels.sas
+19515 + * Support:          cox  James A. Cox
+19516 + * Product:          SAS Text Miner
+19517 + * Language:         Sas
+19518 + * Script:
+19519 + *
+19520 + * Usage:
+19521 + *
+19522 + * Purpose: to apply descriptions from one data set as labels to a list of
+19523 + *        variables in another
+19524 + *
+19525 + * History:
+19526 + * 07Aug13 Initial Coding [cox]
+19527 + *
+19528 + * Notes:
+19529 + *
+19530 + * Last Modified By:
+19531 + * Last Modified On: Fri Aug 30 16:22:02 2013
+19532 + *
+19533 + * End
+19534 + * ************************************************************** */
+19535 +%macro apply_labels(inds,labelds,label_col=_name,col_id=_topicid,prefix=COL,outds=);
+19536 +%if &outds= %then %let outds=&inds;
+19537 +proc sql noprint;
+19538 +    select max(&col_id), min(&col_id) into :_maxvar, :_minvar from &labelds;
+19539 +       quit;
+19540 +%if &_minvar eq . %then %let _minvar=1;
+19541 +%let _minvar=%left(&_minvar);
+19542 +%let _maxvar=%left(&_maxvar);
+19543 +
+19544 +/* Do the following if there are any vars to be scored */
+19545 +%if &_maxvar >0 %then %do;
+19546 +
+19547 +%let _minlab=%ktrim(_tmlab)&_minvar;
+19548 +%let _maxlab=%ktrim(_tmlab)&_maxvar;
+19549 +proc sql noprint;
+19550 +    select &label_col into :&_minlab - :&_maxlab from &labelds;
+19551 +       quit;
+19552 +data &outds;
+19553 +   set &inds;
+19554 +   array vars{&_minvar:&_maxvar} &prefix.&_minvar-&prefix.&_maxvar;
+19555 +         %do i=&_minvar %to &_maxvar;
+19556 +            %let _tm_tmp=%bquote(&&_tmlab&i);
+19557 +            label &prefix.&i="&_tm_tmp";
+19558 +            %end;
+19559 +
+19560 +         %end;
+19561 +run;
+19562 +
+19563 +%mend;
+19564 +/*
+19565 + * Example code;
+19566 +
+19567 +%let num_vars=20;
+19568 + data vars(drop=j);
+19569 +   array cols{&num_vars} col1-col&num_vars;
+19570 +   do i=1 to 10;
+19571 +      do j=1 to &num_vars;
+19572 +         cols{j}=ranuni(0);
+19573 +         end;
+19574 +      output;
+19575 +      end;
+19576 +   run;
+19577 + data labels;
+19578 +    do i=1 to 20;
+19579 +       label = "a"||put(i,2.);
+19580 +       output;
+19581 +       end;
+19582 +run;
+19583 +
+19584 +   filename temp catalog "sashelp.emtxtext.apply_labels.source";
+19585 +   %include temp;
+19586 +%apply_labels(vars,labels,label_col=label,col_id=i,prefix=col);
+19587 +
+19588 +*/
+NOTE: %INCLUDE (level 1) ending.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 277 observations read from the data set EMWS3.TEXTTOPIC2_SVDU.
+NOTE: The data set EMWS3.TEXTTOPIC2_SVDU has 277 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TM_GRAPHS.SOURCE.
+19589 +%MACRO GRAPH_TOP_TERMS(KEY=, MAXTERMS=ALL, FILTER=N, KEEPKEY=N, termds=);
+19590 +/*
+19591 + * A gtable of all "top-level" terms, that is, all terms that do not have a different term as a parent.  This
+19592 + * table would be linked to all graphs in this window such that the rows in the table are selected when points
+19593 + * representing those terms are selected in the graphs.
+19594 + */
+19595 +
+19596 +   %em_getname(key=&key);
+19597 +   %LOCAL GRAPH_DATA;
+19598 +   %LET GRAPH_DATA = &&EM_USER_&KEY;
+19599 +   %if ^%symexist(tm_debug) %then %let tm_debug=0;
+19600 +   %if "&FILTER"="Y" %then %do;
+19601 +       %em_getname(key=terms_tmf, type=data);
+19602 +       * sort by freq for the reports graph ;
+19603 +       proc sort data=&EM_USER_TERMS_tmf out=_sortedTerms;
+19604 +          by descending numdocs;
+19605 +       run;
+19606 +   %end;
+19607 +   %else %do;
+19608 +      %if &termds= %then %do;
+19609 +         %let termds=&em_user_terms;
+19610 +         %em_getname(key=terms, type=data);
+19611 +         %end;
+19612 +
+19613 +       * sort by freq for the reports graph ;
+19614 +       proc sort data=&termds out=_sortedTerms;
+19615 +          by descending numdocs;
+19616 +       run;
+19617 +   %end;
+19618 +
+19619 +
+19620 +   data &GRAPH_DATA;
+19621 +      FORMAT TERM $256.;
+19622 +      SET _sortedTerms(drop=PARENT %IF &keepkey=N %THEN KEY; where=(_ISPAR ne '.'));
+19623 +      LABEL ROLESTRING= "%sysfunc(sasmsg(sashelp.tmine, rpt_text_role_vlabel,NOQUOTE))"
+19624 +            NUMDOCS=    "%sysfunc(sasmsg(sashelp.tmine, rpt_text_numdocs_vlabel,   NOQUOTE))"
+19625 +            RANK= "%sysfunc(sasmsg(sashelp.tmine, rpt_text_rank_vlabel,   NOQUOTE))"
+19626 +            FREQ=       "%sysfunc(sasmsg(sashelp.tmine, rpt_text_freq_vlabel,      NOQUOTE))"
+19627 +            ATTRSTRING=  "%sysfunc(sasmsg(sashelp.tmine, rpt_text_attribute_vlabel, NOQUOTE))"
+19628 +            %if "&FILTER"="Y" %then %do;
+19629 +                WEIGHT          = "%sysfunc(sasmsg(sashelp.tmine, rpt_text_weight_vlabel,             NOQUOTE))"
+19630 +           %end;
+19631 +            KEEP=       "%sysfunc(sasmsg(sashelp.tmine, rpt_text_keep_vlabel,      NOQUOTE))"
+19632 +            PARENT_ID=  "%sysfunc(sasmsg(sashelp.tmine, rpt_text_parentid_vlabel,  NOQUOTE))"
+19633 +            _ISPAR=     "%sysfunc(sasmsg(sashelp.tmine, rpt_text_isparent_vlabel,  NOQUOTE))";
+19634 +       drop ROLE ATTRIBUTE;
+19635 +      /* mark the parents */
+19636 +      IF _ISPAR = '+' THEN TERM = '+ ' || TERM;
+19637 +       %if "%upcase(&MAXTERMS)" ne "ALL" %then %do;
+19638 +           if _N_<=&maxterms then output;
+19639 +       %end;
+19640 +    run;
+19641 +
+19642 +
+19643 +
+19644 +    proc rank data=&graph_data out=&graph_data descending ties=low;
+19645 +       var numdocs;
+19646 +       ranks Rank;
+19647 +    run;
+19648 +
+19649 +
+19650 +
+19651 +
+19652 +
+19653 +    %if &tm_debug =0 %then %do;
+19654 +       proc datasets lib=work nolist;
+19655 +          delete _sortedTerms ;
+19656 +       run;
+19657 +    %end;
+19658 +
+19659 +
+19660 +    quit;
+19661 +
+19662 +
+19663 +   %let block = %sysfunc(sasmsg(sashelp.tmine, rpt_text_terms_title, NOQUOTE));
+19664 +
+19665 +   %let desc = %sysfunc(sasmsg(sashelp.tmine, rpt_text_terms_title, NOQUOTE));
+19666 +   %EM_REPORT(KEY=&KEY, VIEWTYPE=DATA, DESCRIPTION= %nrbquote(&desc), BLOCK= %nrbquote(&block), AUTODISPLAY=Y, where=%str(KEEP='Y'));
+19667 +
+19668 +%MEND GRAPH_TOP_TERMS;
+NOTE: %INCLUDE (level 1) ending.
+
+NOTE: There were 277 observations read from the data set EMWS3.TEXTTOPIC2_WEIGHTEDTERMS.
+NOTE: The data set WORK._SORTEDTERMS has 277 observations and 13 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: Variable RANK is uninitialized.
+NOTE: There were 277 observations read from the data set WORK._SORTEDTERMS.
+      WHERE _ISPAR not = '.';
+NOTE: The data set EMWS3.TEXTTOPIC2_GRAPH_TABLE has 277 observations and 10 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: The data set EMWS3.TEXTTOPIC2_GRAPH_TABLE has 277 observations and 11 variables.
+NOTE: PROCEDURE RANK used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK.EM_USER_REPORT has 133 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+WARNING: This CREATE TABLE statement recursively references the target table. A consequence of this is a possible data integrity problem.
+WARNING: The variable _id_ in the DROP, KEEP, or RENAME list has never been referenced.
+NOTE: Table EMWS3.TEXTTOPIC2_GRAPH_TABLE created, with 277 rows and 12 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 133 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 265 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 265 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 397 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 397 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 529 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 529 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 661 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 661 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 793 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+19669  *------------------------------------------------------------*;
+19670  * End REPORT: TextTopic2;
+19671  *------------------------------------------------------------*;
+19672  
+
+19673  /* Reset EM Options */
+19674  options formchar="|----|+|---+=|-/\<>*";
+19675  options nocenter ls=256 ps=10000;
+19676  goptions reset=all device=GIF NODISPLAY;
+
+19677  proc sort data=WORK.EM_USER_REPORT;
+19678  by ID VIEW;
+19679  run;
+
+NOTE: There were 793 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 793 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+

@@ -1,0 +1,84 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 14, 2023
+Time:                19:51:36
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+Role         Level         Count
+ 
+ID          NOMINAL          1
+TARGET      NOMINAL          1
+TEXT        NOMINAL          1
+ 
+ 
+ 
+ 
+ 
+The CONTENTS Procedure
+ 
+Data Set Name        EMWS3.FIMPORT_DATA            Observations          1353
+Member Type          DATA                          Variables             3
+Engine               V9                            Indexes               0
+Created              11/14/2023 19:51:35           Observation Length    21040
+Last Modified        11/14/2023 19:51:35           Deleted Observations  0
+Protection                                         Compressed            NO
+Data Set Type                                      Sorted                NO
+Label
+Data Representation  WINDOWS_64
+Encoding             wlatin1  Western (Windows)
+ 
+ 
+                                          Engine/Host Dependent Information
+ 
+Data Set Page Size          253952
+Number of Data Set Pages    113
+First Data Page             1
+Max Obs per Page            12
+Obs in First Data Page      12
+Number of Data Set Repairs  0
+ExtendObsCounter            YES
+Filename                    C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\fimport_data.sas7bdat
+Release Created             9.0401M6
+Host Created                X64_10HOME
+Owner Name                  LAHARI\lahar
+File Size                   28MB
+File Size (bytes)           28950528
+ 
+ 
+             Alphabetic List of Variables and Attributes
+ 
+#    Variable      Type      Len    Format     Informat    Label
+ 
+3    Category      Char       22    $22.       $22.        Category
+1    ID            Num         8    BEST.                  ID
+2    Resume_str    Char    21005    $21005.    $21005.     Resume_str
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Exported Attributes for TRAIN Port
+ 
+          Measurement    Frequency
+Role         Level         Count
+ 
+ID          NOMINAL          1
+TARGET      NOMINAL          1
+TEXT        NOMINAL          1

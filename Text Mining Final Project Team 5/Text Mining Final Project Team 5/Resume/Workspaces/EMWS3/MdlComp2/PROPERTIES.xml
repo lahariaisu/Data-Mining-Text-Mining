@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  NumberOfReportedLevels="1E-6" NormalizeReportingVariables="Y" DecileBin="20" LiftEpsilon="1E-6"
+ ProfitEpsilon="1E-6" RoiEpsilon="1E-6" ScoreDistBin="20" RocChart="Y" RocEpsilon="0.01"
+ AssessAllTargetLevels="N" SelectionData="DEFAULT" HPCriteria="DEFAULT" intervalViyaCriteria="DEFAULT"
+ classViyaCriteria="DEFAULT" SelectionTable="TRAIN" SelectionCriteria="_AUR_" SelectionDepth="10"
+ NumberofBins="20" RecomputeAssess="N" TargetName="Category" ModelId="Neural9" ModelDescription="Neural Network Mutual Info High"
+ ModelCriteria="Train: Roc Index" ForceRun="N" RunAction="Train" Component="ModelCompare"
+ RawCreateTime="2016548424.3" CreateTime="25NOV2023:16:20:24" RunId="064bff4d-b6ca-4c04-8976-ab1d36391805"
+ StatisticUsed="_AUR_" TargetLabel="Category">
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES/>
+</_ROOT_>

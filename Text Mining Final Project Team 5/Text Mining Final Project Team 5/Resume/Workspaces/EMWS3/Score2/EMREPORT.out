@@ -1,0 +1,70 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Class Variable Summary Statistics
+
+Data Role=TRAIN Output Type=CLASSIFICATION
+
+              Numeric                              Frequency
+ Variable      Value     Formatted Value             Count      Percent
+
+I_Category       .       DESIGNER                      6          37.5 
+I_Category       .       HR                            6          37.5 
+I_Category       .       INFORMATION-TECHNOLOGY        4          25.0 
+
+
+Data Role=TRAIN Output Type=SEGMENT
+
+                        Numeric    Formatted    Frequency
+      Variable           Value       Value        Count      Percent
+
+TextCluster_cluster_       1           1            6          37.5 
+TextCluster_cluster_       2           2            4          25.0 
+TextCluster_cluster_       3           3            6          37.5 
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Interval Variable Summary Statistics
+
+Variable Name=P_CategoryDESIGNER
+
+Statistics    Label                  TRAIN
+
+  MEAN        Mean                   0.3748
+  STD         Standard Deviation     0.4995
+  N           Non Missing           16.0000
+  MIN         Minimum                0.0000
+  P25         25th Percentile        0.0000
+  MEDIAN      Median                 0.0002
+  P75         75th Percentile        0.9991
+  MAX         Maximum                0.9995
+
+
+Variable Name=P_CategoryHR
+
+Statistics    Label                  TRAIN
+
+  MEAN        Mean                   0.3751
+  STD         Standard Deviation     0.4997
+  N           Non Missing           16.0000
+  MIN         Minimum                0.0001
+  P25         25th Percentile        0.0002
+  MEDIAN      Median                 0.0004
+  P75         75th Percentile        0.9997
+  MAX         Maximum                0.9998
+
+
+Variable Name=P_CategoryINFORMATION_TECHNOLOGY
+
+Statistics    Label                  TRAIN
+
+  MEAN        Mean                   0.2501
+  STD         Standard Deviation     0.4469
+  N           Non Missing           16.0000
+  MIN         Minimum                0.0000
+  P25         25th Percentile        0.0001
+  MEDIAN      Median                 0.0004
+  P75         75th Percentile        0.5002
+  MAX         Maximum                0.9997

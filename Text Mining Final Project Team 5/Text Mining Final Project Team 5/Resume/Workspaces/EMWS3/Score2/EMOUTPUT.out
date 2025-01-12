@@ -1,0 +1,143 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 26, 2023
+Time:                18:19:09
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+           Measurement    Frequency
+ Role         Level         Count
+ 
+SEGMENT      BINARY           3
+SEGMENT      NOMINAL          1
+TARGET       NOMINAL          1
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Score Output Variables
+ 
+Variable Name                       Function          Creator        Label
+ 
+EM_CLASSIFICATION                   CLASSIFICATION    Score2         Prediction for Category
+EM_CLASSTARGET                      ASSESS            Score2         Target Variable: Category
+EM_EVENTPROBABILITY                 PREDICT           Score2         Probability for level INFORMATION-TECHNOLOGY of Category
+EM_PROBABILITY                      PREDICT           Score2         Probability of Classification
+EM_SEGMENT                          TRANSFORM         Score2         Segment
+F_Category                          CLASSIFICATION    Neural10       From: Category
+I_Category                          CLASSIFICATION    Neural10       Into: Category
+P_CategoryDESIGNER                  PREDICT           Neural10       Predicted: Category=DESIGNER
+P_CategoryHR                        PREDICT           Neural10       Predicted: Category=HR
+P_CategoryINFORMATION_TECHNOLOGY    PREDICT           Neural10       Predicted: Category=INFORMATION-TECHNOLOGY
+R_CategoryDESIGNER                  RESIDUAL          Neural10       Residual: Category=DESIGNER
+R_CategoryHR                        RESIDUAL          Neural10       Residual: Category=HR
+R_CategoryINFORMATION_TECHNOLOGY    RESIDUAL          Neural10       Residual: Category=INFORMATION-TECHNOLOGY
+TextCluster_SVD1                    TRANSFORM         TextCluster
+TextCluster_SVD10                   TRANSFORM         TextCluster
+TextCluster_SVD2                    TRANSFORM         TextCluster
+TextCluster_SVD3                    TRANSFORM         TextCluster
+TextCluster_SVD4                    TRANSFORM         TextCluster
+TextCluster_SVD5                    TRANSFORM         TextCluster
+TextCluster_SVD6                    TRANSFORM         TextCluster
+TextCluster_SVD7                    TRANSFORM         TextCluster
+TextCluster_SVD8                    TRANSFORM         TextCluster
+TextCluster_SVD9                    TRANSFORM         TextCluster
+TextCluster_cluster_                TRANSFORM         TextCluster
+TextCluster_prob1                   TRANSFORM         TextCluster
+TextCluster_prob2                   TRANSFORM         TextCluster
+TextCluster_prob3                   TRANSFORM         TextCluster
+TextTopic2_1                        TRANSFORM         TextTopic2     _1_0_technology,+technology,+organization,information,+application
+TextTopic2_2                        TRANSFORM         TextTopic2     _1_0_hr,+policy,+benefit,+resource,+train
+TextTopic2_3                        TRANSFORM         TextTopic2     _1_0_designer,+action,designer,+design,adobe
+TextTopic2_raw1                     TRANSFORM         TextTopic2     technology,+technology,+organization,information,+application
+TextTopic2_raw2                     TRANSFORM         TextTopic2     hr,+policy,+benefit,+resource,+train
+TextTopic2_raw3                     TRANSFORM         TextTopic2     designer,+action,designer,+design,adobe
+U_Category                          CLASSIFICATION    Neural10       Unnormalized Into: Category
+_DOCUMENT_                          TRANSFORM         TextTopic2     Document
+_WARN_                              ASSESS            Neural10       Warnings
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Class Variable Summary Statistics
+ 
+Data Role=TRAIN Output Type=CLASSIFICATION
+ 
+              Numeric                              Frequency
+ Variable      Value     Formatted Value             Count      Percent
+ 
+I_Category       .       DESIGNER                      6          37.5
+I_Category       .       HR                            6          37.5
+I_Category       .       INFORMATION-TECHNOLOGY        4          25.0
+ 
+ 
+Data Role=TRAIN Output Type=SEGMENT
+ 
+                        Numeric    Formatted    Frequency
+      Variable           Value       Value        Count      Percent
+ 
+TextCluster_cluster_       1           1            6          37.5
+TextCluster_cluster_       2           2            4          25.0
+TextCluster_cluster_       3           3            6          37.5
+ 
+ 
+ 
+ 
+Interval Variable Summary Statistics
+ 
+Variable Name=P_CategoryDESIGNER
+ 
+Statistics    Label                  TRAIN
+ 
+  MEAN        Mean                   0.3748
+  STD         Standard Deviation     0.4995
+  N           Non Missing           16.0000
+  MIN         Minimum                0.0000
+  P25         25th Percentile        0.0000
+  MEDIAN      Median                 0.0002
+  P75         75th Percentile        0.9991
+  MAX         Maximum                0.9995
+ 
+ 
+Variable Name=P_CategoryHR
+ 
+Statistics    Label                  TRAIN
+ 
+  MEAN        Mean                   0.3751
+  STD         Standard Deviation     0.4997
+  N           Non Missing           16.0000
+  MIN         Minimum                0.0001
+  P25         25th Percentile        0.0002
+  MEDIAN      Median                 0.0004
+  P75         75th Percentile        0.9997
+  MAX         Maximum                0.9998
+ 
+ 
+Variable Name=P_CategoryINFORMATION_TECHNOLOGY
+ 
+Statistics    Label                  TRAIN
+ 
+  MEAN        Mean                   0.2501
+  STD         Standard Deviation     0.4469
+  N           Non Missing           16.0000
+  MIN         Minimum                0.0000
+  P25         25th Percentile        0.0001
+  MEDIAN      Median                 0.0004
+  P75         75th Percentile        0.5002
+  MAX         Maximum                0.9997

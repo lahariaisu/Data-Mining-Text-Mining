@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  Location="CATALOG" Catalog="SASHELP.EMTXTEXT.CLUSTER.SOURCE" resolution="LOW" maxK="100"
+ exactOrMaximum="maximum" nClusters="12" algorithm="1.0" nDescTerms="15" ForceRun="N"
+ RunAction="Train" Component="TextCluster" RawCreateTime="2016037405.7" CreateTime="19NOV2023:18:23:26"
+ RunId="4bdea786-5cbd-4471-ba0d-b3dbf1a8ec1f" RawLastTimeRun="2016396747.6" RawRunTime="12.315000057"
+ LastTimeRun="23NOV2023:22:12:28" RunTime="0 Hr. 0 Min. 12.32 Sec.">
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES ><![CDATA[
+USERTRAINCODE
+USERSCORECODE
+USERREPORTCODE
+EMNOTES
+]]>
+</FILEPROPERTIES><EMTARGETATTRIBUTES/>
+</_ROOT_>

@@ -1,0 +1,99 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+ID           INTERVAL           1   
+ID           NOMINAL            2   
+INPUT        INTERVAL          44   
+REJECTED     INTERVAL           4   
+SEGMENT      BINARY            25   
+SEGMENT      NOMINAL            1   
+TARGET       NOMINAL            1   
+TEXT         NOMINAL            1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Modified Attributes for DATA Port
+
+                      Measurement      New                                         New                 New
+Variable Name            Level        Level     Role        New Role    Report    Report    Order     Order       Creator       Label
+
+TextCluster2_SVD1      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD10     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD11     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD12     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD13     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD14     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD15     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD16     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD17     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD18     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD19     INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD2      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD3      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD4      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD5      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD6      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD7      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD8      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_SVD9      INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_prob1     INTERVAL      DEFAULT    REJECTED    INPUT         N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_prob2     INTERVAL      DEFAULT    REJECTED    INPUT         N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_prob3     INTERVAL      DEFAULT    REJECTED    INPUT         N         D                DEFAULT    TextCluster2                                                                   
+TextCluster2_prob4     INTERVAL      DEFAULT    REJECTED    INPUT         N         D                DEFAULT    TextCluster2                                                                   
+TextTopic3_1           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_equipment,+vehicle,â,+truck,+repair                       
+TextTopic3_10          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_digital,media,marketing,social,media                      
+TextTopic3_11          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_fitness,wellness,fitness,+exercise,exercise               
+TextTopic3_12          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_â,sales,+sale,+sell,ï                                     
+TextTopic3_13          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+food,food,+clean,+item,+guest                            
+TextTopic3_14          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_agriculture,jamaica,+laboratory,biological,+plant         
+TextTopic3_15          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+tax,financial,accounting,+statement,+loan                
+TextTopic3_16          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_â,company name â,â,interior,+drawing                      
+TextTopic3_17          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+child,+family,+community,â,+case                         
+TextTopic3_18          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+implementation,project,â,strategic,+leadership           
+TextTopic3_19          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+claim,+claim,+provider,+insurance,+resolution            
+TextTopic3_2           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+network,+server,cisco,hardware,windows                   
+TextTopic3_20          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_oracle,dba,11g,weblogic,oracle                            
+TextTopic3_21          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_â,+patient,patient,+meal,companionship                    
+TextTopic3_22          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+child,+teacher,+reinforcement method,+reinforcement,+play
+TextTopic3_23          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+store,merchandise,+customer,+inquiry,+sale               
+TextTopic3_24          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_â,jan,aug,jun,sep                                         
+TextTopic3_25          BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_hr,india,+candidate,+recruitment,+source                  
+TextTopic3_3           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+account,+sale,+market,+business development,cold         
+TextTopic3_4           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_hr,+compensation,+employee,human,human                    
+TextTopic3_5           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+student,+teacher,+lesson,+classroom,teacher              
+TextTopic3_6           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_graphic,+design,designer,+designer,adobe                  
+TextTopic3_7           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_+patient,care,patient,+nurse,medical                      
+TextTopic3_8           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_sql,javascript,java,html,xml                              
+TextTopic3_9           BINARY        DEFAULT    SEGMENT     INPUT         N         D                DEFAULT    TextTopic3      _1_0_administrative,+travel,+spreadsheet,+arrangement,+file    
+TextTopic3_raw1        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      equipment,+vehicle,â,+truck,+repair                            
+TextTopic3_raw10       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      digital,media,marketing,social,media                           
+TextTopic3_raw11       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      fitness,wellness,fitness,+exercise,exercise                    
+TextTopic3_raw12       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      â,sales,+sale,+sell,ï                                          
+TextTopic3_raw13       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +food,food,+clean,+item,+guest                                 
+TextTopic3_raw14       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      agriculture,jamaica,+laboratory,biological,+plant              
+TextTopic3_raw15       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +tax,financial,accounting,+statement,+loan                     
+TextTopic3_raw16       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      â,company name â,â,interior,+drawing                           
+TextTopic3_raw17       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +child,+family,+community,â,+case                              
+TextTopic3_raw18       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +implementation,project,â,strategic,+leadership                
+TextTopic3_raw19       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +claim,+claim,+provider,+insurance,+resolution                 
+TextTopic3_raw2        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +network,+server,cisco,hardware,windows                        
+TextTopic3_raw20       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      oracle,dba,11g,weblogic,oracle                                 
+TextTopic3_raw21       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      â,+patient,patient,+meal,companionship                         
+TextTopic3_raw22       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +child,+teacher,+reinforcement method,+reinforcement,+play     
+TextTopic3_raw23       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +store,merchandise,+customer,+inquiry,+sale                    
+TextTopic3_raw24       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      â,jan,aug,jun,sep                                              
+TextTopic3_raw25       INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      hr,india,+candidate,+recruitment,+source                       
+TextTopic3_raw3        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +account,+sale,+market,+business development,cold              
+TextTopic3_raw4        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      hr,+compensation,+employee,human,human                         
+TextTopic3_raw5        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +student,+teacher,+lesson,+classroom,teacher                   
+TextTopic3_raw6        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      graphic,+design,designer,+designer,adobe                       
+TextTopic3_raw7        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      +patient,care,patient,+nurse,medical                           
+TextTopic3_raw8        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      sql,javascript,java,html,xml                                   
+TextTopic3_raw9        INTERVAL      DEFAULT    INPUT       REJECTED      N         D                DEFAULT    TextTopic3      administrative,+travel,+spreadsheet,+arrangement,+file         

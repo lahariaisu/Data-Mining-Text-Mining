@@ -1,0 +1,46 @@
+*------------------------------------------------------------*
+* Score Log
+Date:                November 26, 2023
+Time:                18:19:07
+*------------------------------------------------------------*
+11570  filename emflow "C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Score2\EMFLOWSCORE.sas";
+11571  *------------------------------------------------------------*;
+11572  * Score2: Scoring DATA data;
+11573  *------------------------------------------------------------*;
+11574  data EMWS3.Score2_TRAIN
+11575  / view=EMWS3.Score2_TRAIN
+11576  ;
+11577  set EMWS3.Neural10_TRAIN
+11578  ;
+11579  %inc emflow;
+11603  run;
+
+NOTE: DATA STEP view saved on file EMWS3.SCORE2_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS3.NEURAL10_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+      
+
+11604  quit;
+11605  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+
+11606  %let _textMiningFlow=N;
+11607  data _null_;
+11608  set EMWS3.Neural10_EMINFO;
+11609  where KEY="LastTMNode";
+11610  call symput('_textMiningFlow', 'Y');
+11611  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.NEURAL10_EMINFO.
+      WHERE KEY='LastTMNode';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+

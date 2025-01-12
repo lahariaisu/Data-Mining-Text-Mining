@@ -1,0 +1,543 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 27, 2023
+Time:                20:55:17
+Site:                70085622
+Platform:            X64_10HOME
+Maintenance Release: 9.04.01M6P111518
+EM Version:          15.1
+* 
+*------------------------------------------------------------*
+* Training Log
+Date:                November 27, 2023
+Time:                20:55:16
+*------------------------------------------------------------*
+11433  proc freq data=EMWS3.Meta_VariableSet noprint;
+11434  table ROLE*LEVEL/out=WORK.MetaMETA;
+11435  run;
+ 
+NOTE: There were 79 observations read from the data set EMWS3.META_VARIABLESET.
+NOTE: The data set WORK.METAMETA has 8 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11436  proc print data=WORK.MetaMETA label noobs;
+11437  var ROLE LEVEL COUNT;
+11438  label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+11439  title9 ' ';
+11440  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+11441  run;
+ 
+NOTE: There were 8 observations read from the data set WORK.METAMETA.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11442  title10;
+ 
+11443  data WORK.META_CHANGE;
+11444  set EMWS3.Meta_VariableSet;
+11445  where (NEWROLE ne "DEFAULT" and NEWROLE ne ROLE) or (NEWLEVEL ne "DEFAULT" and NEWLEVEL ne LEVEL) or (NEWREPORT ne "D" and NEWREPORT ne REPORT) or (NEWORDER ne "DEFAULT" and NEWORDER ne ORDER);
+11446  run;
+ 
+NOTE: There were 73 observations read from the data set EMWS3.META_VARIABLESET.
+      WHERE ((NEWROLE not = 'DEFAULT') and (NEWROLE not = ROLE)) or ((NEWLEVEL not = 'DEFAULT') and (NEWLEVEL not = LEVEL)) or ((NEWREPORT not = 'D') and (NEWREPORT not = REPORT)) or ((NEWORDER not = 'DEFAULT') and (NEWORDER not = ORDER));
+NOTE: The data set WORK.META_CHANGE has 73 observations and 26 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11447  proc print data=WORK.META_CHANGE noobs label;
+11448  var NAME LEVEL NEWLEVEL ROLE NEWROLE REPORT NEWREPORT ORDER NEWORDER CREATOR LABEL;
+11449  label NAME = "%sysfunc(sasmsg(sashelp.dmine, meta_name_vlabel,      NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel,     NOQUOTE))" NEWLEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_newlevel_vlabel,  NOQUOTE))" ROLE =
+11450     "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel,      NOQUOTE))" NEWROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_newrole_vlabel,   NOQUOTE))" REPORT = "%sysfunc(sasmsg(sashelp.dmine, meta_report_vlabel,    NOQUOTE))" NEWREPORT =
+11451     "%sysfunc(sasmsg(sashelp.dmine, meta_newreport_vlabel, NOQUOTE))" ORDER = "%sysfunc(sasmsg(sashelp.dmine, meta_order_vlabel,     NOQUOTE))" NEWORDER = "%sysfunc(sasmsg(sashelp.dmine, meta_neworder_vlabel,  NOQUOTE))" CREATOR =
+11452     "%sysfunc(sasmsg(sashelp.dmine, meta_creator_vlabel,   NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel,     NOQUOTE))";
+11453  title9 ' ';
+11454  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_modattributes_title, NOQUOTE, DATA))";
+11455  run;
+ 
+NOTE: There were 73 observations read from the data set WORK.META_CHANGE.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11456  title10;
+ 
+11457  %let EM_LIB=EMWS3;
+11458  %em_path(NODEID=Meta, OUTDS=META_PREDECESSOR, NODES=PREDECESSOR);
+ 
+11459  data META_PREDECESSOR;
+11460  length nodelabel $32 component $32;
+11461  nodelabel="TextTopic3";
+11462  component="TextTopic";
+11463  output;
+11464  run;
+ 
+NOTE: The data set WORK.META_PREDECESSOR has 1 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: PROCEDURE DISPLAY used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+11465  data EMWS3.Meta_CHOICE(rename=(role=Key dataset=Choice));
+11466  retain Variable 'DATASET';
+11467  set
+11468  EMWS3.TextTopic3_exportset
+11469  ;
+11470  where ROLE in('RAW', 'TRAIN', 'VALIDATE', 'TEST', 'SCORE', 'TRANSACTION') and export='Y';
+11471  if ROLE in('RAW','TRAIN') then ROLE='TRAIN';
+11472  drop export needupdate importport applydelta applyscore deltacode;
+11473  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS3.TEXTTOPIC3_EXPORTSET.
+      WHERE ROLE in ('RAW', 'SCORE', 'TEST', 'TRAIN', 'TRANSACTION', 'VALIDATE') and (export='Y');
+NOTE: The data set EMWS3.META_CHOICE has 4 observations and 13 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11474  %let hiddenNum=0;
+11475  data _null_;
+11476  length string $200;
+11477  set EMWS3.Meta_VariableSet end = eof;
+11478  file #LN00176;
+11479  where HIDDEN = 'Y' and HIDE = 'N';
+11480  if _N_=1 then do;
+11481  put "*------------------------------------------------------------*;";
+11482  put '* Unhide Variables;';
+11483  put "*------------------------------------------------------------*;";
+11484  put 'length NAME $32 ROLE $32 LEVEL $10 ORDER $8 CREATOR $32 REPORT $1 FORMATTYPE $10';
+11485  put '       LABEL $200 FORMAT INFORMAT $36 INDEX $1 INDEXTYPE $9;';
+11486  end;
+11487  string = 'NAME="'!!strip(NAME)!!'";';
+11488  put string;
+11489  if NEWROLE ne 'DEFAULT' then ROLE = NEWROLE;
+11490  string = 'ROLE="'!!strip(ROLE)!!'";';
+11491  put string;
+11492  if NEWLEVEL ne 'DEFAULT' then LEVEL = NEWLEVEL;
+11493  string = 'LEVEL="'!!strip(LEVEL)!!'";';
+11494  put string;
+11495  if NEWREPORT ne 'D' then REPORT = NEWREPORT;
+11496  string = 'REPORT="'!!strip(REPORT)!!'";';
+11497  put string;
+11498  if NEWORDER ne 'DEFAULT' then ORDER = NEWORDER;
+11499  string = 'ORDER="'!!strip(ORDER)!!'";';
+11500  put string;
+11501  string = 'CREATOR="'!!strip(CREATOR)!!'";';
+11502  put string;
+11503  string = 'FORMATTYPE="'!!strip(FORMATTYPE)!!'";';
+11504  put string;
+11505  string = 'TYPE="'!!strip(TYPE)!!'";';
+11506  put string;
+11507  string = 'LABEL="'!!strip(LABEL)!!'";';
+11508  put string;
+11509  string = 'FORMAT="'!!strip(FORMAT)!!'";';
+11510  put string;
+11511  string = 'INFORMAT="'!!strip(INFORMAT)!!'";';
+11512  put string;
+11513  string = 'INDEX="'!!strip(INDEX)!!'";';
+11514  put string;
+11515  string = 'INDEXTYPE="'!!strip(INDEXTYPE)!!'";';
+11516  put string;
+11517  string = 'LENGTH='!!strip(put(length, best.))!!';';
+11518  put string;
+11519  put 'output;';
+11520  if eof then call symput('hiddenNum', '1');
+11521  run;
+ 
+NOTE: The file #LN00176 is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Meta\UNHIDECODE_DATA.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=27Nov2023:20:55:16,
+      Create Time=27Nov2023:20:55:16
+ 
+NOTE: 0 records were written to the file #LN00176.
+NOTE: There were 0 observations read from the data set EMWS3.META_VARIABLESET.
+      WHERE (HIDDEN='Y') and (HIDE='N');
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: This SAS session is using a registry in WORK.  All changes will be lost at the end of this session.
+11522  data WORK.META_CHANGE;
+11523  set EMWS3.Meta_TRANSACTION_VARIABLESET;
+11524  where (NEWROLE ne "DEFAULT" and NEWROLE ne ROLE) or (NEWLEVEL ne "DEFAULT" and NEWLEVEL ne LEVEL) or (NEWREPORT ne "D" and NEWREPORT ne REPORT) or (NEWORDER ne "DEFAULT" and NEWORDER ne ORDER);
+11525  run;
+ 
+NOTE: There were 0 observations read from the data set EMWS3.META_TRANSACTION_VARIABLESET.
+      WHERE ((NEWROLE not = 'DEFAULT') and (NEWROLE not = ROLE)) or ((NEWLEVEL not = 'DEFAULT') and (NEWLEVEL not = LEVEL)) or ((NEWREPORT not = 'D') and (NEWREPORT not = REPORT)) or ((NEWORDER not = 'DEFAULT') and (NEWORDER not = ORDER));
+NOTE: The data set WORK.META_CHANGE has 0 observations and 26 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11526  %let hiddenNum=0;
+11527  data _null_;
+11528  length string $200;
+11529  set EMWS3.Meta_TRANSACTION_VARIABLESET end = eof;
+11530  file #LN00188;
+11531  where HIDDEN = 'Y' and HIDE = 'N';
+11532  if _N_=1 then do;
+11533  put "*------------------------------------------------------------*;";
+11534  put '* Unhide Variables;';
+11535  put "*------------------------------------------------------------*;";
+11536  put 'length NAME $32 ROLE $32 LEVEL $10 ORDER $8 CREATOR $32 REPORT $1 FORMATTYPE $10';
+11537  put '       LABEL $200 FORMAT INFORMAT $36 INDEX $1 INDEXTYPE $9;';
+11538  end;
+11539  string = 'NAME="'!!strip(NAME)!!'";';
+11540  put string;
+11541  if NEWROLE ne 'DEFAULT' then ROLE = NEWROLE;
+11542  string = 'ROLE="'!!strip(ROLE)!!'";';
+11543  put string;
+11544  if NEWLEVEL ne 'DEFAULT' then LEVEL = NEWLEVEL;
+11545  string = 'LEVEL="'!!strip(LEVEL)!!'";';
+11546  put string;
+11547  if NEWREPORT ne 'D' then REPORT = NEWREPORT;
+11548  string = 'REPORT="'!!strip(REPORT)!!'";';
+11549  put string;
+11550  if NEWORDER ne 'DEFAULT' then ORDER = NEWORDER;
+11551  string = 'ORDER="'!!strip(ORDER)!!'";';
+11552  put string;
+11553  string = 'CREATOR="'!!strip(CREATOR)!!'";';
+11554  put string;
+11555  string = 'FORMATTYPE="'!!strip(FORMATTYPE)!!'";';
+11556  put string;
+11557  string = 'TYPE="'!!strip(TYPE)!!'";';
+11558  put string;
+11559  string = 'LABEL="'!!strip(LABEL)!!'";';
+11560  put string;
+11561  string = 'FORMAT="'!!strip(FORMAT)!!'";';
+11562  put string;
+11563  string = 'INFORMAT="'!!strip(INFORMAT)!!'";';
+11564  put string;
+11565  string = 'INDEX="'!!strip(INDEX)!!'";';
+11566  put string;
+11567  string = 'INDEXTYPE="'!!strip(INDEXTYPE)!!'";';
+11568  put string;
+11569  string = 'LENGTH='!!strip(put(length, best.))!!';';
+11570  put string;
+11571  put 'output;';
+11572  if eof then call symput('hiddenNum', '1');
+11573  run;
+ 
+NOTE: The file #LN00188 is:
+      Filename=C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Meta\UNHIDECODE_TRANSACTION.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=27Nov2023:20:55:16,
+      Create Time=27Nov2023:20:55:16
+ 
+NOTE: 0 records were written to the file #LN00188.
+NOTE: There were 0 observations read from the data set EMWS3.META_TRANSACTION_VARIABLESET.
+      WHERE (HIDDEN='Y') and (HIDE='N');
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+*------------------------------------------------------------*
+* Score Log
+Date:                November 27, 2023
+Time:                20:55:16
+*------------------------------------------------------------*
+11678  *------------------------------------------------------------*;
+11679  * Meta: Scoring DATA data;
+11680  *------------------------------------------------------------*;
+11681  data EMWS3.Meta_TRAIN
+11682  / view=EMWS3.Meta_TRAIN
+11683  ;
+11684  set EMWS3.TextTopic3_TRAIN
+11685  ;
+11686  run;
+ 
+NOTE: DATA STEP view saved on file EMWS3.META_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11687  quit;
+ 
+11688  *------------------------------------------------------------*;
+11689  * Meta: Scoring VALIDATE data;
+11690  *------------------------------------------------------------*;
+11691  data EMWS3.Meta_VALIDATE
+11692  / view=EMWS3.Meta_VALIDATE
+11693  ;
+11694  set EMWS3.TextTopic3_VALIDATE
+11695  ;
+11696  run;
+ 
+NOTE: DATA STEP view saved on file EMWS3.META_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11697  quit;
+ 
+11698  *------------------------------------------------------------*;
+11699  * Meta: Scoring TEST data;
+11700  *------------------------------------------------------------*;
+11701  data EMWS3.Meta_TEST
+11702  / view=EMWS3.Meta_TEST
+11703  ;
+11704  set EMWS3.TextTopic3_TEST
+11705  ;
+11706  run;
+ 
+NOTE: DATA STEP view saved on file EMWS3.META_TEST.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11707  quit;
+ 
+11708  *------------------------------------------------------------*;
+11709  * Meta: Scoring TRANSACTION data;
+11710  *------------------------------------------------------------*;
+11711  data EMWS3.Meta_TRANSACTION
+11712  / view=EMWS3.Meta_TRANSACTION
+11713  ;
+11714  set EMWS3.TextTopic3_TRANSACTION
+11715  ;
+11716  run;
+ 
+NOTE: DATA STEP view saved on file EMWS3.META_TRANSACTION.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11717  quit;
+ 
+11718  *------------------------------------------------------------*;
+11719  * Meta: Computing metadata for TRAIN data;
+11720  *------------------------------------------------------------*;
+ 
+11721  data _TEMP;
+11722  set EMWS3.TextTopic3_CMeta_TRAIN;
+11723  *------------------------------------------------------------*;
+11724  * Metadata Changes;
+11725  *------------------------------------------------------------*;
+11726  if upcase(NAME) = "TEXTCLUSTER2_SVD1" then ROLE="REJECTED";
+11727  if upcase(NAME) = "TEXTCLUSTER2_SVD10" then ROLE="REJECTED";
+11728  if upcase(NAME) = "TEXTCLUSTER2_SVD11" then ROLE="REJECTED";
+11729  if upcase(NAME) = "TEXTCLUSTER2_SVD12" then ROLE="REJECTED";
+11730  if upcase(NAME) = "TEXTCLUSTER2_SVD13" then ROLE="REJECTED";
+11731  if upcase(NAME) = "TEXTCLUSTER2_SVD14" then ROLE="REJECTED";
+11732  if upcase(NAME) = "TEXTCLUSTER2_SVD15" then ROLE="REJECTED";
+11733  if upcase(NAME) = "TEXTCLUSTER2_SVD16" then ROLE="REJECTED";
+11734  if upcase(NAME) = "TEXTCLUSTER2_SVD17" then ROLE="REJECTED";
+11735  if upcase(NAME) = "TEXTCLUSTER2_SVD18" then ROLE="REJECTED";
+11736  if upcase(NAME) = "TEXTCLUSTER2_SVD19" then ROLE="REJECTED";
+11737  if upcase(NAME) = "TEXTCLUSTER2_SVD2" then ROLE="REJECTED";
+11738  if upcase(NAME) = "TEXTCLUSTER2_SVD3" then ROLE="REJECTED";
+11739  if upcase(NAME) = "TEXTCLUSTER2_SVD4" then ROLE="REJECTED";
+11740  if upcase(NAME) = "TEXTCLUSTER2_SVD5" then ROLE="REJECTED";
+11741  if upcase(NAME) = "TEXTCLUSTER2_SVD6" then ROLE="REJECTED";
+11742  if upcase(NAME) = "TEXTCLUSTER2_SVD7" then ROLE="REJECTED";
+11743  if upcase(NAME) = "TEXTCLUSTER2_SVD8" then ROLE="REJECTED";
+11744  if upcase(NAME) = "TEXTCLUSTER2_SVD9" then ROLE="REJECTED";
+11745  if upcase(NAME) = "TEXTCLUSTER2_PROB1" then ROLE="INPUT";
+11746  if upcase(NAME) = "TEXTCLUSTER2_PROB2" then ROLE="INPUT";
+11747  if upcase(NAME) = "TEXTCLUSTER2_PROB3" then ROLE="INPUT";
+11748  if upcase(NAME) = "TEXTCLUSTER2_PROB4" then ROLE="INPUT";
+11749  if upcase(NAME) = "TEXTTOPIC3_1" then ROLE="INPUT";
+11750  if upcase(NAME) = "TEXTTOPIC3_10" then ROLE="INPUT";
+11751  if upcase(NAME) = "TEXTTOPIC3_11" then ROLE="INPUT";
+11752  if upcase(NAME) = "TEXTTOPIC3_12" then ROLE="INPUT";
+11753  if upcase(NAME) = "TEXTTOPIC3_13" then ROLE="INPUT";
+11754  if upcase(NAME) = "TEXTTOPIC3_14" then ROLE="INPUT";
+11755  if upcase(NAME) = "TEXTTOPIC3_15" then ROLE="INPUT";
+11756  if upcase(NAME) = "TEXTTOPIC3_16" then ROLE="INPUT";
+11757  if upcase(NAME) = "TEXTTOPIC3_17" then ROLE="INPUT";
+11758  if upcase(NAME) = "TEXTTOPIC3_18" then ROLE="INPUT";
+11759  if upcase(NAME) = "TEXTTOPIC3_19" then ROLE="INPUT";
+11760  if upcase(NAME) = "TEXTTOPIC3_2" then ROLE="INPUT";
+11761  if upcase(NAME) = "TEXTTOPIC3_20" then ROLE="INPUT";
+11762  if upcase(NAME) = "TEXTTOPIC3_21" then ROLE="INPUT";
+11763  if upcase(NAME) = "TEXTTOPIC3_22" then ROLE="INPUT";
+11764  if upcase(NAME) = "TEXTTOPIC3_23" then ROLE="INPUT";
+11765  if upcase(NAME) = "TEXTTOPIC3_24" then ROLE="INPUT";
+11766  if upcase(NAME) = "TEXTTOPIC3_25" then ROLE="INPUT";
+11767  if upcase(NAME) = "TEXTTOPIC3_3" then ROLE="INPUT";
+11768  if upcase(NAME) = "TEXTTOPIC3_4" then ROLE="INPUT";
+11769  if upcase(NAME) = "TEXTTOPIC3_5" then ROLE="INPUT";
+11770  if upcase(NAME) = "TEXTTOPIC3_6" then ROLE="INPUT";
+11771  if upcase(NAME) = "TEXTTOPIC3_7" then ROLE="INPUT";
+11772  if upcase(NAME) = "TEXTTOPIC3_8" then ROLE="INPUT";
+11773  if upcase(NAME) = "TEXTTOPIC3_9" then ROLE="INPUT";
+11774  if upcase(NAME) = "TEXTTOPIC3_RAW1" then ROLE="REJECTED";
+11775  if upcase(NAME) = "TEXTTOPIC3_RAW10" then ROLE="REJECTED";
+11776  if upcase(NAME) = "TEXTTOPIC3_RAW11" then ROLE="REJECTED";
+11777  if upcase(NAME) = "TEXTTOPIC3_RAW12" then ROLE="REJECTED";
+11778  if upcase(NAME) = "TEXTTOPIC3_RAW13" then ROLE="REJECTED";
+11779  if upcase(NAME) = "TEXTTOPIC3_RAW14" then ROLE="REJECTED";
+11780  if upcase(NAME) = "TEXTTOPIC3_RAW15" then ROLE="REJECTED";
+11781  if upcase(NAME) = "TEXTTOPIC3_RAW16" then ROLE="REJECTED";
+11782  if upcase(NAME) = "TEXTTOPIC3_RAW17" then ROLE="REJECTED";
+11783  if upcase(NAME) = "TEXTTOPIC3_RAW18" then ROLE="REJECTED";
+11784  if upcase(NAME) = "TEXTTOPIC3_RAW19" then ROLE="REJECTED";
+11785  if upcase(NAME) = "TEXTTOPIC3_RAW2" then ROLE="REJECTED";
+11786  if upcase(NAME) = "TEXTTOPIC3_RAW20" then ROLE="REJECTED";
+11787  if upcase(NAME) = "TEXTTOPIC3_RAW21" then ROLE="REJECTED";
+11788  if upcase(NAME) = "TEXTTOPIC3_RAW22" then ROLE="REJECTED";
+11789  if upcase(NAME) = "TEXTTOPIC3_RAW23" then ROLE="REJECTED";
+11790  if upcase(NAME) = "TEXTTOPIC3_RAW24" then ROLE="REJECTED";
+11791  if upcase(NAME) = "TEXTTOPIC3_RAW25" then ROLE="REJECTED";
+11792  if upcase(NAME) = "TEXTTOPIC3_RAW3" then ROLE="REJECTED";
+11793  if upcase(NAME) = "TEXTTOPIC3_RAW4" then ROLE="REJECTED";
+11794  if upcase(NAME) = "TEXTTOPIC3_RAW5" then ROLE="REJECTED";
+11795  if upcase(NAME) = "TEXTTOPIC3_RAW6" then ROLE="REJECTED";
+11796  if upcase(NAME) = "TEXTTOPIC3_RAW7" then ROLE="REJECTED";
+11797  if upcase(NAME) = "TEXTTOPIC3_RAW8" then ROLE="REJECTED";
+11798  if upcase(NAME) = "TEXTTOPIC3_RAW9" then ROLE="REJECTED";
+11799  run;
+ 
+NOTE: There were 79 observations read from the data set EMWS3.TEXTTOPIC3_CMETA_TRAIN.
+NOTE: The data set WORK._TEMP has 79 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11800  proc sort data=_TEMP;
+11801  by NAME;
+11802  run;
+ 
+NOTE: There were 79 observations read from the data set WORK._TEMP.
+NOTE: The data set WORK._TEMP has 79 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11803  data EMWS3.Meta_CMeta_TRAIN;
+11804  set _TEMP;
+11805  run;
+ 
+NOTE: There were 79 observations read from the data set WORK._TEMP.
+NOTE: The data set EMWS3.META_CMETA_TRAIN has 79 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: View EMWS3.META_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+NOTE: View EMWS3.META_VALIDATE.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+NOTE: View EMWS3.META_TEST.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+ 
+11806  *------------------------------------------------------------*;
+11807  * Meta: Computing metadata for TRANSACTION data;
+11808  *------------------------------------------------------------*;
+ 
+11809  data _TEMP;
+11810  set EMWS3.TextTopic3_CMeta_TRANSACTION;
+11811  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS3.TEXTTOPIC3_CMETA_TRANSACTION.
+NOTE: The data set WORK._TEMP has 4 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11812  proc sort data=_TEMP;
+11813  by NAME;
+11814  run;
+ 
+NOTE: There were 4 observations read from the data set WORK._TEMP.
+NOTE: The data set WORK._TEMP has 4 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11815  data EMWS3.Meta_CMeta_TRANSACTION;
+11816  set _TEMP;
+11817  run;
+ 
+NOTE: There were 4 observations read from the data set WORK._TEMP.
+NOTE: The data set EMWS3.META_CMETA_TRANSACTION has 4 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: View EMWS3.META_TRANSACTION.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+*------------------------------------------------------------*
+* Report Log
+Date:                November 27, 2023
+Time:                20:55:17
+*------------------------------------------------------------*
+11841  proc print data = EMWS3.Meta_CMeta_TRAIN(obs=500) noobs label;
+11842  var name role level creator label;
+11843  label NAME = "%sysfunc(sasmsg(sashelp.dmine, meta_name_vlabel,      NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel,     NOQUOTE))" ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel,      NOQUOTE))" CREATOR =
+11844     "%sysfunc(sasmsg(sashelp.dmine, meta_creator_vlabel,   NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel,     NOQUOTE))";
+11845  format label $32.;
+11846  title9 "%sysfunc(sasmsg(sashelp.dmine, rpt_exptattributes_title, NOQUOTE, TRAIN))";
+11847  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_maxObsPrinted_title, NOQUOTE))";
+11848  run;
+ 
+NOTE: There were 79 observations read from the data set EMWS3.META_CMETA_TRAIN.
+NOTE: The PROCEDURE PRINT printed page 3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+11849  title9;
+11850  title10;
+ 
+11851  proc print data = EMWS3.Meta_CMeta_TRANSACTION(obs=500) noobs label;
+11852  var name role level creator label;
+11853  label NAME = "%sysfunc(sasmsg(sashelp.dmine, meta_name_vlabel,      NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel,     NOQUOTE))" ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel,      NOQUOTE))" CREATOR =
+11854     "%sysfunc(sasmsg(sashelp.dmine, meta_creator_vlabel,   NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel,     NOQUOTE))";
+11855  format label $32.;
+11856  title9 "%sysfunc(sasmsg(sashelp.dmine, rpt_exptattributes_title, NOQUOTE, TRANSACTION))";
+11857  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_maxObsPrinted_title, NOQUOTE))";
+11858  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS3.META_CMETA_TRANSACTION.
+NOTE: The PROCEDURE PRINT printed page 4.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+11859  title9;
+11860  title10;
+ 

@@ -1,0 +1,5 @@
+    The computed Average Squared Error for Category is 1.6218407E-7.
+    This indicates a possible target duplication issue.
+    Please review the list of inputs used in the model.
+
+

@@ -1,0 +1,742 @@
+*------------------------------------------------------------*
+* Training Log
+Date:                November 23, 2023
+Time:                22:13:09
+*------------------------------------------------------------*
+11433  proc freq data=EMWS3.Reg7_VariableSet noprint;
+11434  table ROLE*LEVEL/out=WORK.Reg7META;
+11435  run;
+
+NOTE: There were 69 observations read from the data set EMWS3.REG7_VARIABLESET.
+NOTE: The data set WORK.REG7META has 3 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+      
+
+11436  proc print data=WORK.Reg7META label noobs;
+11437  var ROLE LEVEL COUNT;
+11438  label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+11439  title9 ' ';
+11440  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+11441  run;
+
+NOTE: There were 3 observations read from the data set WORK.REG7META.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11442  title10;
+
+11443  %let EMNORLEN = %DMNORLEN;
+EMWS3.TextCluster11_TRAIN EMWS3.TextCluster11_TRAIN 
+EMWS3.TextCluster11_TRAIN EMWS3.TextCluster11_TRAIN EMWS3 TextCluster11_TRAIN 
+EMWS3.TextCluster11_TRAIN EMWS3.TextCluster11_TRAIN 
+EMWS3.TextCluster11_TRAIN EMWS3.TextCluster11_TRAIN EMWS3 TextCluster11_TRAIN 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _INIT >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _term >> 
+11490  data WORK.Reg7_EVENT(KEEP=VARIABLE LABEL LEVEL EVENT NUMLEVELS ORDER);
+11491  length ORDER $20;
+11492  label VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel,  NOQUOTE))" EVENT = "%sysfunc(sasmsg(sashelp.dmine, assmt_event_vlabel, NOQUOTE))" NUMLEVELS = "%sysfunc(sasmsg(sashelp.dmine, rpt_numcat_vlabel, NOQUOTE))" LEVEL =
+11493     "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" ORDER = "%sysfunc(sasmsg(sashelp.dmine, meta_order_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+11494  set EMWS3.REG7_CATEGORY_DM( where=(_TYPE_="TARGET"));
+11495  NumLevels=12;
+11496  select(upcase(ORDER));
+11497  when('DESC') ORDER = 'Descending';
+11498  when('ASC') ORDER = 'Ascending';
+11499  when('FMTDESC') ORDER = 'Formatted Descending';
+11500  when('FMTASC') ORDER = 'Formatted Ascending';
+11501  otherwise ORDER = 'Descending';
+11502  end;
+11503  output;
+11504  run;
+
+NOTE: There were 1 observations read from the data set EMWS3.REG7_CATEGORY_DM.
+      WHERE _TYPE_='TARGET';
+NOTE: The data set WORK.REG7_EVENT has 1 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11505  title9 ' ';
+11506  proc print data=WORK.Reg7_EVENT noobs label;
+11507  var VARIABLE EVENT LEVEL NUMLEVELS ORDER LABEL;
+11508  title9 ' ';
+11509  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_modelEvent_title  , NOQUOTE))";
+11510  run;
+
+NOTE: There were 1 observations read from the data set WORK.REG7_EVENT.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11511  title10;
+
+"No decisions defined for target "Category"." 
+11512  proc print data = EMWS3.Reg7_Category_DM noobs label;
+11513  var _type_ variable label;
+11514  where _type_ ^in('MATRIX', 'DECISION', 'TRAINPRIOR', 'DATAPRIOR', 'DECPRIOR');
+11515  label _TYPE_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_type_vlabel,     NOQUOTE))" VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_variable_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+11516  title9 ' ';
+11517  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_predDecVars_title  , NOQUOTE))";
+11518  run;
+
+NOTE: There were 27 observations read from the data set EMWS3.REG7_CATEGORY_DM.
+      WHERE _type_ not in ('DATAPRIOR', 'DECISION', 'DECPRIOR', 'MATRIX', 'TRAINPRIOR');
+NOTE: The PROCEDURE PRINT printed page 3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11519  title10;
+
+11529  data WORK.M37TPHNL;
+11530  set WORK.M37TPHNL end=eof;
+11531  output;
+11532  if eof then do;
+11533  NAME="";
+11534  ROLE="COST";
+11535  LEVEL="INTERVAL";
+11536  TYPE="N";
+11537  output;
+11538  end;
+11539  run;
+
+NOTE: There were 62 observations read from the data set WORK.M37TPHNL.
+NOTE: The data set WORK.M37TPHNL has 63 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 12 observations read from the data set EMWS3.REG7_CATEGORY_DD.
+NOTE: The data set WORK.CATEGORY has 12 observations and 17 variables.
+NOTE: There were 12 observations read from the data set EMWS3.REG7_CATEGORY_DD.
+NOTE: The data set WORK.CATEGORY has 12 observations and 17 variables.
+11540  *------------------------------------------------------------*;
+11541  * Reg7: Create decision matrix;
+11542  *------------------------------------------------------------*;
+11543  data WORK.Category;
+11544    length   Category                         $  32
+11545             COUNT                                8
+11546             DATAPRIOR                            8
+11547             TRAINPRIOR                           8
+11548             DECPRIOR                             8
+11549             DECISION1                            8
+11550             DECISION2                            8
+11551             DECISION3                            8
+11552             DECISION4                            8
+11553             DECISION5                            8
+11554             DECISION6                            8
+11555             DECISION7                            8
+11556             DECISION8                            8
+11557             DECISION9                            8
+11558             DECISION10                           8
+11559             DECISION11                           8
+11560             DECISION12                           8
+11561             ;
+11562  
+11563    label    COUNT="Level Counts"
+11564             DATAPRIOR="Data Proportions"
+11565             TRAINPRIOR="Training Proportions"
+11566             DECPRIOR="Decision Priors"
+11567             DECISION1="TEACHER"
+11568             DECISION2="SALES"
+11569             DECISION3="OTHER"
+11570             DECISION4="INFORMATION-TECHNOLOGY"
+11571             DECISION5="HR"
+11572             DECISION6="HEALTHCARE"
+11573             DECISION7="FITNESS"
+11574             DECISION8="DIGITAL-MEDIA"
+11575             DECISION9="DESIGNER"
+11576             DECISION10="CONSULTANT"
+11577             DECISION11="BUSINESS-DEVELOPMENT"
+11578             DECISION12="ADVOCATE"
+11579             ;
+11580    format   COUNT 10.
+11581             ;
+11582  Category="TEACHER"; COUNT=50; DATAPRIOR=0.0741839763; TRAINPRIOR=0.07418397626112; DECPRIOR=.; DECISION1=1; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0;
+11582! DECISION12=0;
+11583  output;
+11584  Category="SALES"; COUNT=58; DATAPRIOR=0.0860534125; TRAINPRIOR=0.0860534124629; DECPRIOR=.; DECISION1=0; DECISION2=1; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0; DECISION12=0
+11584! ;
+11585  output;
+11586  Category="OTHER"; COUNT=63; DATAPRIOR=0.0934718101; TRAINPRIOR=0.09347181008902; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=1; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0;
+11586! DECISION12=0;
+11587  output;
+11588  Category="INFORMATION-TECHNOLOGY"; COUNT=59; DATAPRIOR=0.087537092; TRAINPRIOR=0.08753709198813; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=1; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0;
+11588! DECISION11=0; DECISION12=0;
+11589  output;
+11590  Category="HR"; COUNT=55; DATAPRIOR=0.0816023739; TRAINPRIOR=0.08160237388724; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=1; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0; DECISION12=0;
+11591  output;
+11592  Category="HEALTHCARE"; COUNT=57; DATAPRIOR=0.0845697329; TRAINPRIOR=0.08456973293768; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=1; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0;
+11592! DECISION12=0;
+11593  output;
+11594  Category="FITNESS"; COUNT=58; DATAPRIOR=0.0860534125; TRAINPRIOR=0.0860534124629; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=1; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0;
+11594! DECISION12=0;
+11595  output;
+11596  Category="DIGITAL-MEDIA"; COUNT=47; DATAPRIOR=0.0697329377; TRAINPRIOR=0.06973293768545; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=1; DECISION9=0; DECISION10=0; DECISION11=0;
+11596! DECISION12=0;
+11597  output;
+11598  Category="DESIGNER"; COUNT=53; DATAPRIOR=0.0786350148; TRAINPRIOR=0.07863501483679; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=1; DECISION10=0; DECISION11=0;
+11598! DECISION12=0;
+11599  output;
+11600  Category="CONSULTANT"; COUNT=57; DATAPRIOR=0.0845697329; TRAINPRIOR=0.08456973293768; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=1; DECISION11=0;
+11600! DECISION12=0;
+11601  output;
+11602  Category="BUSINESS-DEVELOPMENT"; COUNT=60; DATAPRIOR=0.0890207715; TRAINPRIOR=0.08902077151335; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0;
+11602! DECISION11=1; DECISION12=0;
+11603  output;
+11604  Category="ADVOCATE"; COUNT=57; DATAPRIOR=0.0845697329; TRAINPRIOR=0.08456973293768; DECPRIOR=.; DECISION1=0; DECISION2=0; DECISION3=0; DECISION4=0; DECISION5=0; DECISION6=0; DECISION7=0; DECISION8=0; DECISION9=0; DECISION10=0; DECISION11=0;
+11604! DECISION12=1;
+11605  output;
+11606  ;
+11607  run;
+
+NOTE: The data set WORK.CATEGORY has 12 observations and 17 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+11608  proc datasets lib=work nolist;
+11609  modify Category(type=PROFIT label=Category);
+11610  label DECISION1= 'TEACHER';
+11611  label DECISION2= 'SALES';
+11612  label DECISION3= 'OTHER';
+11613  label DECISION4= 'INFORMATION-TECHNOLOGY';
+11614  label DECISION5= 'HR';
+11615  label DECISION6= 'HEALTHCARE';
+11616  label DECISION7= 'FITNESS';
+11617  label DECISION8= 'DIGITAL-MEDIA';
+11618  label DECISION9= 'DESIGNER';
+11619  label DECISION10= 'CONSULTANT';
+11620  label DECISION11= 'BUSINESS-DEVELOPMENT';
+11621  label DECISION12= 'ADVOCATE';
+11622  run;
+
+NOTE: MODIFY was successful for WORK.CATEGORY.DATA.
+11623  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11624  data EM_DMREG / view=EM_DMREG;
+11625  set EMWS3.TextCluster11_TRAIN(keep=
+11626  Category TextCluster11_SVD1 TextCluster11_SVD10 TextCluster11_SVD11
+11627  TextCluster11_SVD12 TextCluster11_SVD13 TextCluster11_SVD14 TextCluster11_SVD15
+11628  TextCluster11_SVD16 TextCluster11_SVD17 TextCluster11_SVD18 TextCluster11_SVD19
+11629  TextCluster11_SVD2 TextCluster11_SVD20 TextCluster11_SVD21 TextCluster11_SVD22
+11630  TextCluster11_SVD23 TextCluster11_SVD24 TextCluster11_SVD25 TextCluster11_SVD26
+11631  TextCluster11_SVD27 TextCluster11_SVD28 TextCluster11_SVD29 TextCluster11_SVD3
+11632  TextCluster11_SVD30 TextCluster11_SVD31 TextCluster11_SVD32 TextCluster11_SVD33
+11633  TextCluster11_SVD34 TextCluster11_SVD35 TextCluster11_SVD36 TextCluster11_SVD37
+11634  TextCluster11_SVD38 TextCluster11_SVD39 TextCluster11_SVD4 TextCluster11_SVD40
+11635  TextCluster11_SVD41 TextCluster11_SVD42 TextCluster11_SVD43 TextCluster11_SVD44
+11636  TextCluster11_SVD45 TextCluster11_SVD46 TextCluster11_SVD47 TextCluster11_SVD48
+11637  TextCluster11_SVD49 TextCluster11_SVD5 TextCluster11_SVD50 TextCluster11_SVD51
+11638  TextCluster11_SVD52 TextCluster11_SVD53 TextCluster11_SVD54 TextCluster11_SVD55
+11639  TextCluster11_SVD56 TextCluster11_SVD57 TextCluster11_SVD58 TextCluster11_SVD59
+11640  TextCluster11_SVD6 TextCluster11_SVD60 TextCluster11_SVD61 TextCluster11_SVD7
+11641  TextCluster11_SVD8 TextCluster11_SVD9 );
+11642  run;
+
+NOTE: DATA STEP view saved on file WORK.EM_DMREG.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11643  *------------------------------------------------------------* ;
+11644  * Reg7: DMDBClass Macro ;
+11645  *------------------------------------------------------------* ;
+11646  %macro DMDBClass;
+11647      Category(DESC)
+11648  %mend DMDBClass;
+11649  *------------------------------------------------------------* ;
+11650  * Reg7: DMDBVar Macro ;
+11651  *------------------------------------------------------------* ;
+11652  %macro DMDBVar;
+11653      TextCluster11_SVD1 TextCluster11_SVD10 TextCluster11_SVD11 TextCluster11_SVD12
+11654     TextCluster11_SVD13 TextCluster11_SVD14 TextCluster11_SVD15 TextCluster11_SVD16
+11655     TextCluster11_SVD17 TextCluster11_SVD18 TextCluster11_SVD19 TextCluster11_SVD2
+11656     TextCluster11_SVD20 TextCluster11_SVD21 TextCluster11_SVD22 TextCluster11_SVD23
+11657     TextCluster11_SVD24 TextCluster11_SVD25 TextCluster11_SVD26 TextCluster11_SVD27
+11658     TextCluster11_SVD28 TextCluster11_SVD29 TextCluster11_SVD3 TextCluster11_SVD30
+11659     TextCluster11_SVD31 TextCluster11_SVD32 TextCluster11_SVD33 TextCluster11_SVD34
+11660     TextCluster11_SVD35 TextCluster11_SVD36 TextCluster11_SVD37 TextCluster11_SVD38
+11661     TextCluster11_SVD39 TextCluster11_SVD4 TextCluster11_SVD40 TextCluster11_SVD41
+11662     TextCluster11_SVD42 TextCluster11_SVD43 TextCluster11_SVD44 TextCluster11_SVD45
+11663     TextCluster11_SVD46 TextCluster11_SVD47 TextCluster11_SVD48 TextCluster11_SVD49
+11664     TextCluster11_SVD5 TextCluster11_SVD50 TextCluster11_SVD51 TextCluster11_SVD52
+11665     TextCluster11_SVD53 TextCluster11_SVD54 TextCluster11_SVD55 TextCluster11_SVD56
+11666     TextCluster11_SVD57 TextCluster11_SVD58 TextCluster11_SVD59 TextCluster11_SVD6
+11667     TextCluster11_SVD60 TextCluster11_SVD61 TextCluster11_SVD7 TextCluster11_SVD8
+11668     TextCluster11_SVD9
+11669  %mend DMDBVar;
+11670  *------------------------------------------------------------*;
+11671  * Reg7: Create DMDB;
+11672  *------------------------------------------------------------*;
+11673  proc dmdb batch data=WORK.EM_DMREG
+11674  dmdbcat=WORK.Reg7_DMDB
+11675  maxlevel = 513
+11676  ;
+11677  class %DMDBClass;
+11678  var %DMDBVar;
+11679  target
+11680  Category
+11681  ;
+11682  run;
+
+NOTE: Records processed = 674   Memory used = 511K.
+NOTE: View WORK.EM_DMREG.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+NOTE: There were 674 observations read from the data set EMWS3.TEXTCLUSTER11_TRAIN.
+NOTE: There were 674 observations read from the data set WORK.EM_DMREG.
+NOTE: PROCEDURE DMDB used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.03 seconds
+      
+
+11683  quit;
+11684  *--- end code ---*;
+
+11685  *------------------------------------------------------------*;
+11686  * Reg7: Run DMREG procedure;
+11687  *------------------------------------------------------------*;
+11688  proc dmreg data=EM_DMREG dmdbcat=WORK.Reg7_DMDB
+11689  validata = EMWS3.TextCluster11_VALIDATE
+11690  outest = EMWS3.Reg7_EMESTIMATE
+11691  outterms = EMWS3.Reg7_OUTTERMS
+11692  outmap= EMWS3.Reg7_MAPDS namelen=200
+11693  ;
+11694  class
+11695  Category
+11696  ;
+11697  model Category =
+11698  TextCluster11_SVD1
+11699  TextCluster11_SVD10
+11700  TextCluster11_SVD11
+11701  TextCluster11_SVD12
+11702  TextCluster11_SVD13
+11703  TextCluster11_SVD14
+11704  TextCluster11_SVD15
+11705  TextCluster11_SVD16
+11706  TextCluster11_SVD17
+11707  TextCluster11_SVD18
+11708  TextCluster11_SVD19
+11709  TextCluster11_SVD2
+11710  TextCluster11_SVD20
+11711  TextCluster11_SVD21
+11712  TextCluster11_SVD22
+11713  TextCluster11_SVD23
+11714  TextCluster11_SVD24
+11715  TextCluster11_SVD25
+11716  TextCluster11_SVD26
+11717  TextCluster11_SVD27
+11718  TextCluster11_SVD28
+11719  TextCluster11_SVD29
+11720  TextCluster11_SVD3
+11721  TextCluster11_SVD30
+11722  TextCluster11_SVD31
+11723  TextCluster11_SVD32
+11724  TextCluster11_SVD33
+11725  TextCluster11_SVD34
+11726  TextCluster11_SVD35
+11727  TextCluster11_SVD36
+11728  TextCluster11_SVD37
+11729  TextCluster11_SVD38
+11730  TextCluster11_SVD39
+11731  TextCluster11_SVD4
+11732  TextCluster11_SVD40
+11733  TextCluster11_SVD41
+11734  TextCluster11_SVD42
+11735  TextCluster11_SVD43
+11736  TextCluster11_SVD44
+11737  TextCluster11_SVD45
+11738  TextCluster11_SVD46
+11739  TextCluster11_SVD47
+11740  TextCluster11_SVD48
+11741  TextCluster11_SVD49
+11742  TextCluster11_SVD5
+11743  TextCluster11_SVD50
+11744  TextCluster11_SVD51
+11745  TextCluster11_SVD52
+11746  TextCluster11_SVD53
+11747  TextCluster11_SVD54
+11748  TextCluster11_SVD55
+11749  TextCluster11_SVD56
+11750  TextCluster11_SVD57
+11751  TextCluster11_SVD58
+11752  TextCluster11_SVD59
+11753  TextCluster11_SVD6
+11754  TextCluster11_SVD60
+11755  TextCluster11_SVD61
+11756  TextCluster11_SVD7
+11757  TextCluster11_SVD8
+11758  TextCluster11_SVD9
+11759  /level=nominal
+11760  coding=DEVIATION
+11761  nodesignprint
+11762  selection=STEPWISE choose=VERROR
+11763  Hierarchy=CLASS
+11764  Rule=NONE
+11765  ;
+11766  ;
+11767  score data=EMWS3.TextCluster11_TEST
+11768  out=_null_
+11769  outfit=EMWS3.Reg7_FITTEST
+11770  role = TEST
+11771  ;
+11772  code file="C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Reg7\EMPUBLISHSCORE.sas"
+11773  group=Reg7
+11774  ;
+11775  code file="C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Reg7\EMFLOWSCORE.sas"
+11776  group=Reg7
+11777  residual
+11778  ;
+11779  run;
+
+NOTE: Convergence criterion (ABSGCONV=0.00001) satisfied.
+NOTE: Convergence criterion (GCONV=1E-6) satisfied.
+NOTE: Convergence criterion (GCONV=1E-6) satisfied.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: Convergence criterion (FCONV=0.0001) satisfied.
+NOTE: At least one element of the gradient is greater than 1e-3.
+NOTE: External file C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Reg7\EMPUBLISHSCORE.sas opened.
+NOTE: External file C:\Users\lahar\OneDrive\Desktop\Data Mining\Resume\Workspaces\EMWS3\Reg7\EMFLOWSCORE.sas opened.
+NOTE: View WORK.EM_DMREG.VIEW used (Total process time):
+      real time           6.47 seconds
+      cpu time            4.29 seconds
+      
+NOTE: There were 674 observations read from the data set EMWS3.TEXTCLUSTER11_TRAIN.
+NOTE: There were 674 observations read from the data set WORK.EM_DMREG.
+NOTE: There were 405 observations read from the data set EMWS3.TEXTCLUSTER11_VALIDATE.
+NOTE: There were 274 observations read from the data set EMWS3.TEXTCLUSTER11_TEST.
+NOTE: The data set EMWS3.REG7_EMESTIMATE has 48 observations and 718 variables.
+NOTE: The data set EMWS3.REG7_OUTTERMS has 99 observations and 6 variables.
+NOTE: The data set EMWS3.REG7_MAPDS has 3 observations and 673 variables.
+NOTE: The data set EMWS3.REG7_FITTEST has 15 observations and 15 variables.
+NOTE: The PROCEDURE DMREG printed pages 4-19.
+NOTE: PROCEDURE DMREG used (Total process time):
+      real time           6.49 seconds
+      cpu time            4.31 seconds
+      
+
+11780  quit;
+
+11781  proc datasets lib=WORK nolist;
+11782  delete Reg7_DMDB;
+11783  run;
+
+NOTE: The file WORK.REG7_DMDB (memtype=DATA) was not found, but appears on a DELETE statement.
+11784  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11785  proc datasets lib=WORK nolist;
+11786  delete Reg7_DMDB / memtype=catalog;
+11787  run;
+
+NOTE: Deleting WORK.REG7_DMDB (memtype=CATALOG).
+11788  quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11789  data WORK.ESTIMATE;
+11790  length _NAME_ $32;
+11791  set EMWS3.Reg7_EMESTIMATE;
+11792  drop _AIC_--_VMISC_
+11793  ;
+11794  where _CHOSEN_ ne '' and _TYPE_ in('PARMS', 'T', 'P');
+11795  drop _STEP_ _CHOSEN_;
+11796  select(_TYPE_);
+11797  when('PARMS') _NAME_='Coefficient';
+11798  when('T') _NAME_='tValue';
+11799  when('P') _NAME_='PValue';
+11800  otherwise;
+11801  end;
+11802  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.REG7_EMESTIMATE.
+      WHERE (_CHOSEN_ not = ' ') and _TYPE_ in ('P', 'PARMS', 'T');
+NOTE: The data set WORK.ESTIMATE has 3 observations and 684 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11803  proc transpose data=WORK.ESTIMATE out=WORK.ESTIMATE(rename=(_NAME_=Effect));
+11804  run;
+
+NOTE: There were 3 observations read from the data set WORK.ESTIMATE.
+NOTE: The data set WORK.ESTIMATE has 682 observations and 5 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+11805  proc transpose data=EMWS3.Reg7_MAPDS out=WORK.MAP(rename=(_NAME_=Effect INPUT=Variable
+11806  TARGET=TargetLevel
+11807  ));
+11808  var 'TextCluster11_SVD1_TEACHER'n--'TextCluster11_SVD9_BUSINESS_DEVE'n;
+11809  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.REG7_MAPDS.
+NOTE: The data set WORK.MAP has 671 observations and 5 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11810  proc sort data=WORK.MAP;
+11811  by Effect;
+11812  run;
+
+NOTE: There were 671 observations read from the data set WORK.MAP.
+NOTE: The data set WORK.MAP has 671 observations and 5 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11813  proc sort data=WORK.ESTIMATE;
+11814  by Effect;
+11815  run;
+
+NOTE: There were 682 observations read from the data set WORK.ESTIMATE.
+NOTE: The data set WORK.ESTIMATE has 682 observations and 5 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11816  data EMWS3.Reg7_EFFECTS(rename=(_LABEL_=EffectLabel));
+11817  length Variable ClassLevel $32;
+11818  merge WORK.ESTIMATE WORK.MAP;
+11819  by Effect;
+11820  label Effect = "%sysfunc(sasmsg(sashelp.dmine, rpt_effect_vlabel, NOQUOTE))" Variable = "%sysfunc(sasmsg(sashelp.dmine, rpt_variable_vlabel, NOQUOTE))" Sign = "%sysfunc(sasmsg(sashelp.dmine, rpt_sign_vlabel, NOQUOTE))" ClassLevel =
+11821     "%sysfunc(sasmsg(sashelp.dmine, rpt_level_vlabel, NOQUOTE))" Abscoefficient = "%sysfunc(sasmsg(sashelp.dmine, rpt_abscoefficient_vlabel, NOQUOTE))" Coefficient = "%sysfunc(sasmsg(sashelp.dmine, rpt_coefficient_vlabel, NOQUOTE))" _LABEL_ =
+11822     "%sysfunc(sasmsg(sashelp.dmine, rpt_effectLabel_vlabel, NOQUOTE))" CODE = "%sysfunc(sasmsg(sashelp.dmine, rpt_scorecodevar_vlabel, NOQUOTE))";
+11823  label tvalue = "%sysfunc(sasmsg(sashelp.dmine, rpt_tvalue_vlabel,         NOQUOTE))" abstvalue = "%sysfunc(sasmsg(sashelp.dmine, rpt_absoluteTvalue_vlabel, NOQUOTE))" PValue = "%sysfunc(sasmsg(sashelp.dmine, rpt_pvalue_vlabel,         NOQUOTE))";
+11824  abstvalue = abs(tValue);
+11825  drop pos;
+11826  length TargetLevel $32;
+WARNING: Length of character variable TargetLevel has already been set. Use the LENGTH statement as the very first statement in the DATA STEP to declare the length of a character variable.
+11827  label TargetLevel = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetLevel_vlabel, NOQUOTE))";
+11828  if index(Effect, 'Intercept') then do;
+11829  variable = 'Intercept';
+11830  TargetLevel = scan(_LABEL_, 2, '=');
+11831  end;
+11832  if ^indexc(variable, '*') then do;
+11833  if length(effect)>length(variable) then classlevel = substr(effect, length(variable)+1);
+11834  pos = index(classlevel, '_'!!TargetLevel);
+11835  if pos> 1 then classlevel = substr(classlevel, 1, pos-1);
+11836  else classlevel = '';
+11837  end;
+11838  if Effect eq '' then Effect = Variable;
+11839  if coefficient < 0 then sign = '-';
+11840  else sign = '+';
+11841  abscoefficient = abs(coefficient);
+11842  if _LABEL_ = '' then _LABEL_ = Effect;
+11843  if coefficient ne . then output;
+11844  run;
+
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      583 at 11824:13   583 at 11841:18   
+NOTE: There were 682 observations read from the data set WORK.ESTIMATE.
+NOTE: There were 671 observations read from the data set WORK.MAP.
+NOTE: The data set EMWS3.REG7_EFFECTS has 99 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+11845  proc sort data =EMWS3.Reg7_EFFECTS;
+11846  by
+11847  TargetLevel
+11848  descending abstvalue;
+11849  run;
+
+NOTE: There were 99 observations read from the data set EMWS3.REG7_EFFECTS.
+NOTE: The data set EMWS3.REG7_EFFECTS has 99 observations and 12 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11850  data EMWS3.Reg7_EFFECTS;
+11851  set EMWS3.Reg7_EFFECTS;
+11852  format TEffectNum 3.;
+11853  label TEffectNum = "%sysfunc(sasmsg(sashelp.dmine, rpt_teffectnum_vlabel, NOQUOTE))";
+11854  retain TEffectNum;
+11855  by TargetLevel;
+11856  if first.TargetLevel then TEffectNum =1;
+11857  else TEffectNum + 1;
+11858  run;
+
+NOTE: There were 99 observations read from the data set EMWS3.REG7_EFFECTS.
+NOTE: The data set EMWS3.REG7_EFFECTS has 99 observations and 13 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+11859  proc sort data =EMWS3.Reg7_EFFECTS;
+11860  by
+11861  TargetLevel
+11862  descending absCoefficient;
+11863  run;
+
+NOTE: There were 99 observations read from the data set EMWS3.REG7_EFFECTS.
+NOTE: The data set EMWS3.REG7_EFFECTS has 99 observations and 13 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11864  data EMWS3.Reg7_EFFECTS;
+11865  set EMWS3.Reg7_EFFECTS;
+11866  format EffectNum 3.;
+11867  label EffectNum = "%sysfunc(sasmsg(sashelp.dmine, rpt_effectnum_vlabel, NOQUOTE))";
+11868  retain EffectNum;
+11869  by TargetLevel;
+11870  if first.TargetLevel then EffectNum =1;
+11871  else EffectNum + 1;
+11872  run;
+
+NOTE: There were 99 observations read from the data set EMWS3.REG7_EFFECTS.
+NOTE: The data set EMWS3.REG7_EFFECTS has 99 observations and 14 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11873  proc transpose data=EMWS3.Reg7_EMESTIMATE out=EMWS3.Reg7_ESTIMATEGRID(rename=(PARMS=Coefficient T=TValue _NAME_=Effect _LABEL_=EffectLabel));
+11874  where _CHOSEN_ eq '' and _TYPE_ in('PARMS', 'T', 'P');
+11875  var 'TextCluster11_SVD1_TEACHER'n--'TextCluster11_SVD9_BUSINESS_DEVE'n;
+11876  by _STEP_;
+11877  id _TYPE_;
+11878  run;
+
+NOTE: There were 45 observations read from the data set EMWS3.REG7_EMESTIMATE.
+      WHERE (_CHOSEN_=' ') and _TYPE_ in ('P', 'PARMS', 'T');
+NOTE: The data set EMWS3.REG7_ESTIMATEGRID has 10065 observations and 6 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+11879  proc transpose data=EMWS3.Reg7_MAPDS out=WORK.MAP(rename=(_NAME_=Effect INPUT=Variable
+11880  TARGET=TargetLevel
+11881  ));
+11882  var 'TextCluster11_SVD1_TEACHER'n--'TextCluster11_SVD9_BUSINESS_DEVE'n;
+11883  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.REG7_MAPDS.
+NOTE: The data set WORK.MAP has 671 observations and 5 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+11884  proc sort data=WORK.MAP;
+11885  by Effect;
+11886  run;
+
+NOTE: There were 671 observations read from the data set WORK.MAP.
+NOTE: The data set WORK.MAP has 671 observations and 5 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11887  proc sort data=EMWS3.Reg7_ESTIMATEGRID out=WORK.ESTIMATE;
+11888  by Effect;
+11889  run;
+
+NOTE: There were 10065 observations read from the data set EMWS3.REG7_ESTIMATEGRID.
+NOTE: The data set WORK.ESTIMATE has 10065 observations and 6 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11890  data EMWS3.Reg7_ESTIMATEGRID(rename=(_LABEL_=EffectLabel));
+11891  merge WORK.ESTIMATE WORK.MAP;
+11892  by Effect;
+11893  run;
+
+WARNING: Variable _LABEL_ cannot be renamed to EffectLabel because EffectLabel already exists.
+NOTE: There were 10065 observations read from the data set WORK.ESTIMATE.
+NOTE: There were 671 observations read from the data set WORK.MAP.
+NOTE: The data set EMWS3.REG7_ESTIMATEGRID has 10065 observations and 10 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11894  data EMWS3.Reg7_ESTIMATEGRID;
+11895  set EMWS3.Reg7_ESTIMATEGRID;
+11896  if EffectLabel eq '' then EffectLabel = Effect;
+11897  label EffectLabel = "%sysfunc(sasmsg(sashelp.dmine, rpt_effectLabel_vlabel, NOQUOTE))" Effect = "%sysfunc(sasmsg(sashelp.dmine, rpt_effect_vlabel, NOQUOTE))" Abscoefficient = "%sysfunc(sasmsg(sashelp.dmine, rpt_abscoefficient_vlabel, NOQUOTE))"
+11898     Coefficient = "%sysfunc(sasmsg(sashelp.dmine, rpt_coefficient_vlabel, NOQUOTE))" tvalue = "%sysfunc(sasmsg(sashelp.dmine, rpt_tvalue_vlabel,         NOQUOTE))" abstvalue = "%sysfunc(sasmsg(sashelp.dmine, rpt_absoluteTvalue_vlabel, NOQUOTE))"
+11898! PValue =
+11899     "%sysfunc(sasmsg(sashelp.dmine, rpt_pvalue_vlabel,         NOQUOTE))";
+11900  AbsCoefficient = abs(Coefficient);
+11901  AbsTValue = abs(TValue);
+11902  where coefficient ne .;
+11903  run;
+
+NOTE: Variable PValue is uninitialized.
+NOTE: There were 1067 observations read from the data set EMWS3.REG7_ESTIMATEGRID.
+      WHERE coefficient not = .;
+NOTE: The data set EMWS3.REG7_ESTIMATEGRID has 1067 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+

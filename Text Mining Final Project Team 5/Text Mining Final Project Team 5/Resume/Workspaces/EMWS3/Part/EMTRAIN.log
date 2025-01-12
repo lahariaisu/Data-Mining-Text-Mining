@@ -1,0 +1,412 @@
+*------------------------------------------------------------*
+* Training Log
+Date:                November 18, 2023
+Time:                18:57:32
+*------------------------------------------------------------*
+11433  proc freq data=EMWS3.Part_VariableSet noprint;
+11434  table ROLE*LEVEL/out=WORK.PartMETA;
+11435  run;
+
+NOTE: There were 3 observations read from the data set EMWS3.PART_VARIABLESET.
+NOTE: The data set WORK.PARTMETA has 3 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.00 seconds
+      
+
+11436  proc print data=WORK.PartMETA label noobs;
+11437  var ROLE LEVEL COUNT;
+11438  label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+11439  title9 ' ';
+11440  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+11441  run;
+
+NOTE: There were 3 observations read from the data set WORK.PARTMETA.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+11442  title10;
+
+11450  *------------------------------------------------------------*;
+11451  * Part: Determine number of observations;
+11452  *------------------------------------------------------------*;
+11453  proc sql;
+11454  reset noprint;
+11455  select count(*) into :_tmpa from EMWS3.FIMPORT_train
+11456  ;
+NOTE: View EMWS3.FIMPORT_TRAIN.VIEW used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.09 seconds
+      
+NOTE: There were 1353 observations read from the data set EMWS3.FIMPORT_DATA.
+11457  quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.11 seconds
+      
+
+trainPct=50 validatePct=30 testPct=20 
+NOTE: View EMWS3.FIMPORT_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+11458  *------------------------------------------------------------*;
+11459  * Part: Retrieving stratification variable(s) levels;
+11460  *------------------------------------------------------------*;
+11461  proc freq data=EMWS3.FIMPORT_train noprint;
+11462  format
+11463  Category $22.
+11464  ;
+11465  table
+11466  Category
+11467  /out=WORK.Part_FREQ(drop=percent);
+11468  run;
+
+NOTE: View EMWS3.FIMPORT_TRAIN.VIEW used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.01 seconds
+      
+NOTE: There were 1353 observations read from the data set EMWS3.FIMPORT_DATA.
+NOTE: There were 1353 observations read from the data set EMWS3.FIMPORT_TRAIN.
+NOTE: The data set WORK.PART_FREQ has 12 observations and 2 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.01 seconds
+      
+
+11469  proc sort data=WORK.Part_FREQ;
+11470  by descending count;
+11471  run;
+
+NOTE: There were 12 observations read from the data set WORK.PART_FREQ.
+NOTE: The data set WORK.PART_FREQ has 12 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11472  * Part: Retrieving levels that meet minimum requirement;
+11473  data WORK.Part_FREQ2(keep = count);
+11474  set WORK.Part_FREQ;
+11475  where (.01 * 50 * count) >= 3;
+11476  run;
+
+NOTE: There were 12 observations read from the data set WORK.PART_FREQ.
+      WHERE (0.5*count)>=3;
+NOTE: The data set WORK.PART_FREQ2 has 12 observations and 1 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+11477  *------------------------------------------------------------*;
+11478  * Part: Create stratified partitioning;
+11479  *------------------------------------------------------------*;
+11480  data
+11481  EMWS3.Part_TRAIN(label="")
+11482  EMWS3.Part_VALIDATE(label="")
+11483  EMWS3.Part_TEST(label="")
+11484  ;
+11485  retain _seed_ 12345;
+11486  drop _seed_ _genvalue_;
+11487  call ranuni(_seed_, _genvalue_);
+11488  label _dataobs_ = "%sysfunc(sasmsg(sashelp.dmine, sample_dataobs_vlabel, NOQUOTE))";
+11489  _dataobs_ = _N_;
+11490  drop _c00:;
+11491  set EMWS3.FIMPORT_train;
+11492  length _Pformat1 $72;
+11493  drop _Pformat1;
+11494  _Pformat1 = strip(put(Category, $22.));
+11495  if
+11496  _Pformat1 = 'OTHER'
+11497  then do;
+11498  if (128+1-_C000004)*_genvalue_ <= (64 - _C000001) then do;
+11499  _C000001 + 1;
+11500  output EMWS3.Part_TRAIN;
+11501  end;
+11502  else do;
+11503  if (128+1-_C000004)*_genvalue_ <= (64 - _C000001 + 38 - _C000002) then do;
+11504  _C000002 + 1;
+11505  output EMWS3.Part_VALIDATE;
+11506  end;
+11507  else do;
+11508  _C000003 + 1;
+11509  output EMWS3.Part_TEST;
+11510  end;
+11511  end;
+11512  _C000004+1;
+11513  end;
+11514  else if
+11515  _Pformat1 = 'BUSINESS-DEVELOPMENT'
+11516  then do;
+11517  if (119+1-_C000008)*_genvalue_ <= (60 - _C000005) then do;
+11518  _C000005 + 1;
+11519  output EMWS3.Part_TRAIN;
+11520  end;
+11521  else do;
+11522  if (119+1-_C000008)*_genvalue_ <= (60 - _C000005 + 36 - _C000006) then do;
+11523  _C000006 + 1;
+11524  output EMWS3.Part_VALIDATE;
+11525  end;
+11526  else do;
+11527  _C000007 + 1;
+11528  output EMWS3.Part_TEST;
+11529  end;
+11530  end;
+11531  _C000008+1;
+11532  end;
+11533  else if
+11534  _Pformat1 = 'INFORMATION-TECHNOLOGY'
+11535  then do;
+11536  if (119+1-_C0000012)*_genvalue_ <= (60 - _C000009) then do;
+11537  _C000009 + 1;
+11538  output EMWS3.Part_TRAIN;
+11539  end;
+11540  else do;
+11541  if (119+1-_C0000012)*_genvalue_ <= (60 - _C000009 + 36 - _C0000010) then do;
+11542  _C0000010 + 1;
+11543  output EMWS3.Part_VALIDATE;
+11544  end;
+11545  else do;
+11546  _C0000011 + 1;
+11547  output EMWS3.Part_TEST;
+11548  end;
+11549  end;
+11550  _C0000012+1;
+11551  end;
+11552  else if
+11553  _Pformat1 = 'FITNESS'
+11554  then do;
+11555  if (117+1-_C0000016)*_genvalue_ <= (59 - _C0000013) then do;
+11556  _C0000013 + 1;
+11557  output EMWS3.Part_TRAIN;
+11558  end;
+11559  else do;
+11560  if (117+1-_C0000016)*_genvalue_ <= (59 - _C0000013 + 35 - _C0000014) then do;
+11561  _C0000014 + 1;
+11562  output EMWS3.Part_VALIDATE;
+11563  end;
+11564  else do;
+11565  _C0000015 + 1;
+11566  output EMWS3.Part_TEST;
+11567  end;
+11568  end;
+11569  _C0000016+1;
+11570  end;
+11571  else if
+11572  _Pformat1 = 'ADVOCATE'
+11573  then do;
+11574  if (115+1-_C0000020)*_genvalue_ <= (58 - _C0000017) then do;
+11575  _C0000017 + 1;
+11576  output EMWS3.Part_TRAIN;
+11577  end;
+11578  else do;
+11579  if (115+1-_C0000020)*_genvalue_ <= (58 - _C0000017 + 35 - _C0000018) then do;
+11580  _C0000018 + 1;
+11581  output EMWS3.Part_VALIDATE;
+11582  end;
+11583  else do;
+11584  _C0000019 + 1;
+11585  output EMWS3.Part_TEST;
+11586  end;
+11587  end;
+11588  _C0000020+1;
+11589  end;
+11590  else if
+11591  _Pformat1 = 'CONSULTANT'
+11592  then do;
+11593  if (115+1-_C0000024)*_genvalue_ <= (58 - _C0000021) then do;
+11594  _C0000021 + 1;
+11595  output EMWS3.Part_TRAIN;
+11596  end;
+11597  else do;
+11598  if (115+1-_C0000024)*_genvalue_ <= (58 - _C0000021 + 35 - _C0000022) then do;
+11599  _C0000022 + 1;
+11600  output EMWS3.Part_VALIDATE;
+11601  end;
+11602  else do;
+11603  _C0000023 + 1;
+11604  output EMWS3.Part_TEST;
+11605  end;
+11606  end;
+11607  _C0000024+1;
+11608  end;
+11609  else if
+11610  _Pformat1 = 'SALES'
+11611  then do;
+11612  if (115+1-_C0000028)*_genvalue_ <= (58 - _C0000025) then do;
+11613  _C0000025 + 1;
+11614  output EMWS3.Part_TRAIN;
+11615  end;
+11616  else do;
+11617  if (115+1-_C0000028)*_genvalue_ <= (58 - _C0000025 + 35 - _C0000026) then do;
+11618  _C0000026 + 1;
+11619  output EMWS3.Part_VALIDATE;
+11620  end;
+11621  else do;
+11622  _C0000027 + 1;
+11623  output EMWS3.Part_TEST;
+11624  end;
+11625  end;
+11626  _C0000028+1;
+11627  end;
+11628  else if
+11629  _Pformat1 = 'HEALTHCARE'
+11630  then do;
+11631  if (113+1-_C0000032)*_genvalue_ <= (57 - _C0000029) then do;
+11632  _C0000029 + 1;
+11633  output EMWS3.Part_TRAIN;
+11634  end;
+11635  else do;
+11636  if (113+1-_C0000032)*_genvalue_ <= (57 - _C0000029 + 34 - _C0000030) then do;
+11637  _C0000030 + 1;
+11638  output EMWS3.Part_VALIDATE;
+11639  end;
+11640  else do;
+11641  _C0000031 + 1;
+11642  output EMWS3.Part_TEST;
+11643  end;
+11644  end;
+11645  _C0000032+1;
+11646  end;
+11647  else if
+11648  _Pformat1 = 'HR'
+11649  then do;
+11650  if (109+1-_C0000036)*_genvalue_ <= (55 - _C0000033) then do;
+11651  _C0000033 + 1;
+11652  output EMWS3.Part_TRAIN;
+11653  end;
+11654  else do;
+11655  if (109+1-_C0000036)*_genvalue_ <= (55 - _C0000033 + 33 - _C0000034) then do;
+11656  _C0000034 + 1;
+11657  output EMWS3.Part_VALIDATE;
+11658  end;
+11659  else do;
+11660  _C0000035 + 1;
+11661  output EMWS3.Part_TEST;
+11662  end;
+11663  end;
+11664  _C0000036+1;
+11665  end;
+11666  else if
+11667  _Pformat1 = 'DESIGNER'
+11668  then do;
+11669  if (106+1-_C0000040)*_genvalue_ <= (53 - _C0000037) then do;
+11670  _C0000037 + 1;
+11671  output EMWS3.Part_TRAIN;
+11672  end;
+11673  else do;
+11674  if (106+1-_C0000040)*_genvalue_ <= (53 - _C0000037 + 32 - _C0000038) then do;
+11675  _C0000038 + 1;
+11676  output EMWS3.Part_VALIDATE;
+11677  end;
+11678  else do;
+11679  _C0000039 + 1;
+11680  output EMWS3.Part_TEST;
+11681  end;
+11682  end;
+11683  _C0000040+1;
+11684  end;
+11685  else if
+11686  _Pformat1 = 'TEACHER'
+11687  then do;
+11688  if (102+1-_C0000044)*_genvalue_ <= (51 - _C0000041) then do;
+11689  _C0000041 + 1;
+11690  output EMWS3.Part_TRAIN;
+11691  end;
+11692  else do;
+11693  if (102+1-_C0000044)*_genvalue_ <= (51 - _C0000041 + 31 - _C0000042) then do;
+11694  _C0000042 + 1;
+11695  output EMWS3.Part_VALIDATE;
+11696  end;
+11697  else do;
+11698  _C0000043 + 1;
+11699  output EMWS3.Part_TEST;
+11700  end;
+11701  end;
+11702  _C0000044+1;
+11703  end;
+11704  else if
+11705  _Pformat1 = 'DIGITAL-MEDIA'
+11706  then do;
+11707  if (95+1-_C0000048)*_genvalue_ <= (48 - _C0000045) then do;
+11708  _C0000045 + 1;
+11709  output EMWS3.Part_TRAIN;
+11710  end;
+11711  else do;
+11712  if (95+1-_C0000048)*_genvalue_ <= (48 - _C0000045 + 29 - _C0000046) then do;
+11713  _C0000046 + 1;
+11714  output EMWS3.Part_VALIDATE;
+11715  end;
+11716  else do;
+11717  _C0000047 + 1;
+11718  output EMWS3.Part_TEST;
+11719  end;
+11720  end;
+11721  _C0000048+1;
+11722  end;
+11723  run;
+
+NOTE: View EMWS3.FIMPORT_TRAIN.VIEW used (Total process time):
+      real time           0.15 seconds
+      cpu time            0.10 seconds
+      
+NOTE: There were 1353 observations read from the data set EMWS3.FIMPORT_DATA.
+NOTE: There were 1353 observations read from the data set EMWS3.FIMPORT_TRAIN.
+NOTE: The data set EMWS3.PART_TRAIN has 674 observations and 4 variables.
+NOTE: The data set EMWS3.PART_VALIDATE has 405 observations and 4 variables.
+NOTE: The data set EMWS3.PART_TEST has 274 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.17 seconds
+      cpu time            0.10 seconds
+      
+
+11724  data _tempNobs;
+11725  length Type $8 Table $32 Nobs 8;
+11726  label type= "%sysfunc(sasmsg(sashelp.dmine, meta_type_vlabel,    NOQUOTE))" table = "%sysfunc(sasmsg(sashelp.dmine, meta_dataset_vlabel, NOQUOTE))" nobs = "%sysfunc(sasmsg(sashelp.dmine,  rpt_numObs_vlabel,   NOQUOTE))";
+11727  type='DATA';
+11728  table="EMWS3.FIMPORT_train";
+11729  Nobs=1353;
+11730  output;
+11731  type='TRAIN';
+11732  table="EMWS3.Part_TRAIN";
+11733  Nobs=674;
+11734  output;
+11735  type='VALIDATE';
+11736  table="EMWS3.Part_VALIDATE";
+11737  Nobs=405;
+11738  output;
+11739  type='TEST';
+11740  table="EMWS3.Part_TEST";
+11741  Nobs=274;
+11742  output;
+11743  run;
+
+NOTE: The data set WORK._TEMPNOBS has 4 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11744  %let _cn = %sysfunc(getoption(CENTER));
+11745  %let _nb = %sysfunc(getoption(NUMBER));
+11746  options nonumber nocenter;
+11747  proc print data=_tempNobs noobs label;
+11748  title9 ' ';
+11749  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_partitionSummary_title, NOQUOTE))";
+11750  run;
+
+NOTE: There were 4 observations read from the data set WORK._TEMPNOBS.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+11751  title10;
+11752  options &_cn &_nb;
+11753  run;
+

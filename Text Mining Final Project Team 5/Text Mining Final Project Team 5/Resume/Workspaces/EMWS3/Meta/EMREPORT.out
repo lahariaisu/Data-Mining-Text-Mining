@@ -1,0 +1,101 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+Exported Attributes for TRAIN Port
+(maximum 500 observations printed)
+
+                                     Measurement
+Variable Name            Role           Level       Creator         Label
+
+Category                 TARGET       NOMINAL                       Category                        
+ID                       ID           NOMINAL                       ID                              
+Resume_str               TEXT         NOMINAL                       Resume_str                      
+TextCluster2_SVD1        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD10       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD11       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD12       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD13       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD14       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD15       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD16       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD17       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD18       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD19       REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD2        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD3        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD4        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD5        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD6        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD7        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD8        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_SVD9        REJECTED     INTERVAL      TextCluster2                                    
+TextCluster2_cluster_    SEGMENT      NOMINAL       TextCluster2                                    
+TextCluster2_prob1       INPUT        INTERVAL      TextCluster2                                    
+TextCluster2_prob2       INPUT        INTERVAL      TextCluster2                                    
+TextCluster2_prob3       INPUT        INTERVAL      TextCluster2                                    
+TextCluster2_prob4       INPUT        INTERVAL      TextCluster2                                    
+TextTopic3_1             INPUT        BINARY        TextTopic3      _1_0_equipment,+vehicle,â,+truck
+TextTopic3_10            INPUT        BINARY        TextTopic3      _1_0_digital,media,marketing,soc
+TextTopic3_11            INPUT        BINARY        TextTopic3      _1_0_fitness,wellness,fitness,+e
+TextTopic3_12            INPUT        BINARY        TextTopic3      _1_0_â,sales,+sale,+sell,ï      
+TextTopic3_13            INPUT        BINARY        TextTopic3      _1_0_+food,food,+clean,+item,+gu
+TextTopic3_14            INPUT        BINARY        TextTopic3      _1_0_agriculture,jamaica,+labora
+TextTopic3_15            INPUT        BINARY        TextTopic3      _1_0_+tax,financial,accounting,+
+TextTopic3_16            INPUT        BINARY        TextTopic3      _1_0_â,company name â,â,interior
+TextTopic3_17            INPUT        BINARY        TextTopic3      _1_0_+child,+family,+community,â
+TextTopic3_18            INPUT        BINARY        TextTopic3      _1_0_+implementation,project,â,s
+TextTopic3_19            INPUT        BINARY        TextTopic3      _1_0_+claim,+claim,+provider,+in
+TextTopic3_2             INPUT        BINARY        TextTopic3      _1_0_+network,+server,cisco,hard
+TextTopic3_20            INPUT        BINARY        TextTopic3      _1_0_oracle,dba,11g,weblogic,ora
+TextTopic3_21            INPUT        BINARY        TextTopic3      _1_0_â,+patient,patient,+meal,co
+TextTopic3_22            INPUT        BINARY        TextTopic3      _1_0_+child,+teacher,+reinforcem
+TextTopic3_23            INPUT        BINARY        TextTopic3      _1_0_+store,merchandise,+custome
+TextTopic3_24            INPUT        BINARY        TextTopic3      _1_0_â,jan,aug,jun,sep          
+TextTopic3_25            INPUT        BINARY        TextTopic3      _1_0_hr,india,+candidate,+recrui
+TextTopic3_3             INPUT        BINARY        TextTopic3      _1_0_+account,+sale,+market,+bus
+TextTopic3_4             INPUT        BINARY        TextTopic3      _1_0_hr,+compensation,+employee,
+TextTopic3_5             INPUT        BINARY        TextTopic3      _1_0_+student,+teacher,+lesson,+
+TextTopic3_6             INPUT        BINARY        TextTopic3      _1_0_graphic,+design,designer,+d
+TextTopic3_7             INPUT        BINARY        TextTopic3      _1_0_+patient,care,patient,+nurs
+TextTopic3_8             INPUT        BINARY        TextTopic3      _1_0_sql,javascript,java,html,xm
+TextTopic3_9             INPUT        BINARY        TextTopic3      _1_0_administrative,+travel,+spr
+TextTopic3_raw1          REJECTED     INTERVAL      TextTopic3      equipment,+vehicle,â,+truck,+rep
+TextTopic3_raw10         REJECTED     INTERVAL      TextTopic3      digital,media,marketing,social,m
+TextTopic3_raw11         REJECTED     INTERVAL      TextTopic3      fitness,wellness,fitness,+exerci
+TextTopic3_raw12         REJECTED     INTERVAL      TextTopic3      â,sales,+sale,+sell,ï           
+TextTopic3_raw13         REJECTED     INTERVAL      TextTopic3      +food,food,+clean,+item,+guest  
+TextTopic3_raw14         REJECTED     INTERVAL      TextTopic3      agriculture,jamaica,+laboratory,
+TextTopic3_raw15         REJECTED     INTERVAL      TextTopic3      +tax,financial,accounting,+state
+TextTopic3_raw16         REJECTED     INTERVAL      TextTopic3      â,company name â,â,interior,+dra
+TextTopic3_raw17         REJECTED     INTERVAL      TextTopic3      +child,+family,+community,â,+cas
+TextTopic3_raw18         REJECTED     INTERVAL      TextTopic3      +implementation,project,â,strate
+TextTopic3_raw19         REJECTED     INTERVAL      TextTopic3      +claim,+claim,+provider,+insuran
+TextTopic3_raw2          REJECTED     INTERVAL      TextTopic3      +network,+server,cisco,hardware,
+TextTopic3_raw20         REJECTED     INTERVAL      TextTopic3      oracle,dba,11g,weblogic,oracle  
+TextTopic3_raw21         REJECTED     INTERVAL      TextTopic3      â,+patient,patient,+meal,compani
+TextTopic3_raw22         REJECTED     INTERVAL      TextTopic3      +child,+teacher,+reinforcement m
+TextTopic3_raw23         REJECTED     INTERVAL      TextTopic3      +store,merchandise,+customer,+in
+TextTopic3_raw24         REJECTED     INTERVAL      TextTopic3      â,jan,aug,jun,sep               
+TextTopic3_raw25         REJECTED     INTERVAL      TextTopic3      hr,india,+candidate,+recruitment
+TextTopic3_raw3          REJECTED     INTERVAL      TextTopic3      +account,+sale,+market,+business
+TextTopic3_raw4          REJECTED     INTERVAL      TextTopic3      hr,+compensation,+employee,human
+TextTopic3_raw5          REJECTED     INTERVAL      TextTopic3      +student,+teacher,+lesson,+class
+TextTopic3_raw6          REJECTED     INTERVAL      TextTopic3      graphic,+design,designer,+design
+TextTopic3_raw7          REJECTED     INTERVAL      TextTopic3      +patient,care,patient,+nurse,med
+TextTopic3_raw8          REJECTED     INTERVAL      TextTopic3      sql,javascript,java,html,xml    
+TextTopic3_raw9          REJECTED     INTERVAL      TextTopic3      administrative,+travel,+spreadsh
+_DOCUMENT_               ID           NOMINAL       TextTopic3      Document                        
+_dataobs_                ID           INTERVAL      Part            Observation Number              
+ 
+                                                                                                                                                                                                                                                                
+ 
+Exported Attributes for TRANSACTION Port
+(maximum 500 observations printed)
+
+Variable                  Measurement
+Name          Role           Level        Creator      Label
+
+_COUNT_       REJECTED     INTERVAL      TextTopic3                                    
+_DOCUMENT_    ID           NOMINAL       TextTopic3                                    
+_TERMNUM_     REJECTED     INTERVAL      TextTopic3                                    
+_item_        TARGET       NOMINAL       TextTopic3                                    

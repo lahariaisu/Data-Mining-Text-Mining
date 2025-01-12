@@ -1,0 +1,122 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 18, 2023
+Time:                18:57:35
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+Role         Level         Count
+ 
+ID          NOMINAL          1
+TARGET      NOMINAL          1
+TEXT        NOMINAL          1
+ 
+ 
+ 
+ 
+Partition Summary
+ 
+                                     Number of
+Type             Data Set          Observations
+ 
+DATA        EMWS3.FIMPORT_train        1353
+TRAIN       EMWS3.Part_TRAIN            674
+VALIDATE    EMWS3.Part_VALIDATE         405
+TEST        EMWS3.Part_TEST             274
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Summary Statistics for Class Targets
+ 
+Data=DATA
+ 
+            Numeric                              Frequency
+Variable     Value     Formatted Value             Count      Percent     Label
+ 
+Category       .       ADVOCATE                     115       8.49963    Category
+Category       .       BUSINESS-DEVELOPMENT         119       8.79527    Category
+Category       .       CONSULTANT                   115       8.49963    Category
+Category       .       DESIGNER                     106       7.83444    Category
+Category       .       DIGITAL-MEDIA                 95       7.02143    Category
+Category       .       FITNESS                      117       8.64745    Category
+Category       .       HEALTHCARE                   113       8.35181    Category
+Category       .       HR                           109       8.05617    Category
+Category       .       INFORMATION-TECHNOLOGY       119       8.79527    Category
+Category       .       OTHER                        128       9.46046    Category
+Category       .       SALES                        115       8.49963    Category
+Category       .       TEACHER                      102       7.53880    Category
+ 
+ 
+Data=TEST
+ 
+            Numeric                              Frequency
+Variable     Value     Formatted Value             Count      Percent     Label
+ 
+Category       .       ADVOCATE                      23       8.39416    Category
+Category       .       BUSINESS-DEVELOPMENT          23       8.39416    Category
+Category       .       CONSULTANT                    23       8.39416    Category
+Category       .       DESIGNER                      22       8.02920    Category
+Category       .       DIGITAL-MEDIA                 19       6.93431    Category
+Category       .       FITNESS                       24       8.75912    Category
+Category       .       HEALTHCARE                    23       8.39416    Category
+Category       .       HR                            22       8.02920    Category
+Category       .       INFORMATION-TECHNOLOGY        24       8.75912    Category
+Category       .       OTHER                         27       9.85401    Category
+Category       .       SALES                         23       8.39416    Category
+Category       .       TEACHER                       21       7.66423    Category
+ 
+ 
+Data=TRAIN
+ 
+            Numeric                              Frequency
+Variable     Value     Formatted Value             Count      Percent     Label
+ 
+Category       .       ADVOCATE                      57       8.45697    Category
+Category       .       BUSINESS-DEVELOPMENT          60       8.90208    Category
+Category       .       CONSULTANT                    57       8.45697    Category
+Category       .       DESIGNER                      53       7.86350    Category
+Category       .       DIGITAL-MEDIA                 47       6.97329    Category
+Category       .       FITNESS                       58       8.60534    Category
+Category       .       HEALTHCARE                    57       8.45697    Category
+Category       .       HR                            55       8.16024    Category
+Category       .       INFORMATION-TECHNOLOGY        59       8.75371    Category
+Category       .       OTHER                         63       9.34718    Category
+Category       .       SALES                         58       8.60534    Category
+Category       .       TEACHER                       50       7.41840    Category
+ 
+ 
+Data=VALIDATE
+ 
+            Numeric                              Frequency
+Variable     Value     Formatted Value             Count      Percent     Label
+ 
+Category       .       ADVOCATE                      35       8.64198    Category
+Category       .       BUSINESS-DEVELOPMENT          36       8.88889    Category
+Category       .       CONSULTANT                    35       8.64198    Category
+Category       .       DESIGNER                      31       7.65432    Category
+Category       .       DIGITAL-MEDIA                 29       7.16049    Category
+Category       .       FITNESS                       35       8.64198    Category
+Category       .       HEALTHCARE                    33       8.14815    Category
+Category       .       HR                            32       7.90123    Category
+Category       .       INFORMATION-TECHNOLOGY        36       8.88889    Category
+Category       .       OTHER                         38       9.38272    Category
+Category       .       SALES                         34       8.39506    Category
+Category       .       TEACHER                       31       7.65432    Category

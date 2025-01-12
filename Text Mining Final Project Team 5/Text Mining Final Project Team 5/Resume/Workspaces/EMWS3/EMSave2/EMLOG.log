@@ -1,0 +1,1027 @@
+*------------------------------------------------------------*
+User:                lahar
+Date:                November 23, 2023
+Time:                22:10:12
+Site:                70085622
+Platform:            X64_10HOME
+Maintenance Release: 9.04.01M6P111518
+EM Version:          15.1
+* 
+*------------------------------------------------------------*
+* Training Log
+Date:                November 23, 2023
+Time:                22:10:10
+*------------------------------------------------------------*
+15225  proc freq data=EMWS3.EMSave2_VariableSet noprint;
+15226  table ROLE*LEVEL/out=WORK.EMSave2META;
+15227  run;
+ 
+NOTE: There were 2 observations read from the data set EMWS3.EMSAVE2_VARIABLESET.
+NOTE: The data set WORK.EMSAVE2META has 2 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+ 
+15228  proc print data=WORK.EMSave2META label noobs;
+15229  var ROLE LEVEL COUNT;
+15230  label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+15231  title9 ' ';
+15232  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+15233  run;
+ 
+NOTE: There were 2 observations read from the data set WORK.EMSAVE2META.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+15234  title10;
+ 
+15235  %let EMEXCEPTIONSTRING=;
+15545  *------------------------------------------------------------*;
+15546  * EMSave2: Generation of macros and macro variables;
+15547  * To see the code generated, set the EM_DEBUG macro variable to SOURCE or _ALL_;
+15548  *------------------------------------------------------------*;
+ 
+15549  %let EMEXCEPTIONSTRING=;
+15550  *------------------------------------------------------------*;
+15551  * TRAIN: EMSave2;
+15552  *------------------------------------------------------------*;
+15553  %let EM_ACTION = TRAIN;
+15554  %let syscc = 0;
+15555  *** MAIN MACRO FOR EMSAVE EXTENSION NODE;
+15556
+15557  %macro EM_SAVEXT_MAIN;
+15558
+15559     %if %upcase("&EM_ACTION") = "CREATE" %then %do;
+15560         filename _create catalog 'sashelp.emutil.savext_create.source';
+15561         %include _create;
+15562         filename _create;
+15563         %EM_SAVEXT_CREATE;
+15564     %end;
+15565     %else
+15566     %if %upcase("&EM_ACTION") = "TRAIN" %then %do;
+15567         filename _train catalog 'sashelp.emutil.savext_train.source';
+15568         %include _train;
+15569         filename _train;
+15570         %EM_SAVEXT_TRAIN;
+15571     %end;
+15572
+15573  %mend EM_SAVEXT_MAIN;
+15574
+15575  %EM_SAVEXT_MAIN;
+NOTE: %INCLUDE (level 1) file _TRAIN is file SASHELP.EMUTIL.SAVEXT_TRAIN.SOURCE.
+15576 +*** TRAINING MACRO FOR EM_SAVEXT EXTENSION NODE;
+15578 +%macro EM_SAVEXT_TRAIN;
+15580 +    *** IMPORT UTILITY MACROS;
+15582 +    filename _savutil catalog 'sashelp.emutil.savext_macros.source';
+15583 +    %include _savutil;
+15584 +    filename _savutil;
+15586 +    *** CHECK FOR IMPORT DATA SOURCES WITHOUT READING PROJECT SETS ************;
+15587 +    *** POPULATE MACRO ARRAY TO HOLD ONLY EXISTING AND REQUESTED PARTITIONS ***;
+15588 +    *** GET NUMBER OF EXISTING AND REQUESTED PARTITIONS ***********************;
+15590 +    data _null_;
+15591 +        length _save_set $50 _save_role $20 _save_set_index $12 _save_role_index $14 _i 3;
+15592 +        _i=0;
+15594 +        *** TRAIN;
+15595 +        %if (%EM_SAVEXT_SET_EXISTS(&EM_IMPORT_DATA) and (("&EM_PROPERTY_TRAIN"="Y") or ("&EM_PROPERTY_ALLROLES"="Y"))) %then %do;
+15596 +            _i=_i+1;                                                        /* INCREMENT ARRAY INDEX */
+15597 +            %EM_SAVEXT_REGISTER(&EM_IMPORT_DATA, TRAIN, _i);                /* INSERT INTO MACRO ARRAY */
+15598 +        %end;
+15600 +        *** VALIDATE;
+15601 +        %if (%EM_SAVEXT_SET_EXISTS(&EM_IMPORT_VALIDATE) and (("&EM_PROPERTY_VALIDATE"="Y") or ("&EM_PROPERTY_ALLROLES"="Y"))) %then %do;
+15602 +            _i=_i+1;
+15603 +            %EM_SAVEXT_REGISTER(&EM_IMPORT_VALIDATE, VALIDATE, _i);
+15604 +        %end;
+15606 +        *** TEST;
+15607 +        %if (%EM_SAVEXT_SET_EXISTS(&EM_IMPORT_TEST) and (("&EM_PROPERTY_TEST"="Y") or ("&EM_PROPERTY_ALLROLES"="Y"))) %then %do;
+15608 +            _i=_i+1;
+15609 +            %EM_SAVEXT_REGISTER(&EM_IMPORT_TEST, TEST, _i);
+15610 +        %end;
+15612 +        *** SCORE;
+15613 +        %if (%EM_SAVEXT_SET_EXISTS(&EM_IMPORT_SCORE) and (("&EM_PROPERTY_SCORE"="Y") or ("&EM_PROPERTY_ALLROLES"="Y"))) %then %do;
+15614 +            _i=_i+1;
+15615 +            %EM_SAVEXT_REGISTER(&EM_IMPORT_SCORE, SCORE, _i);
+15616 +        %end;
+15618 +        *** TRANSACTION;
+15619 +        %if (%EM_SAVEXT_SET_EXISTS(&EM_IMPORT_TRANSACTION) and (("&EM_PROPERTY_TRANSACTION"="Y") or ("&EM_PROPERTY_ALLROLES"="Y"))) %then %do;
+15620 +            _i=_i+1;
+15621 +            %EM_SAVEXT_REGISTER(&EM_IMPORT_TRANSACTION, TRANSACTION, _i);
+15622 +        %end;
+15624 +        *** ESTABLISH NUMBER OF SETS TO SAVE;
+15625 +        call symput('_NUM_SAVE_SETS', strip(put(_i,1.)));
+15627 +    run;
+15629 +    *** EXIT IF NO PARTITIONS TO SAVE;
+15631 +    %if ^(&_NUM_SAVE_SETS) %then %do;
+15632 +        %put &EM_CODEBAR;
+15633 +        %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_nodata_warn, NOQUOTE));
+15634 +        %put &WARNING;
+15635 +        %put &EM_CODEBAR;
+15636 +        %goto quit;
+15637 +    %end;
+15639 +    *** FOR FILE PREFIXES CONTAINING PROBLEMATIC CHARACTERS;
+15640 +    *** REVERT TO DEFAULT NAME;
+15642 +    %if ^(%nrbquote(%sysfunc(compress("&EM_PROPERTY_NAME")))="") %then %do;
+15643 +        %let _BAD_CHARS= <>:%str(%")%str(%')/\|?* %nrstr(&)%nrstr(%%);
+15644 +        %let _BAD_CHAR_FLAG= 0;
+15645 +        %do _i= 1 %to %length(%nrbquote(&_BAD_CHARS));
+15646 +            %if %index(%nrbquote(&EM_PROPERTY_NAME), %nrbquote(%substr(%nrbquote(&_BAD_CHARS), &_i, 1)))
+15647 +                %then %let _BAD_CHAR_FLAG= 1;
+15648 +        %end;
+15649 +        %if %sysfunc(kcount(%nrbquote(&EM_PROPERTY_NAME))) %then %let _BAD_CHAR_FLAG= 1;
+15651 +        %if &_BAD_CHAR_FLAG %then %do;
+15652 +           %put &EM_CODEBAR;
+15653 +           %let WARNING= %sysfunc(sasmsg(sashelp.dmine, save_bad_char_err, NOQUOTE));
+15654 +           %put &WARNING;
+15655 +           %put &EM_CODEBAR;
+15656 +           *** REVERT TO DEFAULT NAME;
+15657 +           %let EM_PROPERTY_NAME = em_save;
+15658 +        %end;
+15659 +    %end;
+15660 +    *** ACCOUNT FOR LIB ISSUES;
+15662 +    %if (%upcase(%sysfunc(compress("&EM_PROPERTY_LIB"))) = "WORK") %then %do;
+15663 +        %put &EM_CODEBAR;
+15664 +        %let WARNING= %sysfunc(sasmsg(sashelp.dmine, save_work_lib_warn, NOQUOTE));
+15665 +        %put &WARNING;                                                      /* WORK IS A TEMPORARY LIBRARY */
+15666 +        %put &EM_CODEBAR;                                                   /* IT DISAPPEARS AFTER THE FLOW COMPLETES ALONG WITH DATA SAVED THERE */
+15667 +    %end;
+15670 +    %if (%sysfunc(compress("&EM_PROPERTY_LIB")) = "") %then %do;            /* IN SOME CASES THIS IS BEING INITIALIZED AS " " */
+15671 +        libname _em_save "%nrbquote(&EM_NODEDIR)";                          /* AND IN OTHERS AS "" */
+15672 +        %let EM_PROPERTY_LIB = _em_save;
+15673 +    %end;
+15675 +    *** CHECK FOR EXISTING LIB;
+15677 +    %let _rc = %sysfunc(libref(&EM_PROPERTY_LIB));
+15678 +    %if &_rc %then %do;
+15679 +        %let EMEXCEPTIONSTRING=exception.server.DATASOURCE.LIBRARY.NOTASSIGNED,&EM_PROPERTY_LIB;
+15680 +        %put &EM_CODEBAR;
+15681 +        %let ERROR1 = %sysfunc(sasmsg(sashelp.dmine, DATASOURCE.LIBRARY.NOTASSIGNED_ERR, NOQUOTE, &EM_PROPERTY_LIB));
+15682 +        %put &ERROR1;
+15683 +        %put &EM_CODEBAR;
+15684 +        %goto quit;
+15685 +    %end;
+15687 +    *** ACCOUNT FOR DEFAULT NAME;                                           /* IN SOME CASES THIS IS BEING INITIALIZED AS " " */
+15688 +                                                                            /* AND IN OTHERS AS "" */
+15689 +    %if (%sysfunc(compress("&EM_PROPERTY_NAME"))="") %then %let EM_PROPERTY_NAME = em_save;
+15691 +    *** CALL UTILITY MACROS TO SAVE SETS *************************************;
+15693 +    %if ("&EM_PROPERTY_TYPE"="SAS7BDAT") %then %do;                         /* OUTPUT SAS DATA SET */
+15694 +        %do _i=1 %to &_num_save_sets;
+15695 +            %EM_SAVEXT_GET_VARS(&&_SAVE_ROLE&_i, &&_SAVE_SET&_i);           /* GET EXACT INPUT VARS FOR EACH INPUT SET */
+15696 +            %if ("&EM_NUM_SAVEXT_VARS"= "0") %then %do;                     /* IF NO VARIABLES WERE SELECTED CONTINUE TO NEXT PARTITION */
+15697 +                %put &EM_CODEBAR;                                           /* REALLY ONLY MATTERS FOR TRANSACTION DATA - OTHERWISE ALL PARTITIONS WILL HAVE SAME NUMBER OF VARS */
+15698 +                %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_novars_warn, NOQUOTE, &EM_NUM_SAVEXT_VARS));
+15699 +                %put &WARNING;
+15700 +                %put &EM_CODEBAR;
+15701 +                %goto continue_sas_loop;
+15702 +            %end;
+15703 +            %EM_SAVEXT_SAS(&&_SAVE_ROLE&_i, &&_SAVE_SET&_i);                /* CYCLE THROUGH SETS TO SAVE */
+15704 +            %continue_sas_loop:
+15705 +        %end;
+15706 +    %end;
+15707 +    %else %do;                                                              /* OUTPUT JMP, EXCEL 2007, CSV OR TAB TABLE */
+15708 +        %do _i=1 %to &_num_save_sets;
+15709 +            %EM_SAVEXT_GET_VARS(&&_SAVE_ROLE&_i, &&_SAVE_SET&_i);
+15710 +            %if ("&EM_NUM_SAVEXT_VARS"= "0") %then %do;
+15711 +                %put &EM_CODEBAR;
+15712 +                %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_novars_warn, NOQUOTE, &EM_NUM_SAVEXT_VARS));
+15713 +                %put &WARNING;
+15714 +                %put &EM_CODEBAR;
+15715 +                %goto continue_pxpt_loop;
+15716 +            %end;
+15717 +            %EM_SAVEXT_PXPT(&&_SAVE_ROLE&_i, &&_SAVE_SET&_i);
+15718 +            %continue_pxpt_loop:
+15719 +        %end;
+15720 +    %end;
+15722 +    *** OUTPUT ****************************************************************;
+15724 +    %if %sysfunc(exist(_save_output_temp)) %then %do;
+15726 +        %EM_GETNAME(key=SAVEOUT, type=DATA);
+15728 +        *** SAVE OUTPUT DATA TO PROJECT;
+15730 +        data &EM_USER_SAVEOUT;
+15731 +            set _save_output_temp;
+15732 +            label
+15733 +                nobs="%sysfunc(sasmsg(sashelp.dmine, save_numobs_vlabel, NOQUOTE))"
+15734 +                outnobs="%sysfunc(sasmsg(sashelp.dmine, save_numoutobs_vlabel, NOQUOTE))"
+15735 +                vars="%sysfunc(sasmsg(sashelp.dmine, rpt_varcount_vlabel, NOQUOTE))"
+15736 +                name="%sysfunc(sasmsg(sashelp.dmine, save_location_vlabel, NOQUOTE))"
+15737 +                %if ("&EM_PROPERTY_TYPE"= "SAS7BDAT") %then %do;
+15738 +                    lib= "%sysfunc(sasmsg(sashelp.dmine, rpt_datalib_vlabel, NOQUOTE))"
+15739 +                %end;
+15740 +                ;
+15741 +        run;
+15743 +        *** PRINT TO OUTPUT;
+15745 +        title "%sysfunc(sasmsg(sashelp.dmine, save_results_title, NOQUOTE))";
+15746 +        proc print data=&EM_USER_SAVEOUT label noobs; run;
+15747 +        %EM_REPORT(key=SAVEOUT, viewtype=DATA, autodisplay=Y);
+15748 +        title;
+15750 +    %end;
+15752 +    *** SAVE FORMATS **********************************************************;
+15754 +    *** CHECK REPLACE CONSTRAINT FOR FORMATS;
+15756 +    %if ((%sysfunc(cexist(&EM_PROPERTY_LIB..&EM_PROPERTY_NAME._FORMATS)) and
+15757 +        "&EM_PROPERTY_TYPE"="SAS7BDAT") and
+15758 +        ("&EM_PROPERTY_REPLACE"="N"))
+15759 +            %then %do;
+15760 +                %put &EM_CODEBAR;
+15761 +                %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_nocats_warn, NOQUOTE));
+15762 +                %put &WARNING;
+15763 +                %put &EM_CODEBAR;
+15764 +                %goto quit;
+15765 +            %end;
+15767 +    %if ((%sysfunc(fileexist(&EM_PROPERTY_DIRECTORYSELECTOR.&EM_DSEP.&EM_PROPERTY_NAME._FORMATS.xpt)) and
+15768 +        "&EM_PROPERTY_TYPE" ne "SAS7BDAT") and
+15769 +        ("&EM_PROPERTY_REPLACE"="N"))
+15770 +           %then %do;
+15771 +                %put &EM_CODEBAR;
+15772 +                %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_nocats_warn, NOQUOTE));
+15773 +                %put &WARNING;
+15774 +                %put &EM_CODEBAR;
+15775 +                %goto quit;
+15776 +            %end;
+15778 +    *** WRITE FORMAT CATALOGS OR TRANSPORT FILE TO ACCOMPANY SAVED DATA;
+15779 +    *** CONTINGENT ON FORMATS EXISTING;
+15780 +    *** PARSE NODE VARIABLE SET FOR FORMATS;
+15782 +    %let _FORMAT_FLAG = 0;
+15783 +    data _formats;
+15784 +        length format $32; /* AVOID MERGE VARIABLE LENGTH WARNING */
+15785 +        set &EM_DATA_VARIABLESET(keep=format where=(format ne '')) end=eof;
+15786 +        format = tranwrd(format, '.', '');
+15787 +        if indexc(format, '$') then fmttype = 'C';
+15788 +        else fmttype = 'N';
+15789 +        if eof then call symput('_FORMAT_FLAG',strip(put(1,1.)));
+15790 +    run;
+15791 +    %if (&_FORMAT_FLAG) %then %EM_SAVEXT_CATALOG(_formats);
+15792 +    proc delete data=_formats; run;
+15794 +    *** HOUSEKEEPING **********************************************************;
+15796 +    %quit:
+15798 +    %if ^(%sysfunc(libref(_em_save))) %then %do;
+15799 +        libname &EM_PROPERTY_LIB clear;
+15800 +    %end;
+15802 +    %if (%sysfunc(exist(_save_output_temp))) %then %do;
+15803 +        proc delete data=_save_output_temp; run;
+15804 +    %end;
+15806 +%mend EM_SAVEXT_TRAIN;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref _TRAIN has been deassigned.
+NOTE: %INCLUDE (level 1) file _SAVUTIL is file SASHELP.EMUTIL.SAVEXT_MACROS.SOURCE.
+15807 +*** UTILITY MACROS FOR EMSAVE NODE ********************************************;
+15809 +*** FUNCTIONALITY TO SAVE SAS DATA SETS ***************************************;
+15810 +*** CALLED BY EM_SAVEXT_TRAIN *************************************************;
+15812 +%macro EM_SAVEXT_SAS(_SAVE_ROLE, _SAVE_SET);
+15814 +    *** CHECK SAS SET NAME LENGTH;
+15816 +    %if %symexist(EM_SAVEXT_SAS_NAME_LENGTH) %then %do;
+15817 +        %if ("&EM_SAVEXT_SAS_NAME_LENGTH"="") %then %let EM_SAVEXT_SAS_NAME_LENGTH=30;
+15818 +    %end;
+15819 +    %else %let EM_SAVEXT_SAS_NAME_LENGTH=30;                                /* 30 FOR OUTSIDE VENDOR LIBS */
+15821 +    %if %eval((%length(&EM_PROPERTY_NAME._&_SAVE_ROLE)) > &EM_SAVEXT_SAS_NAME_LENGTH) %then %do;
+15822 +        %put &EM_CODEBAR;
+15823 +        %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_namelengthsas_warn, NOQUOTE, &EM_PROPERTY_NAME._&_SAVE_ROLE));
+15824 +        %put &WARNING;
+15825 +        %put &EM_CODEBAR;
+15826 +        *** REVERTING TO DEFAULT NAME;
+15827 +        %let EM_PROPERTY_NAME = em_save;
+15828 +    %end;
+15830 +    *** CHECK REPLACE CONSTRAINT FOR DATA SET;
+15832 +    %if (%sysfunc(exist(&EM_PROPERTY_LIB..&EM_PROPERTY_NAME._&_SAVE_ROLE)) and
+15833 +        ("&EM_PROPERTY_REPLACE"="N")) %then %do;
+15834 +        %put &EM_CODEBAR;
+15835 +        %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_replace_warn, NOQUOTE, &EM_PROPERTY_LIB..&EM_PROPERTY_NAME._&_SAVE_ROLE));
+15836 +        %put &WARNING;
+15837 +        %put &EM_CODEBAR;
+15838 +        %goto quit;
+15839 +    %end;
+15841 +    *** WRITE SAVED DATA SET;
+15843 +    %if ("&EM_PROPERTY_ALLOBS"="Y") %then %let EM_PROPERTY_OUTOBS=MAX;
+15845 +    data &EM_PROPERTY_LIB..&EM_PROPERTY_NAME._&_SAVE_ROLE;
+15846 +        set &_SAVE_SET (obs=&EM_PROPERTY_OUTOBS);
+15847 +        keep %EM_SAVEXT_VARS;
+15848 +    run;
+15850 +    *** WRITE RESULTS *********************************************************;
+15851 +    *** CONTINGENT ON SAVED FILE EXISTING *************************************;
+15853 +    %let _dsid=%sysfunc(open(&_SAVE_SET));
+15854 +    %if &_dsid %then %do;
+15855 +        %let _SAVE_NOBS=%sysfunc(attrn(&_dsid, NLOBS));
+15856 +        %let _rc=%sysfunc(close(&_dsid));
+15857 +        %if %eval(&_SAVE_NOBS < 0) %then %do;
+15858 +            proc sql noprint;
+15859 +                select count(*) into: _SAVE_NOBS
+15860 +                from &_SAVE_SET;
+15861 +            ;
+15862 +            quit;
+15863 +        %end;
+15864 +    %end;
+15865 +    %else %do;
+15866 +        %let EMEXCEPTIONSTRING=exception.server.IO.OPEN,&EM_PROPERTY_LIB..&EM_PROPERTY_NAME._&_SAVE_ROLE;
+15867 +        %put &EM_CODEBAR;
+15868 +        %let ERROR2 = %sysfunc(sasmsg(sashelp.dmine, IO.OPEN_ERR, NOQUOTE, &EM_PROPERTY_LIB..&EM_PROPERTY_NAME._&_SAVE_ROLE));
+15869 +        %put &ERROR2;
+15870 +        %put &EM_CODEBAR;
+15871 +        %goto quit;
+15872 +    %end;
+15874 +    %if ("&EM_PROPERTY_OUTOBS" ne "MAX") %then %do;
+15875 +        %if (%eval(&EM_PROPERTY_OUTOBS > &_SAVE_NOBS)) %then %let EM_PROPERTY_OUTOBS= MAX;
+15876 +    %end;
+15878 +    data _save_output_temp_record;
+15879 +        length lib $20 name $255 nobs $20 outnobs $20 vars $20;
+15880 +        vars=left("&EM_NUM_SAVEXT_VARS");
+15881 +        outnobs=left("&EM_PROPERTY_OUTOBS");
+15882 +        nobs=left("&_SAVE_NOBS");
+15883 +        lib= left("&EM_PROPERTY_LIB");
+15884 +        name=left("%sysfunc(pathname(&EM_PROPERTY_LIB))&EM_DSEP.&EM_PROPERTY_NAME._&_SAVE_ROLE..%lowcase(&EM_PROPERTY_TYPE)");
+15885 +    run;
+15887 +    proc append base=_save_output_temp data=_save_output_temp_record force; run; quit;
+15888 +    proc delete data=_save_output_temp_record; run;
+15890 +    *** HOUSEKEEPING **********************************************************;
+15892 +    %quit:
+15894 +    %if %symexist(_SAVE_NOBS) %then %do;
+15895 +        data _null_;
+15896 +            call symdel('_SAVE_NOBS', 'NOWARN');
+15897 +        run;
+15898 +    %end;
+15900 +    %if %symexist(EM_NUM_SAVEXT_VARS) %then %do;
+15901 +        data _null_;
+15902 +            call symdel('EM_NUM_SAVEXT_VARS', 'NOWARN');
+15903 +        run;
+15904 +    %end;
+15906 +%mend EM_SAVEXT_SAS;
+15908 +*** FUNCTIONALITY TO SAVE NON-SAS FORMATS *************************************;
+15909 +*** CALLED BY EM_SAVEXT_TRAIN *************************************************;
+15911 +%macro EM_SAVEXT_PXPT(_SAVE_ROLE, _SAVE_SET);
+15913 +    *** ACCOUNT FOR DEFAULT DIR;
+15915 +    %if ("&EM_PROPERTY_DIRECTORYSELECTOR" = "") %then %let EM_PROPERTY_DIRECTORYSELECTOR = %nrbquote(&EM_NODEDIR);
+15917 +    *** CHECK JMP NAME LENGTH;
+15919 +    %if %symexist(EM_SAVEXT_JMP_NAME_LENGTH) %then %do;
+15920 +        %if ("&EM_SAVEXT_JMP_NAME_LENGTH"= "") %then %let EM_SAVEXT_JMP_NAME_LENGTH= 32;
+15921 +    %end;
+15922 +    %else %let EM_SAVEXT_JMP_NAME_LENGTH= 32;
+15924 +    %if ("&EM_PROPERTY_TYPE"="JMP") %then %do;
+15925 +        %if %eval((%length(&EM_PROPERTY_NAME._&_SAVE_ROLE)) > &EM_SAVEXT_JMP_NAME_LENGTH) %then %do;
+15926 +            %put &EM_CODEBAR;
+15927 +            %let WARNING= %sysfunc(sasmsg(sashelp.dmine, save_namelengthjmp_warn, NOQUOTE, &EM_PROPERTY_NAME._&_SAVE_ROLE));
+15928 +            %put &WARNING;
+15929 +            %put &EM_CODEBAR;
+15930 +            *** REVERTING TO DEFAULT NAME;
+15931 +            %let EM_PROPERTY_NAME = em_save;
+15932 +        %end;
+15933 +    %end;
+15935 +    *** ESTABLISH FULL SAVE FILE NAME FOR USE BELOW;
+15937 +    %let _OUT_FILE_NAME=&EM_PROPERTY_DIRECTORYSELECTOR.&EM_DSEP.&EM_PROPERTY_NAME._&_SAVE_ROLE..%lowcase(&EM_PROPERTY_TYPE);
+15939 +    *** CHECK REPLACE CONSTRAINT;
+15941 +    %if (%sysfunc(fileexist(&_OUT_FILE_NAME)) and ("&EM_PROPERTY_REPLACE"="N")) %then %do;
+15942 +        %put &EM_CODEBAR;
+15943 +        %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_replace_warn, NOQUOTE, &_OUT_FILE_NAME));
+15944 +        %put &WARNING;
+15945 +        %put &EM_CODEBAR;
+15946 +        %goto quit;
+15947 +    %end;
+15948 +    %else %if (^%sysfunc(fileexist(&_OUT_FILE_NAME)) and ("&EM_PROPERTY_REPLACE"="N")) %then %do;
+15949 +        %let _REPLACE= ;
+15950 +    %end;
+15951 +    %else %do;
+15952 +        %let _REPLACE=replace;
+15953 +    %end;
+15955 +    *** EXCEL 2010 LIMITATIONS;
+15956 +    *** CAN BE OVERRIDDEN BY STARTUP CODE;
+15958 +    %if %symexist(_EXCEL_MAX_ROWS) %then %do;
+15959 +        %if ("&_EXCEL_MAX_ROWS"= "") %then %let _EXCEL_MAX_ROWS= 1048575;
+15960 +    %end;
+15961 +    %else %let _EXCEL_MAX_ROWS= 1048575;
+15963 +    %if %symexist(_EXCEL_MAX_COLS) %then %do;
+15964 +        %if ("&_EXCEL_MAX_COLS"="") %then %let _EXCEL_MAX_COLS= 16384;
+15965 +    %end;
+15966 +    %else %let _EXCEL_MAX_COLS=16384;
+15968 +    *** GET INFO FOR EXCEL FILE SIZE LIMITATIONS AND OUTPUT;
+15970 +    %let _dsid=%sysfunc(open(&_SAVE_SET));
+15971 +    %if &_dsid %then %do;
+15972 +        %let _SAVE_NOBS=%sysfunc(attrn(&_dsid, NLOBS));
+15973 +        %let _rc=%sysfunc(close(&_dsid));
+15974 +        %if %eval(&_SAVE_NOBS < 0) %then %do;
+15975 +            proc sql noprint;
+15976 +                select count(*) into: _SAVE_NOBS
+15977 +                from &_SAVE_SET;
+15978 +                ;
+15979 +            quit;
+15980 +        %end;
+15981 +    %end;
+15982 +    %else %do;
+15983 +        %let EMEXCEPTIONSTRING=exception.server.IO.OPEN,&_SAVE_SET;
+15984 +        %put &EM_CODEBAR;
+15985 +        %let ERROR3 = %sysfunc(sasmsg(sashelp.dmine, IO.OPEN_ERR, NOQUOTE, &_SAVE_SET));
+15986 +        %put &ERROR3;
+15987 +        %put &EM_CODEBAR;
+15988 +        %goto quit;
+15989 +    %end;
+15991 +    *** CHECK EXCEL FILE SIZE;
+15993 +    %if ("&EM_PROPERTY_TYPE"="XLSX") and (%eval(&_SAVE_NOBS > &_EXCEL_MAX_ROWS) or %eval(&EM_NUM_SAVEXT_VARS > &_EXCEL_MAX_COLS)) %then %do;
+15994 +        %put &EM_CODEBAR;
+15995 +        %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_excel_limit_warn, NOQUOTE, &_SAVE_SET));
+15996 +        %put &WARNING;
+15997 +        %put &EM_CODEBAR;
+15998 +    %end;
+16000 +    *** EXECUTE EXPORT ********************************************************;
+16001 +    *** VIEW USED TO AVOID EMPTY COLUMNS IN EXPORTED TAB AND CSV FILES ********;
+16003 +    %if ("&EM_PROPERTY_ALLOBS"="Y") %then %let EM_PROPERTY_OUTOBS=MAX;      /* OTHERWISE ONLY EM_PROPERTY_OUTOBS WILL BE WRITTEN */
+16005 +    %if ("&EM_PROPERTY_OUTOBS" ne "MAX") %then %do;
+16006 +        %if (%eval(&EM_PROPERTY_OUTOBS > &_SAVE_NOBS)) %then %let EM_PROPERTY_OUTOBS= MAX;
+16007 +    %end;
+16009 +    %if ("&EM_PROPERTY_TYPE"="TXT" or "&EM_PROPERTY_TYPE"="CSV") %then %do;
+16011 +        *** SPECIAL CONDITION FOR TAB PROPERTY;
+16013 +        %if ("&EM_PROPERTY_TYPE"="TXT") %then %let EM_PROPERTY_TYPE=tab;
+16015 +        data _temp_save_view /view=_temp_save_view;
+16016 +            set &_SAVE_SET;
+16017 +            keep %EM_SAVEXT_VARS;
+16018 +        run;
+16020 +        %let SYSCC=0;
+16021 +        proc export data=_temp_save_view(obs=&EM_PROPERTY_OUTOBS) outfile="&_OUT_FILE_NAME" &_REPLACE dbms=&EM_PROPERTY_TYPE;
+16022 +        run;
+16023 +        quit;
+16025 +    %end;
+16026 +    %else %do;
+16028 +        %let SYSCC=0;
+16029 +        proc export data=&_SAVE_SET(obs=&EM_PROPERTY_OUTOBS keep=%EM_SAVEXT_VARS) outfile="&_OUT_FILE_NAME" &_REPLACE dbms=&EM_PROPERTY_TYPE;
+16030 +        run;
+16031 +        quit;
+16033 +    %end;
+16035 +    %if (^&SYSCC=0) %then %do;
+16036 +        %let EMEXCEPTIONSTRING=exception.server.IO.CREATE,&_OUT_FILE_NAME;
+16037 +        %put &EM_CODEBAR;
+16038 +        %let ERROR4 = %sysfunc(sasmsg(sashelp.dmine, IO.CREATE_ERR, NOQUOTE, &_OUT_FILE_NAME));
+16039 +        %put &ERROR4;
+16040 +        %put &EM_CODEBAR;
+16041 +        %goto quit;
+16042 +    %end;
+16044 +    *** WRITE RESULTS *********************************************************;
+16045 +    *** CONTINGENT ON SAVED FILE EXISTING *************************************;
+16047 +    %if %sysfunc(fileexist(&_OUT_FILE_NAME)) %then %do;
+16048 +        data _save_output_temp_record;
+16049 +            length name $255 nobs $20 outnobs $20 vars $20;
+16050 +            vars=left("&EM_NUM_SAVEXT_VARS");
+16051 +            outnobs=left("&EM_PROPERTY_OUTOBS");
+16052 +            nobs=left("&_SAVE_NOBS");
+16053 +            name=left("&_OUT_FILE_NAME");
+16054 +        run;
+16055 +        proc append base=_save_output_temp data=_save_output_temp_record force; run; quit;
+16056 +        proc delete data=_save_output_temp_record; run;
+16057 +    %end;
+16058 +    %else %do;
+16059 +        %let EMEXCEPTIONSTRING=exception.server.IO.CANTREADFILE,&_OUT_FILE_NAME;
+16060 +        %put &EM_CODEBAR;
+16061 +        %let ERROR5 = %sysfunc(sasmsg(sashelp.dmine, IO.CANTREADFILE_ERR, NOQUOTE, &_OUT_FILE_NAME));
+16062 +        %put &ERROR5;
+16063 +        %put &EM_CODEBAR;
+16064 +        %goto quit;
+16065 +    %end;
+16067 +    *** HOUSEKEEPING **********************************************************;
+16069 +    %quit:
+16071 +    %if ("&EM_PROPERTY_TYPE"="tab") %then %let EM_PROPERTY_TYPE=TXT;
+16073 +    %if %sysfunc(exist(_temp_save_view, VIEW)) %then %do;
+16074 +        proc datasets lib=work memtype=view nolist;
+16075 +            delete _temp_save_view;
+16076 +        run;
+16077 +        quit;
+16078 +    %end;
+16080 +    %if %symexist(_SAVE_NOBS) %then %do;
+16081 +        data _null_;
+16082 +            call symdel('_SAVE_NOBS', 'NOWARN');
+16083 +        run;
+16084 +    %end;
+16086 +    %if %symexist(EM_NUM_SAVEXT_VARS) %then %do;
+16087 +        data _null_;
+16088 +            call symdel('EM_NUM_SAVEXT_VARS', 'NOWARN');
+16089 +        run;
+16090 +    %end;
+16092 +%mend EM_SAVEXT_PXPT;
+16094 +*** SAVES SAS CATALOGS FOR OUTPUT DATA SETS ***********************************;
+16095 +*** CALLED BY EM_SAVEXT_TRAIN *************************************************;
+16097 +%macro EM_SAVEXT_CATALOG(_FORMATS);
+16099 +    *** SORT AND REMOVE DUPLICATES;
+16101 +    proc sort data=&_FORMATS nodupkey;
+16102 +        by format;
+16103 +    run;
+16104 +    quit;
+16106 +    *** RETRIEVE FORMAT LOCATION INFO AND ASSIGNED CATALOGS IN ACTIVE SESSION;
+16108 +    proc sort data=sashelp.vformat(keep=fmtname libname memname where=(libname ne '' and memname ne ''))
+16109 +        out=_formats2(rename=(fmtname=format));
+16110 +        by fmtname;
+16111 +    run;
+16112 +    quit;
+16114 +    *** MERGE SAS FORMATS WITH LOCATION;
+16116 +    data &_FORMATS;
+16117 +        merge &_FORMATS(in=_a) _formats2(in=_b);
+16118 +        by format;
+16119 +        if _a and _b then output;
+16120 +    run;
+16122 +    *** IF &_FORMATS IS EMPTY AFTER MERGE THEN NO FORMATS BELONG TO THE SAVED SET;
+16124 +    proc contents data=&_FORMATS out=_formats_content_temp noprint; run;
+16125 +    data _null_;
+16126 +        set _formats_content_temp (obs=1);
+16127 +        if nobs > 0 then call symput('_USER_FORMATS_FLAG','1');
+16128 +        else call symput('_USER_FORMATS_FLAG','0');
+16129 +    run;
+16130 +    %if (^&_USER_FORMATS_FLAG) %then %do;
+16131 +        %put &EM_CODEBAR;
+16132 +        %let WARNING = %sysfunc(sasmsg(sashelp.dmine, save_nocats_warn, NOQUOTE));
+16133 +        %put &WARNING;
+16134 +        %put &EM_CODEBAR;
+16135 +        %goto quit;
+16136 +    %end;
+16138 +    *** SAVE FORMATS AS CATALOG OR TRANSPORT FORMAT;
+16140 +    proc sort data=&_FORMATS;
+16141 +        by libname memname;
+16142 +    run;
+16143 +    quit;
+16145 +    *** WRITING CATALOG IN WORK AVOIDS OVERWRITING SAS CATALOG;
+16146 +    *** FOR CASE REPLACE=N, TYPE ne SAS7BDAT;
+16148 +    data _null_;
+16149 +        set &_FORMATS end=eof;
+16150 +        by libname memname;
+16151 +        if first.libname or first.memname then do;
+16152 +            call execute('proc catalog cat='|| strip(libname)||'.'||strip(memname)||';');
+16153 +            call execute('copy out=work.&EM_PROPERTY_NAME._FORMATS et=format ;');
+16154 +            call execute('select ');
+16155 +        end;
+16156 +        if strip(fmttype) eq 'C' then do;
+16157 +            call execute(' '||strip(tranwrd(format, '$', ''))||'.formatc');
+16158 +        end;
+16159 +        else call execute(' '||strip(format)||'.format');
+16160 +        if last.libname or last.memname then do;
+16161 +            call execute(';');
+16162 +            call execute('run;');
+16163 +        end;
+16164 +        if eof then call execute('quit;');
+16165 +    run;
+16167 +    %if ("&EM_PROPERTY_TYPE" = "SAS7BDAT") %then %do;
+16168 +        proc copy in=work out=&EM_PROPERTY_LIB; select &EM_PROPERTY_NAME._FORMATS; run; quit;
+16169 +    %end;
+16170 +    %else %do;
+16171 +        proc cport cat=work.&EM_PROPERTY_NAME._formats file="&EM_PROPERTY_DIRECTORYSELECTOR.&EM_DSEP.&EM_PROPERTY_NAME._FORMATS.xpt"; run;
+16172 +    %end;
+16174 +    *** HOUSEKEEPING **********************************************************;
+16176 +    proc datasets lib=work memtype=catalog nolist;
+16177 +        delete &EM_PROPERTY_NAME._FORMATS;
+16178 +    run;
+16179 +    quit;
+16181 +    %quit:
+16183 +    proc delete data=_formats_content_temp; run;
+16184 +    proc delete data=_formats2; run;
+16186 +%mend EM_SAVEXT_CATALOG;
+16188 +*** FIND VARIABLES TO KEEP ****************************************************;
+16189 +*** CALLED BY EM_SAVEXT_TRAIN *************************************************;
+16191 +%macro EM_SAVEXT_GET_VARS(_SAVE_ROLE, _SAVE_SET);
+16193 +    %if("%sysfunc(strip(%upcase(&_SAVE_ROLE)))" ne "TRANSACTION") %then %do;
+16195 +        *** COMPARE INPUT SET AND NODE VARIABLE SET TO GET THE EXACT VARIABLES TO EXPORT;
+16197 +        proc contents data=&_SAVE_SET out=_input_vars(keep=name) noprint; run;
+16198 +        proc sort data=_input_vars; by name; run;
+16200 +        *** EXCLUDE REJECTED OR UNUSED VARIABLES;
+16202 +        proc sort data=&EM_DATA_VARIABLESET
+16203 +            (where=(use='Y' or (use='D' and role ne 'REJECTED'))) out=_train_vars(keep=name);
+16204 +            by name;
+16205 +        run;
+16207 +        data _em_savext_vars;
+16208 +            merge _input_vars(in=_a) _train_vars(in=_b);
+16209 +            by name;
+16210 +            keep name;
+16211 +            if _a and _b then output;
+16212 +        run;
+16214 +        *** CREATE VARIABLE AND NUMBER MACROS FOR EACH INPUT SET;
+16216 +        %em_varMacro(name=EM_SAVEXT_VARS, metadata=_em_savext_vars, key=name, nummacro=EM_NUM_SAVEXT_VARS);
+16218 +        *** HOUSEKEEPING;
+16220 +        proc delete data=_input_vars; run;
+16221 +        proc delete data=_train_vars; run;
+16222 +        proc delete data=_em_savext_vars; run;
+16224 +    %end;
+16225 +    %else %do; /* TRANSCATION TABLE VARIABLES ARE NOT LISTED IN THE TRAINING VARIABLE SET */
+16227 +        proc contents data=&_SAVE_SET out=_em_savext_vars(keep=name) noprint; run;
+16228 +        %em_varMacro(name=EM_SAVEXT_VARS, metadata=_em_savext_vars, key=name, nummacro=EM_NUM_SAVEXT_VARS);
+16229 +        proc delete data=_em_savext_vars; run;
+16231 +    %end;
+16233 +%mend EM_SAVEXT_GET_VARS;
+16235 +*** CHECKS IF A SET OR VIEW EXISTS ********************************************;
+16236 +*** CALLED BY EM_SAVEXT_TRAIN *************************************************;
+16238 +%macro EM_SAVEXT_SET_EXISTS(_DATASET);
+16240 +    %if (%sysfunc(exist(&_DATASET)) or
+16241 +        %sysfunc(exist(&_DATASET, VIEW))) and
+16242 +        "&_DATASET" ne "" %then %do;
+16243 +            %let _rc=1;
+16244 +    %end;
+16245 +    %else %do;
+16246 +            %let _rc=0;
+16247 +    %end;
+16249 +    &_rc.
+16251 +%mend EM_SAVEXT_SET_EXISTS;
+16253 +*** REGISTERS SETS INTO MACRO VARIABLE ARRAY USED IN SAVING PROCESS ***********;
+16254 +*** CALLED BY EM_SAVEXT_TRAIN *************************************************;
+16256 +%macro EM_SAVEXT_REGISTER(_DATASET, _ROLE, _i);
+16258 +    _save_set="&_DATASET";
+16259 +    _save_role="&_ROLE";
+16260 +    _save_set_index=cats('_save_set', strip(put(&_i,1.)));
+16261 +    _save_role_index=cats('_save_role', strip(put(&_i,1.)));
+16262 +    call symput(_save_set_index, _save_set);
+16263 +    call symput(_save_role_index, _save_role);
+16265 +%mend EM_SAVEXT_REGISTER;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref _SAVUTIL has been deassigned.
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set WORK._INPUT_VARS has 2 observations and 1 variables.
+NOTE: PROCEDURE CONTENTS used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set WORK._INPUT_VARS.
+NOTE: The data set WORK._INPUT_VARS has 2 observations and 1 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS3.EMSAVE2_VARIABLESET.
+      WHERE (use='Y') or ((use='D') and (role not = 'REJECTED'));
+NOTE: The data set WORK._TRAIN_VARS has 2 observations and 1 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+WARNING: Multiple lengths were specified for the BY variable NAME by input data sets. This might cause unexpected results.
+NOTE: There were 2 observations read from the data set WORK._INPUT_VARS.
+NOTE: There were 2 observations read from the data set WORK._TRAIN_VARS.
+NOTE: The data set WORK._EM_SAVEXT_VARS has 2 observations and 1 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file MACFILE is:
+      Catalog Name=WORK.EMUTIL.MACRO.SOURCE,
+      Catalog Page Size=4096,
+      Number of Catalog Pages=4,
+      Created=Thu, Nov 23, 2023 10:10:11 PM,
+      Last Modified=Thu, Nov 23, 2023 10:10:11 PM,
+      Filename=C:\Users\lahar\AppData\Local\Temp\SAS Temporary Files\_TD4848_LAHARI_\emutil.sas7bcat,
+      Release Created=9.0401M6,
+      Host Created=X64_10HOME,
+      Owner Name=LAHARI\lahar,
+      File Size=             5KB,
+      File Size (bytes)=5120
+ 
+NOTE: 5 records were written to the file MACFILE.
+      The minimum record length was 15.
+      The maximum record length was 29.
+NOTE: There were 2 observations read from the data set WORK._EM_SAVEXT_VARS.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: %INCLUDE (level 1) file MACFILE is file WORK.EMUTIL.MACRO.SOURCE.
+16271 +%macro EM_SAVEXT_VARS;
+16272 +"ROLE"n "TERM"n
+16273 +%mend EM_SAVEXT_VARS;
+16274 +%global EM_NUM_SAVEXT_VARS;
+16275 +%let EM_NUM_SAVEXT_VARS = 2 ;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref MACFILE has been deassigned.
+ 
+NOTE: Deleting WORK._INPUT_VARS (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._TRAIN_VARS (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._EM_SAVEXT_VARS (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: View EMWS3.FIMPORT2_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+ 
+NOTE: There were 55785 observations read from the data set EMWS3.FIMPORT2_DATA.
+NOTE: There were 55785 observations read from the data set EMWS3.FIMPORT2_TRAIN.
+NOTE: The data set RESUME.STOPLIST_TRAIN has 55785 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: View EMWS3.FIMPORT2_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+NOTE: There were 55785 observations read from the data set EMWS3.FIMPORT2_DATA.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: The data set WORK._SAVE_OUTPUT_TEMP_RECORD has 1 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Appending WORK._SAVE_OUTPUT_TEMP_RECORD to WORK._SAVE_OUTPUT_TEMP.
+NOTE: BASE data set does not exist. DATA file is being copied to BASE file.
+NOTE: There were 1 observations read from the data set WORK._SAVE_OUTPUT_TEMP_RECORD.
+NOTE: The data set WORK._SAVE_OUTPUT_TEMP has 1 observations and 5 variables.
+NOTE: PROCEDURE APPEND used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._SAVE_OUTPUT_TEMP_RECORD (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set WORK._SAVE_OUTPUT_TEMP.
+NOTE: The data set EMWS3.EMSAVE2_SAVEOUT has 1 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set EMWS3.EMSAVE2_SAVEOUT.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS3.EMSAVE2_VARIABLESET.
+      WHERE format not = ' ';
+NOTE: The data set WORK._FORMATS has 2 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set WORK._FORMATS.
+NOTE: 0 observations with duplicate key values were deleted.
+NOTE: The data set WORK._FORMATS has 2 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 9 observations read from the data set SASHELP.VFORMAT.
+      WHERE (libname not = ' ') and (memname not = ' ');
+NOTE: The data set WORK._FORMATS2 has 9 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.31 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set WORK._FORMATS.
+NOTE: There were 9 observations read from the data set WORK._FORMATS2.
+NOTE: The data set WORK._FORMATS has 0 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set WORK._FORMATS_CONTENT_TEMP has 4 observations and 41 variables.
+NOTE: PROCEDURE CONTENTS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set WORK._FORMATS_CONTENT_TEMP.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+*------------------------------------------------------------*
+WARNING: Format catalogs will not be overwritten.
+*------------------------------------------------------------*
+ 
+NOTE: Deleting WORK._FORMATS_CONTENT_TEMP (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._FORMATS2 (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._FORMATS (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._SAVE_OUTPUT_TEMP (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+16276
+16277  *------------------------------------------------------------*;
+16278  * End TRAIN: EMSave2;
+16279  *------------------------------------------------------------*;
+ 
+16280  *------------------------------------------------------------*;
+16281  * Close any missing semi colons;
+16282  *------------------------------------------------------------*;
+16283  ;
+16284  ;
+16285  ;
+16286  ;
+16287  quit;
+16288  *------------------------------------------------------------*;
+16289  * Close any unbalanced quotes;
+16290  *------------------------------------------------------------*;
+16291  /*; *"; *'; */
+16292  ;
+16293  run;
+16294  quit;
+16295  /* Reset EM Options */
+16296  options formchar="|----|+|---+=|-/\<>*";
+16297  options nocenter ls=256 ps=10000;
+16298  goptions reset=all device=GIF NODISPLAY;
+ 
+16299  proc sort data=WORK.EM_USER_REPORT;
+16300  by ID VIEW;
+16301  run;
+ 
+NOTE: There were 132 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+*------------------------------------------------------------*
+* Score Log
+Date:                November 23, 2023
+Time:                22:10:11
+*------------------------------------------------------------*
+16403  %let EMEXCEPTIONSTRING=;
+16404  *------------------------------------------------------------*;
+16405  * SCORE: EMSave2;
+16406  *------------------------------------------------------------*;
+16407  %let EM_ACTION = SCORE;
+16408  %let syscc = 0;
+16409  *** MAIN MACRO FOR EMSAVE EXTENSION NODE;
+16410
+16411  %macro EM_SAVEXT_MAIN;
+16412
+16413     %if %upcase("&EM_ACTION") = "CREATE" %then %do;
+16414         filename _create catalog 'sashelp.emutil.savext_create.source';
+16415         %include _create;
+16416         filename _create;
+16417         %EM_SAVEXT_CREATE;
+16418     %end;
+16419     %else
+16420     %if %upcase("&EM_ACTION") = "TRAIN" %then %do;
+16421         filename _train catalog 'sashelp.emutil.savext_train.source';
+16422         %include _train;
+16423         filename _train;
+16424         %EM_SAVEXT_TRAIN;
+16425     %end;
+16426
+16427  %mend EM_SAVEXT_MAIN;
+16428
+16429  %EM_SAVEXT_MAIN;
+16430
+16431  *------------------------------------------------------------*;
+16432  * End SCORE: EMSave2;
+16433  *------------------------------------------------------------*;
+ 
+16434  *------------------------------------------------------------*;
+16435  * EMSave2: Scoring DATA data;
+16436  *------------------------------------------------------------*;
+16437  data EMWS3.EMSave2_TRAIN
+16438  / view=EMWS3.EMSave2_TRAIN
+16439  ;
+16440  set EMWS3.FIMPORT2_train
+16441  ;
+16442  run;
+ 
+NOTE: DATA STEP view saved on file EMWS3.EMSAVE2_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS3.FIMPORT2_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+ 
+ 
+16443  quit;
+ 
+16445  *------------------------------------------------------------*;
+16446  * EMSave2: Computing metadata for TRAIN data;
+16447  *------------------------------------------------------------*;
+ 
+NOTE: View EMWS3.EMSAVE2_TRAIN.VIEW used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.06 seconds
+ 
+NOTE: View EMWS3.EMSAVE2_TRAIN.VIEW used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.04 seconds
+ 
+*------------------------------------------------------------*
+* Report Log
+Date:                November 23, 2023
+Time:                22:10:12
+*------------------------------------------------------------*
+16808  %let EMEXCEPTIONSTRING=;
+16809  *------------------------------------------------------------*;
+16810  * REPORT: EMSave2;
+16811  *------------------------------------------------------------*;
+16812  %let EM_ACTION = REPORT;
+16813  %let syscc = 0;
+16814  *** MAIN MACRO FOR EMSAVE EXTENSION NODE;
+16815
+16816  %macro EM_SAVEXT_MAIN;
+16817
+16818     %if %upcase("&EM_ACTION") = "CREATE" %then %do;
+16819         filename _create catalog 'sashelp.emutil.savext_create.source';
+16820         %include _create;
+16821         filename _create;
+16822         %EM_SAVEXT_CREATE;
+16823     %end;
+16824     %else
+16825     %if %upcase("&EM_ACTION") = "TRAIN" %then %do;
+16826         filename _train catalog 'sashelp.emutil.savext_train.source';
+16827         %include _train;
+16828         filename _train;
+16829         %EM_SAVEXT_TRAIN;
+16830     %end;
+16831
+16832  %mend EM_SAVEXT_MAIN;
+16833
+16834  %EM_SAVEXT_MAIN;
+16835
+16836  *------------------------------------------------------------*;
+16837  * End REPORT: EMSave2;
+16838  *------------------------------------------------------------*;
+ 
+16839  /* Reset EM Options */
+16840  options formchar="|----|+|---+=|-/\<>*";
+16841  options nocenter ls=256 ps=10000;
+16842  goptions reset=all device=GIF NODISPLAY;
+ 
